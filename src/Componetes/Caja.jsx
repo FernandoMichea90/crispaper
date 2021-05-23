@@ -872,15 +872,15 @@ const armararreglo=(nuevoValor)=>{
                             <CircularProgress className={clases.circular}></CircularProgress>
                         </div>
                         :<div>
-                           {/* { listapaper.length==0 && 
+                           { listapaper.length==0 ?
                               <Typography className={clases.
                               textNoDisponible
                                } align="center" variant="h4">
                                         No hay registros
-                              </Typography>           */}
+                              </Typography>          
                            
 
-                           {
+                           :
                             listapaper.map((valor)=>(
 
                                         <Paper key={valor.id} className={clases.caja} elevation={3}>
@@ -1025,14 +1025,8 @@ const armararreglo=(nuevoValor)=>{
 
 
                                         </Paper>
-
-
-                            )
-                         
-                            
-                            
-                            )
-                                                }
+                            ))
+                         }
 
                             {cargandodos?
 
