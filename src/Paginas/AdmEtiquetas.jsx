@@ -132,21 +132,23 @@ useEffect(() => {
             setcargando(true)
 
             //conocer el estado  del usuario 
-        console.log(usuario)
-           
-         if(usuario==null) return  props.history.push("/")
+            console.log(usuario)
+            if(usuario==null){
+                props.history.push("/")
 
-        if(!usuario.administrador){
-          
-            props.history.push("/")
-
-        }
-
+            }else{
+                
+                if(!usuario.administrador){
+                    props.history.push("/")
+                }
+            }
+     
 
     agregarEtiquetas()
  
    
-}, [])
+   
+}, [usuario])
     
 
 const handleChange=(e)=>{
@@ -222,6 +224,7 @@ function manejarSnapshot(snapshot){
             id:doc.id,
             ...doc.data()
         }
+       
     })
     setetiquetas(lista)   
 }

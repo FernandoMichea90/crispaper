@@ -872,6 +872,18 @@ useEffect(() => {
 
     const {id}=props.match.params
  
+    if(usuario==null){
+        props.history.push("/")
+
+    }else{
+        
+        if(!usuario.administrador){
+            props.history.push("/")
+        }
+    }
+
+
+
     // validar si editar o borrar
     editorcreate(id)
 

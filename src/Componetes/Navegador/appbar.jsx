@@ -446,7 +446,7 @@ if(history.location.pathname=="/login" ){
   
 }else{
 
-  if(history.location.pathname=="/adminetiquetas") {
+  if(history.location.pathname=="/adminetiquetas"||history.location.pathname=="/nosotros") {
   
     setappBar(true)
   }else{
@@ -956,7 +956,11 @@ container
 
                {usuario==null?
 
-                      <Link className={classes.linkList} >
+                      <Link onClick={()=>{
+                    {             handleClose()
+                          abrirCerrarMenu()
+                          history.push("/nosotros")}
+                      }} className={classes.linkList} >
                       <Typography className={classes.linkLi} align="center" variant="subtitle1">
                                 Nosotros
                       </Typography>
