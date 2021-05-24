@@ -34,7 +34,7 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
+      <Link color="inherit" >
         Cris Paper
       </Link>{' '}
       {new Date().getFullYear()}
@@ -46,6 +46,11 @@ function Copyright() {
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '92vh',
+
+  "& body":{
+    backgroundColor:"#ffffff"
+  },
+   
 
     " & .submit": {
       margin: theme.spacing(5, 0, 2),
@@ -61,8 +66,7 @@ const useStyles = makeStyles((theme) => ({
   image: {
     backgroundImage: 'url(https://source.unsplash.com/random)',
     backgroundRepeat: 'no-repeat',
-    backgroundColor:
-      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+    backgroundColor:"#ffffff",
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   },

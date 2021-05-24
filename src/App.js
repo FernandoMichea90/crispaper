@@ -2,7 +2,7 @@ import React ,{useState,useContext,useEffect}from 'react'
 import Login from '../src/Paginas/Login'
 import {BrowserRouter as Router,Route,Switch} from 'react-router-dom'
 import Inicio from './Paginas/inicio'
-import {ThemeProvider} from  "@material-ui/core/styles"
+import {ThemeProvider, makeStyles} from  "@material-ui/core/styles"
 import theme  from "./Provider/TemaConfig"
 import {UsuarioContext,UsuarioProvider } from "./Provedores/UsuarioContext"
 import  Navegador  from './Componetes/Navegador/appbar'
@@ -13,8 +13,25 @@ import {useHistory} from 'react-router-dom'
 import AdmEtiquetas from './Paginas/AdmEtiquetas'
 import CrearCuenta from './Paginas/CrearCuenta'
 import Nosotros from '../src/Paginas/Nosotros'
+
+
+const estilos =makeStyles((theme)=>({
+
+root:{
+
+  "& body":{
+    backgroundColor:"#ffffff"
+  }
+}
+
+
+}))
+
+
+
 const App = (props) => {
 
+  const clases=estilos()
   const history=useHistory()
 const [recientes, setrecientes] = useState(false)
 
@@ -78,7 +95,7 @@ useEffect(() => {
           
 
 
-                <div>
+                <div className={clases.root}>
                   <Navegador  mejorvalorados={mejorvalorados} recientes={recientes} valorados={valorados} reciente ={reciente} ></Navegador>
 
                 <Switch>
