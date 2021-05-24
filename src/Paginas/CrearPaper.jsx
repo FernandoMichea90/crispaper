@@ -650,7 +650,7 @@ const ActualizarPaperDos=async()=>{
  
     let etiquetasOld=[]
     
-    paper.etiquetas.map(valor=>{      
+    paper.etiquetas.map(valor=>{     
         etiquetas.map(valordos=>{
         
 
