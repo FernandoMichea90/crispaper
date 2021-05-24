@@ -144,7 +144,7 @@ useEffect(() => {
 
 
     agregarEtiquetas()
-    setcargando(false)
+   
    
 }, [])
     
@@ -217,10 +217,12 @@ const agregarEtiquetas=async()=>{
 
 function manejarSnapshot(snapshot){
     const  lista =snapshot.docs.map(doc=>{
+        setcargando(false)
         return{
             id:doc.id,
             ...doc.data()
         }
+       
     })
     setetiquetas(lista)    
 }
