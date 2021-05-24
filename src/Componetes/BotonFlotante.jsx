@@ -2,6 +2,7 @@ import React from 'react'
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core/styles';
+import {useHistory} from 'react-router-dom'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -26,12 +27,13 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const BotonFlotante = () => {
+const BotonFlotante = (props) => {
 
+  const history=useHistory()
     const clases=useStyles()
     return (
         <div className={clases.root}>
-            <Fab href="/nuevopaper" color="primary" variant="extended">
+            <Fab onClick={()=>{history.push("/nuevopaper")}} color="primary" variant="extended">
         <AddIcon className={clases.extendedIcon} />
                 Agregar Paper
       </Fab>
