@@ -871,6 +871,7 @@ const actualizarState=(e)=>
 useEffect(() => {
 
     const {id}=props.match.params
+    console.log(usuario)
  
     if(usuario==null){
         props.history.push("/")
@@ -896,7 +897,7 @@ useEffect(() => {
 
 
 
-}, [errores])
+}, [errores,usuario])
 
 const editorcreate= async (id)=>{
 

@@ -83,7 +83,7 @@ useEffect(() => {
 
                 <Switch>
                 <Route  path="/crearcuenta" component={CrearCuenta}></Route>
-                <Route  path="/nuevopaper" component={CrearPaper}></Route>
+                <Route  path="/nuevopaper"  render={(props)=>(< CrearPaper {...props}   />)} ></Route>
                 <Route  path="/editarpaper/:id" component={CrearPaper}></Route>
                 <Route  path="/etiquetas"  render={(props)=>(<Etiquetas {...props}  valorados={valorados} recientes={recientes} />)} ></Route>
                 <Route  path="/tag/:valor"  render={(props)=>(<EtiquetasDos {...props}  valorados={valorados} recientes={recientes} />)}></Route>
