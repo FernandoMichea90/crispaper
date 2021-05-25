@@ -5,7 +5,7 @@
 /.pnp
 .pnp.js
 /.firebase
-.firebaseserc
+.firebaserc
 firebase.json
 .eslintcache
 # testing
