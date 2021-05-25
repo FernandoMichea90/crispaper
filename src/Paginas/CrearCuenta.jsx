@@ -166,6 +166,31 @@ const CrearCuenta = (props) => {
                        icon:"success"
                 })
 
+            }).catch(error=>{
+                console.log(error)
+                let mensaje=""
+                let titulo=""
+                titulo=error.code
+                mensaje=error.message
+                
+                //desde aca se atrapan los errores
+                if(error.code=="auth/weak-password"){
+                    titulo="Contraseña Debil"    
+                    mensaje="La contraseña debe tener al menos 6 caracteres"
+                }
+
+
+                //desde aca se atrapan los errores
+                if(error.code=="auth/email-already-in-use"){
+                    titulo="correo electrónico ya en uso"    
+                    mensaje="La dirección de correo electrónico ya está siendo utilizada por otra cuenta."
+                }
+
+                Swal.fire({
+                    title:titulo,
+                    text:mensaje,
+                    icon:"info"
+             })
             })
             setcargando(false)
     }}
@@ -378,3 +403,4 @@ severity="error">{errores.confirmar}</Alert>
 }
 
 export default CrearCuenta
+  
