@@ -145,6 +145,7 @@ useEffect(() => {
      
 
     agregarEtiquetas()
+ 
    
    
 }, [usuario])
@@ -225,7 +226,7 @@ function manejarSnapshot(snapshot){
         }
        
     })
-    setetiquetas(lista)    
+    setetiquetas(lista)   
 }
 
 
