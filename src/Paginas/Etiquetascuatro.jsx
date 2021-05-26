@@ -16,6 +16,13 @@ const estilos=makeStyles((theme)=>({
     
     root:{
 
+        " & .MuiButton-containedPrimary:hover" :{
+            backgroundColor: "#303f9f00",
+            color:"#5fcccf",
+            border:"1px solid"
+        },
+
+
         "& .botonEtiqueta":{
             background:"#ffffff",
             color:"#212121 !important",
