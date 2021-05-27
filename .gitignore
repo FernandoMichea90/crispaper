@@ -8,7 +8,7 @@
 .firebaserc
 firebase.json
 .eslintcache
-/src/firebase/config.js
+#/src/firebase/config.js
 
 # testing
 /coverage

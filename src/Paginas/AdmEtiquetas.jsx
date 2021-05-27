@@ -182,6 +182,7 @@ const guardarEtiqueta=async()=>{
             }else{
                 Firebase.db.collection("etiquetas").add({...tag,contar:0
                     }).then(()=>{
+                   
                     Swal.fire({
                         icon:"success",
                         title:"Guardado Correctamente"
@@ -206,7 +207,7 @@ const guardarEtiqueta=async()=>{
         setcargando(false)  
     }
 
-    setcargando(false)
+    
     settag({
         descripcion:""
     })
@@ -215,17 +216,20 @@ const guardarEtiqueta=async()=>{
 const agregarEtiquetas=async()=>{
 
     await Firebase.db.collection("etiquetas").onSnapshot(manejarSnapshot)
+  
 }
 
 function manejarSnapshot(snapshot){
     const  lista =snapshot.docs.map(doc=>{
-        setcargando(false)
+        
         return{
             id:doc.id,
             ...doc.data()
         }
        
     })
+        
+    setcargando(false)
     setetiquetas(lista)   
 }
 
@@ -253,8 +257,9 @@ const borrarEtiquetas=async(valor)=>{
 
                 //buscarPapers(valor)
 
-
+                console.log("paso por aca ")
                 
+
                  let nuevalista=await  Firebase.db.collection("etiquetas").doc(valor.id).collection("paper").get()
                   
                  let nuevalistados=nuevalista.docs.map((doc)=>{
@@ -266,6 +271,7 @@ const borrarEtiquetas=async(valor)=>{
             
                  console.log(nuevalistados)
                  //remover la etiqueta a los paper
+                 //recorriendo los paper
                  nuevalistados.map(async (doc)=>{
                         // nueva variable donde guardare la nueva coleccion  etiqueta
 
@@ -300,27 +306,37 @@ const borrarEtiquetas=async(valor)=>{
                    
                 
 
-    })
+               })
 
 
 
+    
+
+                        })
+
+
+
+
+
+                 //borrar la etiqueta
+                 
+                 
                await Firebase.db.collection("etiquetas").doc(valor.id).delete().then((respuesta)=>{
 
 
 
 
-                        Swal.fire({
-                            title:"Borrado Correctamente",
-                            icon:"success"
-                        })
+                Swal.fire({
+                    title:"Borrado Correctamente",
+                    icon:"success"
+                }).then(()=>{
+                    setcargando(false)
+                })
 
-                        setcargando(false)
-                 
-                }).catch((error) =>{console.log(error)})
-            
+                
+         
+        }).catch((error) =>{console.log(error)})
     
-
-                        })
 
             }})
         }
@@ -554,48 +570,68 @@ const editarEtiquetas=(valor)=>{
                      let nuevoValor={...valor,descripcion:result.value}
 
 
-                const listaPaper=await modificarPaperdelastag(nuevoValor)
-                
-                // registrar  en la base de datos 
 
-                    // actualizar en los papers 
-                    actualizarVariosPaper(listaPaper)
-                    // Actualizar los paper con las etiquetas 
-                    ActualizarVariosEtiquetas(listaPaper,nuevoValor)
-                    //
+                     let coincide=false
+
+                     etiquetas.map(doc=>{
+         
+                         if(doc.descripcion==result.value){
+                             coincide=true
+                         }
+                     })
+         
+                 // buscar si esa etiqueta ya existe
+                     if(coincide){
+         
+                         Swal.fire({
+                             icon:"info",
+                             title:"Ese registro ya esta disponible"
+                           }).then(()=>{
+                               setcargando(false)
+                           })}else{
+
+                                    const listaPaper=await modificarPaperdelastag(nuevoValor)
+                                    
+                                    // registrar  en la base de datos 
+
+                                        // actualizar en los papers 
+                                        actualizarVariosPaper(listaPaper)
+                                        // Actualizar los paper con las etiquetas 
+                                        ActualizarVariosEtiquetas(listaPaper,nuevoValor)
+                                        //
 
 
 
 
 
-                // modificar  todos los paper             
-                // modificar todas las etiquetas con ese paper
-                // retorna la lista que de los papers que contienes esa etiqueta
-                //  var prueba =await buscarPaperEdit(valor)
-                //editar todos los paper de la coleccion unica y de la subcolleccion de la etiquetas
-               //  editarTodolosPapers(prueba,valor,result.value)
+                                    // modificar  todos los paper             
+                                    // modificar todas las etiquetas con ese paper
+                                    // retorna la lista que de los papers que contienes esa etiqueta
+                                    //  var prueba =await buscarPaperEdit(valor)
+                                    //editar todos los paper de la coleccion unica y de la subcolleccion de la etiquetas
+                                //  editarTodolosPapers(prueba,valor,result.value)
 
-                // actualiza la etiqueta 
-                //valor id es el id de la etiqueta
-            await Firebase.db.collection("etiquetas").doc(valor.id).update({
-                descripcion:result.value
-            }).then(()=>{
-                Swal.fire({
-                    title:"Editado Correctamente",
-                    icon:"success"
-                })
-                setcargando(false)
-            
-            }).catch((error)=>{
-                    Swal.fire({
-                     title:"Ha ocurrido un problema",
-                    icon:"error"
-                            
-                                })})
-                            
-                                setcargando(false)
-                            
-                            }else{setcargando(false)}}) 
+                                    // actualiza la etiqueta 
+                                    //valor id es el id de la etiqueta
+                                await Firebase.db.collection("etiquetas").doc(valor.id).update({
+                                    descripcion:result.value
+                                }).then(()=>{
+                                    Swal.fire({
+                                        title:"Editado Correctamente",
+                                        icon:"success"
+                                    })
+                                    setcargando(false)
+                                
+                                }).catch((error)=>{
+                                        Swal.fire({
+                                        title:"Ha ocurrido un problema",
+                                        icon:"error"
+                                                
+                                                    })})
+                                                
+                                                    setcargando(false)
+                                                }         
+                                                }else{setcargando(false)}}) 
 
 
         }
