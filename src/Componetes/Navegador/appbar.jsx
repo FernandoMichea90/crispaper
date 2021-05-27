@@ -525,10 +525,9 @@ const handleClickOutside=event =>{
         
         value={buscador.buscado}
         name="buscado"
-        autocomplete="off"
-       
+        autoComplete="off"
         placeholder="Buscar..."
-        inputProps={{ 'aria-label': 'search google maps' }}
+     
       />
       
                 
@@ -866,7 +865,7 @@ container
         
         value={buscador.buscado}
         name="buscado"
-        autocomplete="off"
+        autoComplete="off"
        
         placeholder="Buscar..."
         inputProps={{ 'aria-label': 'search google maps' }}
