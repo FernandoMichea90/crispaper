@@ -281,13 +281,18 @@ const NuevoPaper=async()=>{
         if(respuesta){
 
 
-            props.history.push("/")
+        
 
             swal.fire({
                 icon: 'success',
                 title: "Guardado!",
+                confirmButtonColor: '#21cbce',
+                                      
+                
                 
               
+              }).then(()=>{
+                  props.history.push("/")
               })
             
 
@@ -384,7 +389,6 @@ try {
     //crear paper y retornar el id 
     const id = await firebase.db.collection("paper").add(paper).then((docRef) => {
         //console.log("Document written with ID: ", docRef.id);
-
         return docRef.id
     })
     const pdf =await subirPDF(id)

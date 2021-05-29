@@ -302,8 +302,12 @@ const Caja = (props) => {
                                         setvacio(true)
 
                                 }
+
+                                if(nuevalista.length==0){
+                                        setultimoDocumento(0)
+                                }else{
                                 setultimoDocumento(nuevalista[nuevalista.length-1].id)
-                                 
+                                 }
                        
 
                            })
@@ -311,7 +315,7 @@ const Caja = (props) => {
 
                            
                        
-                           
+                           console.log("paso por aca ")
                         setlistapaper(nuevalista)   
 
 
@@ -395,14 +399,17 @@ const borrar=(e)=>{
       
 
         Swal.fire({
-                title: 'Esta seguro que desea borrar el siguiente registro?',
+                title: '¿Esta seguro que desea borrar el siguiente registro?',
                 text:`${e.titulo}`,
                 showDenyButton: true,
-              
+                confirmButtonColor: '#21cbce',                    
                 confirmButtonText: `Borrar`,
                 denyButtonText: `Cancelar`,
               }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
+
+
+                console.log(e.id)
                 if (result.isConfirmed) {
 
                                         
@@ -424,7 +431,7 @@ const borrar=(e)=>{
                                         })
                                        
                                      
-                                        pedirpaper()
+                                        //pedirpaper()
                                     
                                        
 
@@ -485,7 +492,9 @@ const borrar=(e)=>{
                                                 }); }  
 
 
-                  Swal.fire('Borrado!', '', 'success')
+                  Swal.fire({title:'Borrado!', confirmButtonColor:'#21cbce',icon: 'success'}).then(()=>{
+                          pedirpaper()
+                  })
                 } else if (result.isDenied) {
                 
                 }

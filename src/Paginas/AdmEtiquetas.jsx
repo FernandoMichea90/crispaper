@@ -328,7 +328,9 @@ const borrarEtiquetas=async(valor)=>{
 
                 Swal.fire({
                     title:"Borrado Correctamente",
-                    icon:"success"
+                    icon:"success",
+                    confirmButtonColor: '#21cbce',
+                    
                 }).then(()=>{
                     setcargando(false)
                 })
@@ -618,7 +620,9 @@ const editarEtiquetas=(valor)=>{
                                 }).then(()=>{
                                     Swal.fire({
                                         title:"Editado Correctamente",
-                                        icon:"success"
+                                        icon:"success",
+                                        confirmButtonColor: '#21cbce',
+                                      
                                     })
                                     setcargando(false)
                                 

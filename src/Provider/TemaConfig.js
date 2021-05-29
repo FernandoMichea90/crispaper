@@ -1,5 +1,5 @@
 import {createMuiTheme} from "@material-ui/core/styles" 
-
+import { esES } from '@material-ui/core/locale';
 
 
 const theme=createMuiTheme({
@@ -28,7 +28,7 @@ const theme=createMuiTheme({
 
 
 
-})
+},esES)
 
 
 
