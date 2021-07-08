@@ -1,6 +1,9 @@
-import React from 'react'
-import { makeStyles,Typography,Grid } from '@material-ui/core'
-
+import React,{useEffect,useState} from 'react'
+import { makeStyles,Typography,Grid,CircularProgress } from '@material-ui/core'
+import { convertToRaw } from 'draft-js';
+import {  ContentState, convertFromHTML } from 'draft-js'
+import Firebase from "../../src/firebase/firebase"
+import { EditorState } from 'draft-js';
 
 const estilos=makeStyles((theme)=>({
 
@@ -21,16 +24,57 @@ const estilos=makeStyles((theme)=>({
 
 }, 
 
-    
-}
 
+},
+divCircular:{
+    marginTop:"100px"
 
-
-
+},
+circular:{
+    height:"72px !important",
+    width:"72px !important",
+    display:"block",
+    margin:"auto"
+    },
 }))
 
 const Nosotros = () => {
      const  clases=estilos()
+
+     const [titulo, settitulo] = useState()
+     const [cargando,setcargando]=useState(false)
+     const [editorState, setEditorState] = useState()
+ 
+
+
+
+
+     // funcion extraida 
+     
+
+     useEffect(async() => {
+
+        setcargando(true)
+        const retornarObjeto=await Firebase.db.collection("administrarnosotros").doc("configuracion").get().then((respuesta)=>{
+            console.log(respuesta.data())
+
+            return respuesta.data()
+        })
+
+        if(retornarObjeto!=undefined){
+            
+            settitulo(retornarObjeto.title)
+            console.log(retornarObjeto.contenido)
+
+            // aca esta el problema 
+            setEditorState(retornarObjeto.contenido)
+
+        }
+
+        console.log(editorState)
+        setcargando(false)
+   
+     }, [])
     return (
         <div  className={clases.root} style={{marginTop:"100px"}}>
 
@@ -42,25 +86,23 @@ const Nosotros = () => {
                 <Grid xs="8">
 
                             <Typography variant="h3">
-                                Nosotros 
+                                {titulo}
                             </Typography>
 
+                             {cargando?
+                                    <div className={clases.divCircular} >
+                                            <CircularProgress className={clases.circular}></CircularProgress>
+                                        </div>
 
-                            <Typography variant="body1">
-                            The mission of Papers with Code is to create a free and open resource with Machine Learning papers, code and evaluation tables.
-                            </Typography>
+                                    :
 
-                            <Typography variant="body1">
-                            We believe this is best done together with the community, supported by NLP and ML.
-                            </Typography>
+                                    <div dangerouslySetInnerHTML={{__html:editorState}}>
+                                    
+                                    </div>
+                             }
+                          
 
-                            <Typography variant="body1">
-                            All content on this website is openly licenced under CC-BY-SA (same as Wikipedia) and everyone can contribute - look for the "Edit" buttons!
-                            </Typography>
-
-                            <Typography variant="body1">
-                            We also operate specialized portals for papers with code in astronomy, physics, computer sciences, mathematics and statistics.
-                            </Typography>
+                            
                 </Grid>
                 <Grid xs="2"></Grid>
             </Grid>

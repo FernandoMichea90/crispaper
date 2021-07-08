@@ -13,15 +13,19 @@ import { useContext } from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import MuiAlert from '@material-ui/lab/Alert';
 import CloseIcon from '@material-ui/icons/Close';
+import LinkIcon from '@material-ui/icons/Link';
 
 
 
 import swal  from 'sweetalert2'
 import { purple } from '@material-ui/core/colors';
+import { Link } from 'react-router-dom';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
+
+
   
 
 
@@ -45,6 +49,11 @@ const useStyles=makeStyles((theme)=>({
     margenArriba:{
 
         marginTop:"100px"
+    },
+    estilo_mensaje_informativo:{
+
+        marginTop:"100px",
+        color:"#00000042"
     },
 
     divFoto:{
@@ -136,10 +145,10 @@ const CrearPaper = (props) => {
     const usuario=useContext(UsuarioContext)
     const clases=useStyles()
     const [imagen,setimagen]=useState({file:null,imagen:null})
-    const [pdf,setpdf]=useState({file:null,pdf:null})
     const [etiquetas,setetiquetas]=useState([])
     const [tag,settag]=useState([]) 
     const [cargando, setcargando] = useState(false)
+    const [mensaje_informativo,set_mensaje_informativo]=useState("")
     let [paper, setpaper] = useState({
         imagen:null,
         pdf:null,
@@ -150,18 +159,16 @@ const CrearPaper = (props) => {
         resumen:""
 
     })
-
     const [id, setid] = useState()
-
     const [errores, seterrores] = useState({
 
         titulo:null,
         resumen:null,
         pdf:null
 
-    } 
-    )
-
+    })
+    const [pdf,setpdf]=useState({file:null,pdf:null})
+    const [link, setLink] = useState()
 
 
  //seleccionar el archivo 
@@ -188,12 +195,15 @@ const CrearPaper = (props) => {
 
         
         const agregarpdf=pdf.target.files[0]
-             if(agregarpdf!=undefined){                
+             if(agregarpdf!=undefined){            
+             
                     setpdf({
                         pdf:agregarpdf,
                         file:URL.createObjectURL(agregarpdf)
                     })
-                }
+                                
+                setLink(null)
+            }
 
 }
 
@@ -245,9 +255,9 @@ const validacionuno=()=>{
             prueba.resumen="el resumen es requerido"
     }
 
-
-    if(pdf.file==null){
-        prueba.pdf=" debe subir un archivo .pdf"
+  
+    if(pdf.file==null &&  link==undefined){
+        prueba.pdf=" debe subir un archivo .pdf o agregar una URL"
 }
 
    
@@ -262,9 +272,9 @@ const validacionuno=()=>{
 const NuevoPaper=async()=>{
 
     
-
     setcargando(true)
 
+    set_mensaje_informativo("...verificando informacion")
       let  errores  = validacionuno()
       seterrores(errores)
 
@@ -272,7 +282,7 @@ const NuevoPaper=async()=>{
    
     if(Object.keys(errores).length){
      
-    }else{
+    }else{   
 
 
 
@@ -293,6 +303,8 @@ const NuevoPaper=async()=>{
               
               }).then(()=>{
                   props.history.push("/")
+                  set_mensaje_informativo("")
+                 
               })
             
 
@@ -304,6 +316,7 @@ const NuevoPaper=async()=>{
                 text: "intentalo mas tarde ",
                 timer: 1500
               })
+              set_mensaje_informativo("")
             
 
         }
@@ -373,9 +386,6 @@ const NuevoPaper=async()=>{
 const IngresarPaper=async()=>{
 
  
-
-
-    
 try {
 
 
@@ -391,14 +401,17 @@ try {
         //console.log("Document written with ID: ", docRef.id);
         return docRef.id
     })
-    const pdf =await subirPDF(id)
+
+    set_mensaje_informativo("...guardando imagen...")
     const img =await subirImagen(id)
     
+    set_mensaje_informativo("...guardando PDF...")
+    const pdf =await subirPDF(id)
+    
 
+    set_mensaje_informativo("...creando paper...")
 
-
-                console.log(tag)   
-
+               
                 const tagdos=tag.map(valor=>{
 
                        return {id:valor.id,descripcion:valor.descripcion} 
@@ -410,7 +423,8 @@ try {
                         imagen:img,
                         pdf:pdf,
                         etiquetas:tagdos,
-                        id:id
+                        id:id,
+                        link:link
                 })
             
                 
@@ -435,9 +449,8 @@ try {
 
                     })
 
-
-                console.log(agregarEtiquet)
-
+                    set_mensaje_informativo("...Finalizando")
+            
                 
             
 
@@ -445,7 +458,7 @@ try {
 return true 
     
 } catch (error) {
-    console.log(error)
+   
     return false 
 }
 
@@ -460,10 +473,6 @@ return true
 
 
 const AddRemovePaperTag=async(tagdos,paperdos,tag)=>{
-
-    console.log(tagdos)
-    console.log(paperdos)
-    console.log(tag)
 
      
     firebase.db.collection("etiquetas").doc(tagdos.id).collection("paper").doc(paperdos.id).set({...paperdos,
@@ -518,7 +527,6 @@ const AddRemovePaperTag=async(tagdos,paperdos,tag)=>{
 
 
 
-    console.log(newTag)
 
 
  let paperSuplente={
@@ -526,6 +534,7 @@ const AddRemovePaperTag=async(tagdos,paperdos,tag)=>{
     imagen:imgURL,
     pdf:pdfURL,
     etiquetas:tag,
+    link:link,
     busqueda:paper.titulo.toLocaleLowerCase()
 }
 
@@ -649,8 +658,16 @@ swal.fire(
 
 const ActualizarPaperDos=async()=>{
     setcargando(true)
+
+    set_mensaje_informativo("...verificando informacion...")
+    
+    paper.link=link
+
+    set_mensaje_informativo("...actualizando imagen...")
     const imgURL=await subirImagen(id)
+    set_mensaje_informativo("...actualizando PDF...")
     const pdfURL=await subirPDF(id)
+    set_mensaje_informativo("...actualizando paper...")
  
     let etiquetasOld=[]
     
@@ -732,6 +749,7 @@ newTag.map(valor=>{
 
 })
   //  actualizar el paper 
+    console.log(paperSuplente)
 
     firebase.db.collection("paper").doc(paperSuplente.id).update(paperSuplente)
 
@@ -744,7 +762,7 @@ newTag.map(valor=>{
       )
 
 
-
+      set_mensaje_informativo("")
 setcargando(false)
 
 
@@ -834,6 +852,8 @@ setcargando(false)
             }
 
   }
+
+
   const subirPDF =async(id)=>{
   
 
@@ -843,7 +863,7 @@ setcargando(false)
 
                    if(pdf.pdf instanceof File){ 
                         const pdfRef =  firebase.storage.ref().child("PDF").child(id)
-                        console.log()
+                        console.log()   
                         await pdfRef.put(pdf.pdf)
                         const pdfURL=await pdfRef.getDownloadURL()
                         return pdfURL
@@ -851,13 +871,69 @@ setcargando(false)
                         return pdf.file
                    }
         }else{
-            alert("debe agregar un paper")
+            
+            return null
    
         }
 
 }
 
 
+const AgregrarLink=async()=>{
+
+    const { value: url } = await swal.fire({
+        input: 'url',
+        inputLabel: 'URL',
+        inputPlaceholder: 'Ingrese direccion URL',
+        showConfirmButton:"true",
+        confirmButtonText:"Guardar",
+        confirmButtonColor:"#21cbce",
+        validationMessage:"URL invalida",
+        denyButtonText:"Cancelar",
+        showDenyButton:"true"
+    
+    
+    })
+      
+      if (url) {
+
+
+        setLink(url)
+        setpdf({file:null,pdf:null})
+        //si existe el id 
+        console.log(id)
+        if(id){
+
+
+            try {
+                await firebase.storage.ref().child("PDF").child(id).delete().then(function() {
+                    //console.log("borrado")
+                    // File deleted successfully
+            }).catch(function(error) {
+
+                            console.log(error)
+                    //console.log(error)
+                    // Uh-oh, an error occurred!m   
+            });          
+
+            } catch (error) {
+                console.log(error)
+            }
+            //borrar  pdf
+           
+        }
+
+       
+
+
+        swal.fire({     
+            icon: 'success',
+            title: '¡URL Guardada!',
+            showConfirmButton: false,
+            timer: 1500
+          })
+      }
+}
 
 const actualizarState=(e)=>
 {
@@ -870,12 +946,10 @@ const actualizarState=(e)=>
 
 
 
-
-
 useEffect(() => {
 
     const {id}=props.match.params
-    console.log(usuario)
+   
  
     if(usuario==null){
         props.history.push("/")
@@ -930,6 +1004,7 @@ const editorcreate= async (id)=>{
         file:test.pdf
 
   })  
+  setLink(test.link)
 
 
   
@@ -977,6 +1052,11 @@ const editorcreate= async (id)=>{
                         
                         <div className={clases.divCircular} >
                             <CircularProgress className={clases.circular}></CircularProgress>
+
+                            <Typography  className={clases.estilo_mensaje_informativo} align="center" variant="h5">
+                                            {mensaje_informativo}
+                                    </Typography>:
+
                         </div>
                               </div> :
                         <div className={clases.divPrincipal}>
@@ -1241,6 +1321,15 @@ const editorcreate= async (id)=>{
                                   
                                     </label>
                          </Button>     
+
+                         <IconButton color="primary" aria-label="agregrar link"
+                         onClick={()=>{
+
+                            AgregrarLink()
+                         }}
+                         >
+                            <LinkIcon />
+                        </IconButton>
                             </div>
 
 
@@ -1278,10 +1367,17 @@ const editorcreate= async (id)=>{
 
                     </Typography>
            
+
+
+
+
+
+
+           
                     <Typography align="center" >
                         {
                         
-                        pdf.file?
+                        pdf.file&&
                         
                         <div style={{ height: '750px' }}>
                         <div
@@ -1296,11 +1392,22 @@ const editorcreate= async (id)=>{
                             </div>                   
 
                         </div>
+                
                     
-                    
-                        :<div></div>}
+                       }
                           
                     </Typography>
+
+                    {link&&     
+                    <div>
+                        <a  target="_blank" href={link}>
+                        <Typography variant="subtitle1" align="center" >
+                        
+                        {link}
+                        </Typography>
+                        </a>
+                     </div>
+                    }
                    </div>
                    }
                 </Grid>

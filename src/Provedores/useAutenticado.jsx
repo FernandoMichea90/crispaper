@@ -30,15 +30,62 @@ const useAutenticado = props => {
 
 
 
+    const usuarioExistente=async(usuario)=>{
+
+                console.log(usuario )
+                //consultar en la base de datos
+                
+                // crear constantes  de referencias a usuarios 
+
+                const usuarios=firebase.db.collection("usuarios")
+                //firebase.db.collection("usuarios")
+
+                const  consulta=await usuarios.where("correo","==",usuario.email).get().then(doc=>
+                    {
+                        return doc.docs
+                    }
+                    )
+
+
+                if(consulta.length){
+                    console.log("vacio")
+                }else{
+                    console.log("lleno")
+                
+                    let usuarioAgregar={
+                        correo:usuario.email,
+                        nombre:usuario.displayName,
+                        photoURL:usuario.photoURL
+
+                    }
+                    console.log(usuarioAgregar)
+                     await usuarios.doc(usuarioAgregar.correo).set(usuarioAgregar)
+                    
+
+                } 
+
+
+
+
+
+
+
+
+    }
+
+
     useEffect(async() => {
 
-        console.log("paso por use autenticado")
+       
         const unsuscribe= firebase.auth.onAuthStateChanged(user=>{
 
             if(user){
 
-          
-             
+                 //  consultar si el usuario  existe            
+
+                 
+
+
                   administrador(user).then(function(result) {
                             console.log(result) // "Some User token"
                             setusuarioAutenticado({...user,administrador:result})
@@ -46,7 +93,7 @@ const useAutenticado = props => {
 
 
                   
-
+                usuarioExistente(user)
               
 
 

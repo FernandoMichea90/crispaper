@@ -13,6 +13,11 @@ import {useHistory} from 'react-router-dom'
 import AdmEtiquetas from './Paginas/AdmEtiquetas'
 import CrearCuenta from './Paginas/CrearCuenta'
 import Nosotros from '../src/Paginas/Nosotros'
+import Search from '../src/Paginas/Search'
+import Usuarios from '../src/Paginas/Usuarios'
+import ListarComentarios from './Paginas/ListarComentarios'
+import AdministrarNosotros from "../src/Paginas/AdministrarNosotros"
+
 
 
 const estilos =makeStyles((theme)=>({
@@ -22,6 +27,12 @@ root:{
   "& body":{
     backgroundColor:"#ffffff"
   }
+  ,
+  "& .swal2-textarea": {
+    fontFamily:"Nunito !important",
+    color:"#21cbce",
+ },
+ 
 }
 
 
@@ -33,30 +44,35 @@ const App = (props) => {
 
   const clases=estilos()
   const history=useHistory()
-const [recientes, setrecientes] = useState(false)
-
+const [recientes, setrecientes] = useState(true)
 const [valorados, setvalorados] = useState(false)
-
-const [match, setmatch] = useState()
-  
-  const usuario=useContext(UsuarioContext)
-
+const [match, setmatch] = useState()  
+const usuario=useContext(UsuarioContext)
+//  agregar  un texto general  
+const [textoGeneral, setTextoGeneral]=useState("Lo mas reciente")
 
  const reciente=()=>{
 
 
 
-  if(recientes)
-  {
+//   if(recientes)
+//   {
 
-  setvalorados(false)
-  setrecientes(false)
-}else
-  {
-    setvalorados(false)
-    setrecientes(true)
+//   setvalorados(false)
+//   setrecientes(false)
+// }else
+//   {
+//     setvalorados(false)
+//     setrecientes(true)
 
-  }
+//   }
+
+        setTextoGeneral("Lo mas reciente")
+        setvalorados(false)
+        setrecientes(true)
+
+      
+
 
 }
 
@@ -64,18 +80,20 @@ const [match, setmatch] = useState()
 
 const mejorvalorados=()=>{
 
-    
-      if(valorados){
+      // if(valorados){
 
-        setvalorados(false)
-        setrecientes(false)
-      }else
-        {
-          setvalorados(true)
-          setrecientes(false)
+      //   setvalorados(false)
+      //   setrecientes(false)
+      // }else
+      //   {
+      //     setvalorados(true)
+      //     setrecientes(false)
       
-        }
-
+      //   } 
+        setTextoGeneral("Lo mejor valorado")
+        setvalorados(true)
+        setrecientes(false)
+      
 }
 
 useEffect(() => {
@@ -100,15 +118,19 @@ useEffect(() => {
 
                 <Switch>
                 <Route  path="/crearcuenta" component={CrearCuenta}></Route>
-                <Route  path="/nuevopaper"  render={(props)=>(< CrearPaper {...props}   />)} ></Route>
+                <Route  path="/nuevopaper"        render={(props)=>(< CrearPaper {...props}   />)} ></Route>
                 <Route  path="/editarpaper/:id" component={CrearPaper}></Route>
                 <Route  path="/etiquetas"  render={(props)=>(<Etiquetas {...props}  valorados={valorados} recientes={recientes} />)} ></Route>
                 <Route  path="/tag/:valor"  render={(props)=>(<EtiquetasDos {...props}  valorados={valorados} recientes={recientes} />)}></Route>
                 <Route  path="/buscar/:papermatch"  render={(props)=>(<Inicio {...props}  valorados={valorados}  recientes={recientes} />)} ></Route> 
+                <Route  path="/search"  render={(props)=>(<Search {...props}  valorados={valorados}  recientes={recientes} />)} ></Route> 
                 <Route  path="/adminetiquetas"  render={(props)=>(<AdmEtiquetas {...props}   />)} ></Route>
                 <Route  path="/login" render={(props)=>(<Login {...props}  />)} ></Route>
                 <Route  path="/nosotros" component={Nosotros}></Route>
-                <Route exac path="/"  render={(props)=>(<Inicio {...props}  valorados={valorados} recientes={recientes} />)} ></Route> 
+                <Route  path="/listusuarios" component={Usuarios}></Route>
+                <Route  path="/listacomentarios" component={ListarComentarios}></Route>
+                <Route  path="/administrarnosotros"  component={AdministrarNosotros} ></Route>
+                <Route exac path="/"  render={(props)=>(<Inicio {...props}  textoGeneral={textoGeneral}  valorados={valorados} recientes={recientes} />)} ></Route> 
 
               
                 </Switch>

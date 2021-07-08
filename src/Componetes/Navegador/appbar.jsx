@@ -7,27 +7,40 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-
-import {animateScroll as scroll} from 'react-scroll'
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu'
 import AddIcon from '@material-ui/icons/Add';
 import { UsuarioContext } from '../../Provedores/UsuarioContext';
 import Firebase from "../../firebase/firebase"
-import {TextField,InputAdornment} from '@material-ui/core'
 import BookIcon from '@material-ui/icons/Book';
 import {useHistory} from 'react-router-dom'
 import { useRef } from 'react';
 import Icono from "../../icono.jpeg"
+import { withRouter } from "react-router";
+import Swal from "sweetalert2"
+import FuncionesFirebase from '../../Funciones/FuncionesFirebase';
+
+
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
 
+
+  "& .swal2-textarea": {
+   fontFamily:"Nunito !important",
+   color:"#21cbce",
+},
+
+
+  "& .MuiButton-outlinedPrimary": {
+    color:"#21cbce",
+    border:"1px solid rgba(33, 203, 206, 0.5)",
+    margin:"0px 15px"
+},
 
     "& .MuiLink-underlineHover:hover": {
       textDecoration: "none"
@@ -57,16 +70,16 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-  
-   
-  
+
+
+
 
   },
   grow: {
     flexGrow: 1,
   },
-      
- 
+
+
 
   title: {
     display: 'none',
@@ -74,20 +87,21 @@ const useStyles = makeStyles((theme) => ({
       display: 'block',
     },
   },
-  
+
   search: {
     position: 'relative',
     background:"#ffffff",
+    border:"1px solid #ccc",
     borderRadius: theme.shape.borderRadius,
     [theme.breakpoints.down("md")]:{
-   
+
     padding:"10px 0px 10px 0px",
     border:"1px solid #ccc",
-   
-   
+
+
     }
-   
-  
+
+
     },
 
   searchIcon: {
@@ -100,7 +114,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
 
-  
+
   inputRoot: {
     color: 'primary',
   },
@@ -119,7 +133,7 @@ const useStyles = makeStyles((theme) => ({
   linkclass:{
         cursor:"pointer",
         padding:"5px 25px 5px 25px",
-        
+
         [theme.breakpoints.down("sm")]:{
           padding:"unset"
         }
@@ -154,7 +168,7 @@ estiloIcono:{
     /* right: 6px; */
    top:"50px",
     width:"500px",
-   
+
     //left: 24px;
 
 
@@ -168,7 +182,7 @@ estiloIcono:{
 
 
 
-    
+
   },
   resumen:{
 
@@ -189,7 +203,7 @@ estiloIcono:{
   },
   cajaMenu:{
     padding:"2px 5px 0px 5px",
-    height:"350px",
+    height:"453px",
     transition:"height 0.25s ease-in",
     overflow:"hidden",
   },
@@ -197,12 +211,12 @@ estiloIcono:{
     padding:"2px 5px 0px 5px",
     height:"350px",
     transition:"height 0.25s ease-in",
-    
+
   },
    cajaMenuDos:{
     padding:"2px 0px 0px",
     height:"0px",
-    
+
     overflow:"hidden",
     transition:"height 0.25s  ease-out"
   },
@@ -212,16 +226,16 @@ estiloIcono:{
     borderColor:"#e5e5e5",
     margin: "11px 11px 11px",
     background:"#ffffff"
-    
-    
+
+
   },
   input:{
-
+    marginLeft:"5px",
     [theme.breakpoints.down("md")]:{
       width:"85%"
 
     }
-    
+
   },
   linkList:{
 
@@ -235,13 +249,13 @@ estiloIcono:{
 
     padding:"9px 0px",
     cursor:"pointer"
-   
 
 
 
 
 
-  
+
+
 
   },
 linkLiDos:{
@@ -257,7 +271,7 @@ linkLiDos:{
       display:"none"
 
    },
-   
+
    mostrar:{
       display:"unset"
 
@@ -271,13 +285,13 @@ linkLiDos:{
 
 
 
-      
- 
+
+
 }))
 
-export default function ButtonAppBar(props) {
+const ButtonAppBar=(props) =>{
 
-    
+
   const history=useHistory()
     const [url, seturl] = useState(history.location.pathname)
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -300,31 +314,31 @@ const wrapperRef =useRef(null)
 
     const abrirCerrarMenu=()=>{
 
-          setmenu(!menu)      
+          setmenu(!menu)
     }
 
     const handleClose = () => {
         setAnchorEl(null);
-      
+
       };
-    
 
 
-    // handle menu 
+
+    // handle menu
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
-        
+
       };
 
 
     const buscarPaper=(papermatch)=>{
-     
+
         history.push(`/buscar/${papermatch.id}`)
         setlistapaper([])
     }
 
-      // cerrar sesion 
+      // cerrar sesion
 
 
      const cerrarSesion=()=>{
@@ -345,7 +359,7 @@ const wrapperRef =useRef(null)
 
           }else{
             var trimmedStringdos=trimmedString+"..."
-          }  
+          }
           console.log(trimmedStringdos)
           return trimmedStringdos
 
@@ -356,16 +370,16 @@ const wrapperRef =useRef(null)
       var string = titulo;
       var length = 30;
       var trimmedString = string.substring(0,length);
-         
+
       if(trimmedString.length<12){
         var trimmedStringdos=trimmedString
 
       }else{
         var trimmedStringdos=trimmedString+"..."
-      }  
-   
-   
-   
+      }
+
+
+
       console.log(trimmedStringdos)
       return trimmedStringdos
 
@@ -375,10 +389,11 @@ const wrapperRef =useRef(null)
      const buscar=async (e)=>{
        setlistapaper([])
 
+       console.log(e.target.value)
 
        setbuscador({[e.target.name]:e.target.value})
-     
-       //validar cuando el tipeo esta vacio 
+
+       //validar cuando el tipeo esta vacio
        if(e.target.value!==""){
         const inicio=e.target.value.toLocaleLowerCase()
        const prueba=await Firebase.db.collection("paper").
@@ -386,11 +401,11 @@ const wrapperRef =useRef(null)
        .startAt(inicio).endAt(inicio+'\uf8ff')
        .limit(5)
       .onSnapshot(manejarSnapshot)
-       
+
       }else{
         setlistapaper([])
         setNoFound(false)
-      } 
+      }
      }
 
 
@@ -411,10 +426,62 @@ const wrapperRef =useRef(null)
 
       }
       //lista paper
-      setlistapaper(lista)   
-      return lista 
+      setlistapaper(lista)
+      return lista
   }
 
+
+
+
+
+  const dejarUnComentario=async()=>{
+
+    const { value: text } = await Swal.fire({
+      input: 'textarea',
+      title: '¿Preguntas?¿Comentarios?¿Sugerencias?',
+      inputPlaceholder: 'Escribe tu comentario ...',
+      confirmButtonColor: '#21cbce',
+      denyButtonText: `Cancelar`,
+      confirmButtonText: `Enviar`,
+      showDenyButton: true,
+    })
+
+    if (text) {
+
+
+
+
+
+      let user="anonimo"
+      let anonimo=true
+
+      if(usuario!=null){
+        user={
+          nombre:usuario.displayName,
+          email:usuario.email,
+          imagen:usuario.photoURL
+        }
+        anonimo=false
+
+      }
+      //Swal.fire(text)
+
+
+      let Comentario={
+        fecha: new Date(),
+        usuario:user,
+        comentario:text,
+        anonimo
+      }
+
+      console.log(Comentario)
+
+       FuncionesFirebase.IngresarComentario(Comentario)
+    }
+
+
+
+  }
 
 
 
@@ -422,32 +489,32 @@ const wrapperRef =useRef(null)
 
   // state Scroll
 
-//hacer un useEffect 
+//hacer un useEffect
 
 useEffect(() => {
-  
+
 
 console.log(history.location.pathname)
- 
+
 
 if(history.location.pathname=="/login" ){
   if(usuario!==null)
-  
+
           {
             console.log("redirecciono ")
             setappBar(false)
             history.push("/")
 
-        
+
         }else{
           setappBar(true)
 
         }
-  
+
 }else{
 
   if(history.location.pathname=="/adminetiquetas"||history.location.pathname=="/nosotros") {
-  
+
     setappBar(true)
   }else{
   setappBar(false)
@@ -460,9 +527,9 @@ return ()=>{
 }
 
 }, [usuario,url,history.location.pathname] )
-  
 
-  
+
+
 
 const handleClickOutside=event =>{
 
@@ -470,17 +537,46 @@ const handleClickOutside=event =>{
   if(wrap && !wrap.contains(event.target)){
     setlistapaper([])
     setNoFound(false)
+    // onBlur={()=>{
+            setbuscador({
+              buscado:""
+            })
+          // }}
   }
 }
-  
+
+
+ const pruebaFormulario=(event)=>{
+  history.push({
+    pathname: `/search`,
+    search: `?query=${buscador.buscado}`,
+    state: buscador
+});
+event.preventDefault()
+
+}
+
+
+
+const buscarDos=()=>{
+
+console.log(buscador.buscado)
+  history.push({
+    pathname: `/search`,
+    search: `?query=${buscador.buscado}`,
+    state: buscador
+});
+//event.preventDefault()
+
+}
 
 
   return (
     <div className={classes.root} >
-      <AppBar position="static" color="secondary" elevation={0} >
+      <AppBar  position="static" color="secondary" elevation={0} >
         <Toolbar>
 
-        
+
 
             <Typography align="center">
                       <Link href="/" className={classes.linkclass}>
@@ -492,52 +588,53 @@ const handleClickOutside=event =>{
               </Typography>
       <Hidden lgUp>
               <Typography variant="h6" style={{flexGrow:"1"}}>
-                 
+
               </Typography>
 
               <Typography align="center">
-                    
+
                       <IconButton  onClick={()=>abrirCerrarMenu()} edge="start"  variant="contained" color="primary" aria-label="menu"  >
-                         
-                          <MenuIcon style={{fontSize:"35px"}}   />   
-                    
+
+                          <MenuIcon style={{fontSize:"35px"}}   />
+
                        </IconButton>
 
-                    
+
               </Typography>
 
     </Hidden>
 
-       <Hidden mdDown>    
-          <div ref={wrapperRef} className={classes.search}>
-            <div> 
-      <IconButton  color="primary" aria-label="search">
-        <SearchIcon />
-      </IconButton>
+       <Hidden mdDown>
+          <div ref={wrapperRef}     className={classes.search}>
+            <div>
+           <form  onSubmit={pruebaFormulario}>
             <InputBase
+
+          // onBlur={()=>{
+          //   setbuscador({
+          //     buscado:""
+          //   })
+          // }}
         className={classes.input}
         onChange={e=>buscar(e) }
-        onBlur={()=>{
-          setbuscador({
-            buscado:""
-          })
-        }}
-        
+
+
         value={buscador.buscado}
         name="buscado"
         autoComplete="off"
         placeholder="Buscar..."
-     
+
       />
-      
-                
+       <IconButton onClick={()=>{buscarDos()}} color="primary" aria-label="search">
+        <SearchIcon />
+      </IconButton>
+        </form>
             </div>
-          
+
           {listapaper.length>0?
             <div className={classes.divlista}>
-      
+
             {listapaper.map((valor)=>(
-            
 
 
                 <div style={{height:"54px",
@@ -553,17 +650,17 @@ const handleClickOutside=event =>{
                           onClick={()=>buscarPaper(valor)}
                           >
 
-                                
-                                
+
+
                                 {
                                   formatTitle(valor.titulo)
-                                }   
+                                }
 
                           </Button>
 
-                  
 
- {/* <Link onCli > 
+
+ {/* <Link onCli >
 <Grid
 container
 >
@@ -575,9 +672,9 @@ container
         </div>
   </Grid>
   <Grid xs={11}>
-
+d
         <Typography align="left" className={classes.resumen}  variant="body1" >
-           {valor.titulo}    
+           {valor.titulo}
         </Typography>
   </Grid>
 
@@ -588,21 +685,21 @@ container
 
 
 
-         
+
 
           ))}
 
-   
+
             </div>
           :
-          noFound&&      
+          noFound&&
           <div className={classes.divlista}>
                 <div style={{height:"54px",
                 overflow:"hidden"
-                }}>  
-                 <Typography className={classes.noRegistro} align="left" variant="h6"> 
+                }}>
+                 <Typography className={classes.noRegistro} align="left" variant="h6">
                   no hay  resultados
-                  </Typography> 
+                  </Typography>
 
                   </div>
             </div>
@@ -611,18 +708,56 @@ container
           </div>
 
 
-        
-       
-      
-         
+
+
+
+
 
           {/* <Hidden mdDown> */}
-          
 
-         
-          
 
-        
+
+
+          <div className={classes.grow} />
+
+
+
+          {!appBar?
+
+        <>
+         <Link onClick={()=>props.reciente()}  className={props.recientes?
+            classes.linkclassdos:classes.linkclass}>
+          <div className="divHover">
+            <Typography >
+
+              Recientes
+
+            </Typography>
+            <div className="subrayado"></div>
+          </div>
+          </Link>
+          <Link onClick={()=>props.mejorvalorados()}  className={
+            props.valorados?
+            classes.linkclassdos:classes.linkclass}>
+          <div className="divHover">
+            <Typography >
+
+              Mejor valorados
+
+            </Typography>
+            <div className="subrayado"></div>
+          </div>
+          </Link>
+
+
+
+          </>
+
+
+        :
+        <div></div>
+        }
+
           <Link href="/etiquetas" className={ classes.linkclass}>
           <div className="divHover">
             <Typography >
@@ -634,51 +769,18 @@ container
           </Link>
 
 
-          {!appBar?
-          
-        <>
-          <Link onClick={()=>props.mejorvalorados()}  className={
-            props.valorados?
-            classes.linkclassdos:classes.linkclass}>
-          <div className="divHover">
-            <Typography >
-              
-              Mejor valorados   
 
-            </Typography> 
-            <div className="subrayado"></div>
-          </div>
-          </Link>
-          <Link onClick={()=>props.reciente()}  className={props.recientes?
-            classes.linkclassdos:classes.linkclass}>
-          <div className="divHover">
-            <Typography >
-              
-              Recientes
 
-            </Typography>
-            <div className="subrayado"></div>
-          </div>
-          </Link>
-          </>
-        
-        
-        :
-        <div></div>
-        }
-          
-
-          <div>
-             
 
 
           {usuario==null?
-          
-          
+
+          <>
+
           <Link  href="/nosotros" className={classes.linkclass}>
           <div className="divHover">
               <Typography align="center" >
-                
+
                 Nosotros
                   {/* <Button
                       variant="contained"
@@ -690,16 +792,38 @@ container
                   >
                       mas
                   </Button> */}
-  
+
               </Typography>
               <div className="subrayado"></div>
             </div>
             </Link>
-  
-           
-          
-          
-          
+            <Link  onClick={()=>dejarUnComentario()} className={classes.linkclass}>
+          <div className="divHover">
+              <Typography align="center" >
+
+                Feedback
+                  {/* <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      endIcon={<AddIcon></AddIcon>}
+                      variant="contained"
+                      color="primary"
+                  >
+                      mas
+                  </Button> */}
+
+              </Typography>
+              <div className="subrayado"></div>
+            </div>
+            </Link>
+
+
+        </>
+
+
+
+
           :
           usuario.administrador?
 
@@ -708,8 +832,8 @@ container
 
           <div className="divHover">
               <Typography align="center" >
-                
-           
+
+
                   <Button
                       variant="contained"
                       color="primary"
@@ -720,50 +844,24 @@ container
                   >
                       mas
                   </Button>
-  
+
               </Typography>
               <div className="subrayado"></div>
             </div>
             </Link>
-  
-           
-          
-          
-          
-
-:  <Link  href="/nosotros" className={classes.linkclass}>
-<div className="divHover">
-    <Typography align="center" >
-      
-      Nosotros
-        {/* <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            endIcon={<AddIcon></AddIcon>}
-            variant="contained"
-            color="primary"
-        >
-            mas
-        </Button> */}
-
-    </Typography>
-    <div className="subrayado"></div>
-  </div>
-  </Link>
-
- 
 
 
 
-        }
 
 
-          {/* <Link onClick={handleMenu} className={classes.linkclass}> */}
-          {/* <Link  className={classes.linkclass}>
+
+:
+
+    <>
+        <Link  href="/nosotros" className={classes.linkclass}>
         <div className="divHover">
             <Typography align="center" >
-              
+
               Nosotros
                 {/* <Button
                     variant="contained"
@@ -775,17 +873,70 @@ container
                 >
                     mas
                 </Button> */}
-{/* 
+
             </Typography>
             <div className="subrayado"></div>
           </div>
-          </Link> */} 
+          </Link>
+          <Link  onClick={()=>dejarUnComentario()} className={classes.linkclass}>
+        <div className="divHover">
+            <Typography align="center" >
 
-         
-            </div>
-            <div className={classes.grow} />
+              Feedback
+                {/* <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    endIcon={<AddIcon></AddIcon>}
+                    variant="contained"
+                    color="primary"
+                >
+                    mas
+                </Button> */}
 
-            {usuario?    
+            </Typography>
+            <div className="subrayado"></div>
+          </div>
+          </Link>
+
+
+
+      </>
+
+
+
+
+
+
+        }
+
+
+          {/* <Link onClick={handleMenu} className={classes.linkclass}> */}
+          {/* <Link  className={classes.linkclass}>
+        <div className="divHover">
+            <Typography align="center" >
+
+              Nosotros
+                {/* <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    endIcon={<AddIcon></AddIcon>}
+                    variant="contained"
+                    color="primary"
+                >
+                    mas
+                </Button> */}
+{/*
+            </Typography>
+            <div className="subrayado"></div>
+          </div>
+          </Link> */}
+
+
+
+
+            {usuario?
             <Button variant="outlined" color="primary"  onClick={()=>cerrarSesion()}>
                      Cerrar sesion
             </Button>
@@ -797,14 +948,14 @@ container
                </Button>}
 
 
-             
-          
-              </Hidden> 
+
+
+              </Hidden>
         </Toolbar>
-          
+
         <Menu
                 id="menu-appbar"
-                keepMounted     
+                keepMounted
                 anchorEl={anchorEl}
                 anchorOrigin={{
                     vertical: 'bottom',
@@ -822,10 +973,22 @@ container
                 abrirCerrarMenu()
                 history.push("/nosotros")
                 }}>Nosotros</MenuItem>
+                  <MenuItem onClick={()=>{handleClose()
+                abrirCerrarMenu()
+                history.push("/administrarnosotros")
+                }}>Administrar Nosotros</MenuItem>
                 <MenuItem onClick={()=>{history.push("/adminetiquetas")
                 setmenu(false)
                 handleClose()
               }}>Administrar Etiquetas</MenuItem>
+                <MenuItem onClick={()=>{history.push("/listacomentarios")
+                setmenu(false)
+                handleClose()
+              }}>Ver Comentarios </MenuItem>
+                 <MenuItem onClick={()=>{history.push("/listusuarios")
+                setmenu(false)
+                handleClose()
+              }}>Usuarios</MenuItem>
                 {/* <MenuItem onClick={handleClose}>Partner</MenuItem> */}
               </Menu>
       </AppBar>
@@ -841,44 +1004,39 @@ container
 
 
 
-          <Hidden lgUp>      
+          <Hidden lgUp>
         <div className={menu?
-         listapaper.length>0? 
+         listapaper.length>0?
           classes.cajaMenuTres:
           classes.cajaMenu
           :classes.cajaMenuDos}>
-         
+
 
                 <div ref={wrapperRef} className={classes.search}>
-            <div className={classes.cajaListMenu}> 
-      <IconButton  color="primary" aria-label="search">
-        <SearchIcon />
-      </IconButton>
+            <div className={classes.cajaListMenu}>
+          
             <InputBase
         className={classes.input}
         onChange={e=>buscar(e) }
-        onBlur={()=>{
-          setbuscador({
-            buscado:""
-          })
-        }}
-        
         value={buscador.buscado}
         name="buscado"
         autoComplete="off"
-       
         placeholder="Buscar..."
         inputProps={{ 'aria-label': 'search google maps' }}
       />
-      
-                
+  <IconButton  onClick={()=>{buscarDos()}}  color="primary" aria-label="search">
+        <SearchIcon />
+      </IconButton>
+
+
+  
             </div>
-          
+
           {listapaper.length>0?
             <div className={classes.divlista}>
-      
+
             {listapaper.map((valor)=>(
-            
+
 
 
                       <div style={{height:"54px",
@@ -895,12 +1053,12 @@ container
           >
 
                 {formatTitleDos(valor.titulo)
-                }   
+                }
           </Button>
 
-          
 
- {/* <Link onCli > 
+
+ {/* <Link onCli >
 <Grid
 container
 >
@@ -914,7 +1072,7 @@ container
   <Grid xs={11}>
 
         <Typography align="left" className={classes.resumen}  variant="body1" >
-           {valor.titulo}    
+           {valor.titulo}
         </Typography>
   </Grid>
 
@@ -925,17 +1083,12 @@ container
 
           ))}
 
-   
+
             </div>
           :<div></div>}
 
           {/* <div className={menu?classes.mostrar:classes.esconder}> */}
 
-              <Link href="/etiquetas" className={classes.linkList}>
-              <Typography className={classes.linkLi} align="center" variant="subtitle1">
-                        Etiquetas
-              </Typography>
-              </Link>
 
               {appBar?<div></div>:
               <>
@@ -953,8 +1106,16 @@ container
                 }
 
 
-               {usuario==null?
+                <Link href="/etiquetas" className={classes.linkList}>
+              <Typography className={classes.linkLi} align="center" variant="subtitle1">
+                        Etiquetas
+              </Typography>
+              </Link>
 
+
+
+               {usuario==null?
+                      <>
                       <Link onClick={()=>{
                     {             handleClose()
                           abrirCerrarMenu()
@@ -964,6 +1125,13 @@ container
                                 Nosotros
                       </Typography>
                       </Link>
+                        <Link onClick={()=>dejarUnComentario()} className={classes.linkList} >
+                        <Typography className={classes.linkLi} align="center" variant="subtitle1">
+                                  Feedback
+                        </Typography>
+                        </Link>
+
+                        </>
                         :
 
                         usuario.administrador?
@@ -971,8 +1139,8 @@ container
 
                         <div className="divHover">
                             <Typography align="center" >
-                              
-                         
+
+
                                 <Button
                                     variant="contained"
                                     color="primary"
@@ -983,27 +1151,33 @@ container
                                 >
                                     mas
                                 </Button>
-                
+
                             </Typography>
                             <div className="subrayado"></div>
                           </div>
                           </Link>
 
                         :
+                                <>
+                                  <Link className={classes.linkList} >
+                                  <Typography className={classes.linkLi} align="center" variant="subtitle1">
+                                            Nosotros
+                                  </Typography>
+                                  </Link>
 
-                        <Link className={classes.linkList} >
-                        <Typography className={classes.linkLi} align="center" variant="subtitle1">
-                                  Nosotros
-                        </Typography>
-                        </Link>
-                        
+                                  <Link onClick={()=>dejarUnComentario()} className={classes.linkList} >
+                                  <Typography className={classes.linkLi} align="center" variant="subtitle1">
+                                            Feedback
+                                  </Typography>
+                                  </Link>
+                                </>
 
-               } 
-           
+               }
+
               <Typography className={classes.linkLi} align="center" variant="h6">
 
 
-                {usuario? 
+                {usuario?
                 <Button color="primary" variant="outlined" onClick={()=>cerrarSesion()} >
                 Cerrar sesion
               </Button>
@@ -1011,19 +1185,19 @@ container
                 <Button color="primary" variant="outlined" href="/login" >
                 Iniciar Sesion
               </Button>
-               
+
                 }
-                    
+
               </Typography>
               </div>
           {/* </div> */}
 
 
-        
+
           </div>
-                
-        
-      
+
+
+
 
         </Hidden>
 
@@ -1033,3 +1207,4 @@ container
 }
 
 
+export default withRouter(ButtonAppBar)

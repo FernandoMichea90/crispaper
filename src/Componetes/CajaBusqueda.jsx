@@ -8,9 +8,9 @@ import Swal from 'sweetalert2'
 import {Chip} from '@material-ui/core'
 import "moment/locale/es"
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-//import Corazon from '@material-ui/icons/FavoriteBorder';
+
 import Basurero from '@material-ui/icons/Delete';
-//import CorazonLleno from '@material-ui/icons/Favorite';
+
 import Lapiz from '@material-ui/icons/Create';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import {UsuarioContext} from "../Provedores/UsuarioContext"
@@ -20,10 +20,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Alert from '@material-ui/lab/Alert';
 import CorazonLleno from "../imagen/iconos/arbolLleno.png"
 import Corazon from "../imagen/iconos/arbolVacio.png"
-import FuncionesFirebase from "../Funciones/FuncionesFirebase"
-
-
-
 
  const  estilos = makeStyles((theme)=>({
 
@@ -98,12 +94,12 @@ import FuncionesFirebase from "../Funciones/FuncionesFirebase"
         fontFamily:"nunito"
     }
 ,
-        tituloGeneral:{
+tituloGeneral:{
 
-        fontWeight:"700",
-        fontFamily:"Lato",
-        fontSize:"27px"
-        }
+    fontWeight:"700",
+    fontFamily:"Lato",
+    fontSize:"27px"
+}
 ,
 divTituloGeneral:{
         margin:"55px auto",
@@ -182,6 +178,7 @@ divFoto:{
     margenChip:{
 
         margin:"0px 3px",
+
         [theme.breakpoints.down("sm")]:{
 
                 margin:"0px 4px"
@@ -217,7 +214,9 @@ divFoto:{
     
     
     
-        },
+        }
+
+        ,
         centrarComponente:{
                 textAlign:"end",
                 marginRight:"10px",
@@ -248,7 +247,7 @@ const Caja = (props) => {
     const [paper, setpaper] = useState({})
     const [ultimoDocumento, setultimoDocumento] = useState(0)
    const [vacio, setvacio] = useState(false)    
-  const [tituloGeneral,setTituloGeneral]=useState("Lo mas reciente") 
+  const [tituloGeneral,setTituloGeneral]=useState() 
 
 
   
@@ -390,41 +389,53 @@ const Caja = (props) => {
 
 const buscarTexto=async(texto_busqueda,recientes,valorados)=>{
 
-        
+         let pruebatexto=texto_busqueda       
         setcargando(true)
+        setTituloGeneral(`Resultados de la busqueda : "${pruebatexto}" `)
        
         try {   
            
-                if(recientes){
-                        console.log(texto_busqueda)
+                // if(recientes){
+                        console.log(pruebatexto)
                         setlistapaper([])
-                        await firebase.db.collection("paper").orderBy("busqueda")
-                        .startAt(texto_busqueda).endAt(texto_busqueda+'\uf8ff')
-                       .limit(5).get().then((coleccion)=>
-                        {                        
-                                
-                                    if(coleccion.size!=0){            
-                                           
-                                                const lista =coleccion.docs.map((paperObje)=>paperObje.data())
-                                                console.log(lista)              
-                                                console.log(listapaper)              
-
-
-                                                setultimoDocumento(lista[lista.length-1].id)
-                                                setlistapaper((listapaper)=>[...listapaper,...lista])
-                                                setcargando(false)
-                                              
-                                        }
-                                        if(coleccion.length==5){
-                                                setvacio(true)
-                                        }else{
-                                                setvacio(false)
-                                        }
-        
-                        }
                         
-                        )
-                }else{
+                        // ver la data que esta llegando  
+ 
+                          const query=await firebase.db.collection("paper").orderBy ("busqueda")
+                        .startAt(pruebatexto).endAt(pruebatexto+'\uf8ff').limit(5).get()
+
+                        const resultado=query.docs.map((paperObje)=>{
+                        console.log(pruebatexto)        
+                        return paperObje.data()})
+                        console.log(resultado)
+                        setlistapaper(resultado)
+                        // .then((coleccion)=>
+                        // {                        
+                        //         console.log(pruebatexto)
+
+                                
+                        //             if(coleccion.size!=0){            
+                                           
+                        //                         const lista =coleccion.docs.map((paperObje)=>paperObje.data())
+                        //                         console.log(lista)              
+                        //                         console.log(listapaper)              
+
+
+                        //                         setultimoDocumento(lista[lista.length-1].id)
+                        //                         setlistapaper((listapaper)=>[...listapaper,...lista])
+                        //                         setcargando(false)
+                                              
+                        //                 }
+                        //                 if(coleccion.length==5){
+                        //                         setvacio(true)
+                        //                 }else{
+                        //                         setvacio(false)
+                        //                 }
+        
+                        // }
+                        
+                                
+                // }else{
                         // if(valorados){
                         //         setlistapaper([])
                         //        await  firebase.db.collection("paper").orderBy("likes","desc").limit(5).get().then((coleccion)=>
@@ -491,7 +502,7 @@ const buscarTexto=async(texto_busqueda,recientes,valorados)=>{
                         // }
                        
                        
-                }
+                
         
                 } catch (error) {
                         console.log(error)
@@ -551,12 +562,21 @@ const borrar=(e)=>{
               }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
 
-                 if (result.isConfirmed) {
-                                console.log("paso por el borrado")
-                                console.log(e.id)
+
+                console.log(e.id)
+                if (result.isConfirmed) {
+
+                                        
                                 firebase.db.collection("paper").doc(e.id).delete().then(() => {
+                                        
+                                     
+
+
                                         let nuevaLista=[]
-                                        listapaper.map((valor)=>{   
+                                        
+                                        listapaper.map((valor)=>{
+                                                      
+                                                      
                                                         if(valor.id!=e.id){
                                                                 console.log(valor)
                                                                 nuevaLista.push(valor)
@@ -566,8 +586,8 @@ const borrar=(e)=>{
                                        
                                      
                                         //pedirpaper()
-                                      
-                                console.log("borrado")
+                                    
+                                       
 
                                 }).catch((error) => {
                                         console.error("Error removing document: ", error);
@@ -604,52 +624,26 @@ const borrar=(e)=>{
         
                                     })
 
+                              var  borrarArchivo= firebase.storage.ref().child("PDF").child(e.id)    
 
 
+                              var  borrarImagen= firebase.storage.ref().child("IMAGEN").child(e.id)    
 
+                              borrarArchivo.delete().then(function() {
+                                      //console.log("borrado")
+                                // File deleted successfully
+                              }).catch(function(error) {
+                                      //console.log(error)
+                                // Uh-oh, an error occurred!
+                              });          
 
-
-
-
-                                   try {
-                                        var  borrarArchivo= firebase.storage.ref().child("PDF").child(e.id)  
-                                        var  borrarImagen= firebase.storage.ref().child("IMAGEN").child(e.id)    
-                                    
-
-                                   } catch (error) {
-                                    console.log(error)       
-                                   }
-                                            
-
-                        
-
-                              console.log(borrarArchivo)
-                              console.log(borrarImagen)   
-                             
-
-                                   if(borrarArchivo!=undefined){
-                                                borrarArchivo.delete().then(function() {
+                                        if(e.imagen!=null){ borrarImagen.delete().then(function() {
                                                         //console.log("borrado")
-                                                        // File deleted successfully
+                                                // File deleted successfully
                                                 }).catch(function(error) {
-
-                                                                console.log(error)
-                                                        //console.log(error)
-                                                        // Uh-oh, an error occurred!m   
-                                                });          
-
-                                        }
-                                if(borrarImagen!=undefined){
-
-
-                                                if(e.imagen!=null){ borrarImagen.delete().then(function() {
-                                                                //console.log("borrado")
-                                                        // File deleted successfully
-                                                        }).catch(function(error) {
-                                                                console.log(error)
-                                                        // Uh-oh, an error occurred!
-                                                        }); }  
-                                }
+                                                        console.log(error)
+                                                // Uh-oh, an error occurred!
+                                                }); }  
 
 
                   Swal.fire({title:'Borrado!', confirmButtonColor:'#21cbce',icon: 'success'}).then(()=>{
@@ -668,36 +662,36 @@ const borrar=(e)=>{
 
  useEffect(() => {
 
-//buscar si  ahi un paper en especifico 
-//
-setcargando(true)
+// //buscar si  ahi un paper en especifico 
+// //
+ setcargando(true)
 
-const {papermatch}=props.paperid
+// const {papermatch}=props.paperid
 
-if(papermatch){
+// if(papermatch){
 
-        buscarPorId(papermatch)
+//         buscarPorId(papermatch)
 
-}else{
+// }else{
 
-  // LLAMAR A LOS PAPER
+//   // LLAMAR A LOS PAPER
 
   
         
-  listadepaper(props.recientes,props.valorados)
+//   listadepaper(props.recientes,props.valorados)
 
-}
+// }
 
-                // if(props.busqueda!=undefined){
-                //         const texto_busqueda=props.busqueda.buscado
-                //         buscarTexto(texto_busqueda,props.recientes,props.valorados)        
-                // }
-                //else{
-                // pedirpaper()
-                // }
+                if(props.busqueda!=undefined){
+                        const texto_busqueda=props.busqueda.buscado
+                        buscarTexto(texto_busqueda,props.recientes,props.valorados)        
+                }
+                // else{
+                        //  pedirpaper()
+                        //  }
 
-                //    console.log(listapaper)
-                //    setlistapaper([])
+                //     console.log(listapaper)
+                //     setlistapaper([])
 
  }, [props.recientes,props.paperid,props.busqueda])
 
@@ -889,6 +883,15 @@ if(papermatch){
   }
 
 
+// actualizar etiquetas 
+
+ const updateTag=()=>
+ {
+
+
+ }
+
+
  // buscar por id del paper 
 
   const buscarPorId=async(id)=>{
@@ -1045,6 +1048,8 @@ const armararreglo=(nuevoValor)=>{
 
 
 
+
+
     return (
 
 
@@ -1062,9 +1067,10 @@ const armararreglo=(nuevoValor)=>{
 
                 <div className={clases.divTituloGeneral}>
                          <Typography variant="h4" className={clases.tituloGeneral}>
-                                {props.textoGeneral}
+                                {tituloGeneral}
                         </Typography>
                 </div>
+
 
                 <Grid container>
                     <Grid  xs={12}>
@@ -1083,10 +1089,6 @@ const armararreglo=(nuevoValor)=>{
                            
 
                            :
-
-                           <div>
-                                {
-
                             listapaper.map((valor)=>(
 
                                         <Paper key={valor.id} className={clases.caja} elevation={3}>
@@ -1149,18 +1151,19 @@ const armararreglo=(nuevoValor)=>{
                                         
                                                 <Grid xs={12} sm={12} md={2}>
 
-                                                <Typography className={clases.centrarComponente} variant="subtitle1" >
+                                                <Typography variant="subtitle1"  className={clases.centrarComponente}  >
 
                                                                 <Button onClick={()=>megusta(valor)}
                                                                 className={clases.botonLikes}
                                                                 startIcon={
                                                                 
                                                                 funcionCorazon(valor)?
-                                                                // <CorazonLleno></CorazonLleno>
-                                                                <img height="40" src={CorazonLleno}></img>
-                                                                :
-                                                                //  <Corazon></Corazon>
-                                                                <img  height="40"  src={Corazon}></img>
+                                                                   // <CorazonLleno></CorazonLleno>
+                                                                   <img height="40" src={CorazonLleno}></img>
+                                                                   :
+                                                                   //  <Corazon></Corazon>
+                                                                   <img  height="40"  src={Corazon}></img>
+                                                                   
                                                                 
                                                                }
                                                                 >
@@ -1171,11 +1174,8 @@ const armararreglo=(nuevoValor)=>{
                                                 </Typography>
                                         
 
-                                                <Typography  className={clases.centrarComponente} variant="subtitle1" 
-                                        >
-                                                <a href={valor.pdf==null?
-                                                    valor.link:valor.pdf             
-                                                }  style={{textDecoration:"none"}} target="_blank">                                               
+                                                <Typography variant="subtitle1" className={clases.centrarComponente}  >
+                                                <a href={valor.pdf}  style={{textDecoration:"none"}} target="_blank">                                               
                                                 <Button  className="botoneditar" variant="contained"
                                                 
                                                 startIcon={<InsertDriveFileIcon />}
@@ -1244,17 +1244,6 @@ const armararreglo=(nuevoValor)=>{
 
                                         </Paper>
                             ))
-                            }
-
-
-
-
-
-
-
-
-                            
-                            </div>
                          }
 
                             {cargandodos?
@@ -1267,11 +1256,10 @@ const armararreglo=(nuevoValor)=>{
 
 :
 
-// vacio==true &&
+vacio==true &&
 
         <Typography align="center">
         <Button 
-        
                 endIcon={<ExpandMoreIcon></ExpandMoreIcon>}
                 variant ="contained"
                 color="primary"

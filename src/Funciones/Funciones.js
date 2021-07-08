@@ -33,4 +33,8 @@ const RenovarPaperMapEtiqueta=(paper)=>{
 
 
 
+
+
+
+
 export {RetornarPaper,RenovarPaperMapEtiqueta}

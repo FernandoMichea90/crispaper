@@ -89,10 +89,15 @@ const CrearCuenta = (props) => {
 
 
   })
-
-
-
   const [cargando,setcargando]=useState(false)
+
+
+ const usuariosRef=Firebase.db.collection("usuarios")
+
+
+
+
+
 
     const actualizarState=(e)=>{
         e.preventDefault()
@@ -151,7 +156,7 @@ const CrearCuenta = (props) => {
     }
 
 
-    const guardar=()=>{
+    const guardar= ()=>{
         setcargando(true)    
         let err= validar()
         seterrores(err)
@@ -159,7 +164,28 @@ const CrearCuenta = (props) => {
           
               setcargando(false)
         }else{
-            Firebase.registrar(cuenta).then(()=>{
+
+
+
+
+
+
+
+            Firebase.registrar(cuenta).then(async()=>{
+
+
+
+                let usuariosRegistrar={
+                    correo:cuenta.correo,
+                    nombre:cuenta.nombre,
+                    photoURL:null
+                }
+
+
+
+                await usuariosRef.doc(usuariosRegistrar.correo).set(usuariosRegistrar)
+
+
                 props.history.push("/login")
                 Swal.fire({
                        title:"Cuenta creada correctamente",

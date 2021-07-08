@@ -3,8 +3,9 @@ import {Paper as Papel,Grid,Typography,Chip,Button ,CircularProgress ,IconButton
 import Basurero from '@material-ui/icons/Delete';
 import Lapiz from '@material-ui/icons/Create';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-import Corazon from '@material-ui/icons/FavoriteBorder';
+// import Corazon from '@material-ui/icons/FavoriteBorder';
 import moment from 'moment' 
+// import CorazonLleno from '@material-ui/icons/Favorite';
 import "moment/locale/es"
 import { useState } from 'react';
 import Swal from "sweetalert2"
@@ -17,8 +18,9 @@ import { useEffect } from 'react';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import {RetornarPaper,RenovarPaperMapEtiqueta} from '../Funciones/Funciones'
-
 import {actualizarPaper,ActualizarPaperEnEtiquetas} from '../Funciones/PaperDoc'
+import CorazonLleno from "../imagen/iconos/arbolLleno.png"
+import Corazon from "../imagen/iconos/arbolVacio.png"
 
 
 const  estilos = makeStyles((theme)=>({
@@ -172,7 +174,7 @@ imgFoto:{
 
 ,
     margenChip:{
-
+        margin:"0px 3px",
         [theme.breakpoints.down("sm")]:{
 
                 margin:"0px 4px"
@@ -190,6 +192,15 @@ imgFoto:{
         fontWeight:"300"
 
     },
+    centrarComponente:{
+            textAlign:"end",
+            marginRight:"10px",
+            [theme.breakpoints.down("md")]:{
+
+                    textAlign:"center",
+            }
+
+    }
 
 
 
@@ -534,6 +545,35 @@ const listaPaperdos=(valor,megusta,nuevosvotos)=>
 
 
 
+const funcionCorazon=(valor)=>{
+       
+        let votos_usuarios=[]
+
+        if(valor.haVotado==undefined){
+                console.log("paso por aca dodo")
+                return false
+        }else{
+
+        votos_usuarios=valor.haVotado
+        if(votos_usuarios.length==0){
+                console.log("paso por aca dodo")
+                return false
+        }else{
+                console.log(usuario)
+                if(usuario!=undefined){
+                if(votos_usuarios.includes(usuario.uid)){
+                        return true
+                }else{
+                        return false
+                }}
+
+        }
+}
+
+       
+
+ }
+
 
 
 
@@ -632,7 +672,7 @@ useEffect(async() => {
                                                                                 </div>
                                                  </Grid>
                                             
-                                                <Grid xs={12} sm={12} md={5}>
+                                                <Grid xs={12} sm={12} md={6}>
         <div className={clases.divTexto}>             
 
 
@@ -665,9 +705,9 @@ useEffect(async() => {
         </Grid>
 
                                                 
-        <Grid xs={12} sm={12} md={3}>
+        <Grid xs={12} sm={12} md={2}>
 
-        <Typography variant="subtitle1" align="center">
+        <Typography variant="subtitle1" className={clases.centrarComponente}>
 
            {cargandoCorazon?
 
@@ -681,10 +721,21 @@ useEffect(async() => {
 
                 <Button
                 onClick={()=>megusta(valor)}
-               style={{color:"#ff0000",
+               style={{color:"#35b37c",
                marginTop:"40px"
        }}
-               startIcon={<Corazon></Corazon>}
+       startIcon={
+                                                                
+        funcionCorazon(valor)?
+        // <CorazonLleno></CorazonLleno>
+        <img height="40" src={CorazonLleno}></img>
+
+        :
+        <img  height="40"  src={Corazon}></img>
+
+        //  <Corazon></Corazon>
+        
+       }
                >
 
                        {valor.likes}
@@ -701,7 +752,7 @@ useEffect(async() => {
         </Typography>
 
 
-        <Typography variant="subtitle1" align="center">
+        <Typography variant="subtitle1" className={clases.centrarComponente}   >
         <a href={valor.pdf}  style={{textDecoration:"none"}} target="_blank">                                               
         <Button  className="botoneditar" variant="contained"
         

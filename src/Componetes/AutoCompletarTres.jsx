@@ -117,6 +117,7 @@ export default function Tags(props) {
              }else{
               const id = crearEtiqueta(valor)
               Swal.fire({
+                icon:"success",
                 title:"Nuevo Registro Creado"    
 
               })

@@ -3,6 +3,9 @@ import firebaseConfig from './config'
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
+import admin from 'firebase-admin'
+
+
 
 
 
@@ -11,13 +14,18 @@ class Firebase{
     
     constructor(){
      if(!app.apps.length){             
-
-        app.initializeApp(firebaseConfig)
+      app.initializeApp(firebaseConfig)
+      admin.initializeApp(firebaseConfig)
      }
 
+
+     
      this.auth=app.auth();
      this.db = app.firestore();
      this.storage = app.storage();
+    this.admin=admin.auth()
+     
+     
 
     }
 
@@ -64,6 +72,16 @@ class Firebase{
      
          }
      
+
+  
+
+    async pruebaUsuario(){
+
+
+
+    }
+
+
 
     
 }

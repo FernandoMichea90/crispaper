@@ -1,0 +1,25 @@
+.demo-editor{
+    border:1px solid;
+  border-color:rgb(0 0 0 / 25%);
+  border-radius:5px
+}
+
+.swal2-textarea{
+    font-family:Nunito !important;
+    color:#21cbce,
+ }
+ .swal2-textarea:active {
+    border: 1px solid rgb(0 0 0 / 10%);
+    outline: 0;
+    box-shadow: none;
+}
+.swal2-file:focus, .swal2-input:focus, .swal2-textarea:focus {
+    border: 1px solid rgb(0 0 0 / 10%)!important;
+    outline: 0!important;
+    box-shadow: none!important;
+}
+.rdw-editor-main {
+    min-height: 150px!important;
+    overflow: auto;
+    box-sizing: border-box;
+}
