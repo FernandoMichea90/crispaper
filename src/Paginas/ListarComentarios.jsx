@@ -40,7 +40,13 @@ circular:{
     margin:"auto"
     },
 
+    textNoDisponible:{
 
+
+        fontFamily:"Nunito",
+        color:"#808080"
+
+},
 })))
 
 

@@ -86,13 +86,13 @@ const [cargando, setcargando] = useState(false)
             //    for(let i=0;i<)    
                 let tamaño=doc.docs.length
                
-                for(let i=0;i<tamaño-1;i++){
+                for(let i=0;i<tamaño;i++){
 
                     console.log(doc.docs[i].data())
                     nuevalista.push(doc.docs[i].data())
                 }
 
-                setultimo(doc.docs[usuariosMostrados-1].id)
+                //setultimo(doc.docs[usuariosMostrados-1].id)
     
                 if(tamaño==usuariosSolicitados){
                             setvacio(false)
