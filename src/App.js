@@ -17,7 +17,7 @@ import Search from '../src/Paginas/Search'
 import Usuarios from '../src/Paginas/Usuarios'
 import ListarComentarios from './Paginas/ListarComentarios'
 import AdministrarNosotros from "../src/Paginas/AdministrarNosotros"
-
+import Colaboraciones  from "../src/Paginas/Colaboraciones"
 
 
 const estilos =makeStyles((theme)=>({
@@ -49,7 +49,7 @@ const [valorados, setvalorados] = useState(false)
 const [match, setmatch] = useState()  
 const usuario=useContext(UsuarioContext)
 //  agregar  un texto general  
-const [textoGeneral, setTextoGeneral]=useState("Lo mas reciente")
+const [textoGeneral, setTextoGeneral]=useState("The Lastest")
 
  const reciente=()=>{
 
@@ -67,7 +67,7 @@ const [textoGeneral, setTextoGeneral]=useState("Lo mas reciente")
 
 //   }
 
-        setTextoGeneral("Lo mas reciente")
+        setTextoGeneral("The Lastest")
         setvalorados(false)
         setrecientes(true)
 
@@ -125,10 +125,11 @@ useEffect(() => {
                 <Route  path="/buscar/:papermatch"  render={(props)=>(<Inicio {...props}  valorados={valorados}  recientes={recientes} />)} ></Route> 
                 <Route  path="/search"  render={(props)=>(<Search {...props}  valorados={valorados}  recientes={recientes} />)} ></Route> 
                 <Route  path="/adminetiquetas"  render={(props)=>(<AdmEtiquetas {...props}   />)} ></Route>
-                <Route  path="/login" render={(props)=>(<Login {...props}  />)} ></Route>
+                <Route  path="/admin" render={(props)=>(<Login {...props}  />)} ></Route>
                 <Route  path="/nosotros" component={Nosotros}></Route>
                 <Route  path="/listusuarios" component={Usuarios}></Route>
                 <Route  path="/listacomentarios" component={ListarComentarios}></Route>
+                <Route  path="/colaborate" component={Colaboraciones}></Route>
                 <Route  path="/administrarnosotros"  component={AdministrarNosotros} ></Route>
                 <Route exac path="/"  render={(props)=>(<Inicio {...props}  textoGeneral={textoGeneral}  valorados={valorados} recientes={recientes} />)} ></Route> 
 

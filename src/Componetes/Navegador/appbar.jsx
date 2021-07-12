@@ -17,7 +17,7 @@ import Firebase from "../../firebase/firebase"
 import BookIcon from '@material-ui/icons/Book';
 import {useHistory} from 'react-router-dom'
 import { useRef } from 'react';
-import Icono from "../../icono.jpeg"
+import Icono from "../../pajaro.svg"
 import { withRouter } from "react-router";
 import Swal from "sweetalert2"
 import FuncionesFirebase from '../../Funciones/FuncionesFirebase';
@@ -150,8 +150,8 @@ const useStyles = makeStyles((theme) => ({
 
 },
 estiloIcono:{
-  height:"45px",
-  padding:"5px 0px 0px"
+  height:"85px",
+  padding:"0px 0px 0px"
 
 },
   divlista:{
@@ -438,11 +438,11 @@ const wrapperRef =useRef(null)
 
     const { value: text } = await Swal.fire({
       input: 'textarea',
-      title: '¿Preguntas?¿Comentarios?¿Sugerencias?',
-      inputPlaceholder: 'Escribe tu comentario ...',
+      title: 'Suggestion? Comments? Question?',
+      inputPlaceholder: 'Please enter your feedback here',
       confirmButtonColor: '#21cbce',
-      denyButtonText: `Cancelar`,
-      confirmButtonText: `Enviar`,
+      denyButtonText: `Cancel`,
+      confirmButtonText: `Send`,
       showDenyButton: true,
     })
 
@@ -943,9 +943,12 @@ d
 
                 :
 
-                <Button variant="outlined" color="primary" href="/login">
-                Iniciar Sesion
-               </Button>}
+              <></>                
+               // para cuando el usuario  sea necesario
+              //   <Button variant="outlined" color="primary" href="/login">
+              //   Iniciar Sesion
+              //  </Button>
+            }
 
 
 
@@ -985,6 +988,11 @@ d
                 setmenu(false)
                 handleClose()
               }}>Ver Comentarios </MenuItem>
+
+                  <MenuItem onClick={()=>{history.push("/colaborate")
+                    setmenu(false)
+                    handleClose()
+                  }}>Ver Colaboraciones </MenuItem>
                  <MenuItem onClick={()=>{history.push("/listusuarios")
                 setmenu(false)
                 handleClose()

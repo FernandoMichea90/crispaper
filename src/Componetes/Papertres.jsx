@@ -100,6 +100,14 @@ fecha:{
         paddingTop:"5px",
         color:"#717171"
 },
+cajaMeGusta:{
+        position:'absolute',
+        top:'8px',
+        right:'12px',
+[theme.breakpoints.down("sm")]:{
+        position:'unset'
+},
+},
 
 contenedor:{
         margin:"18px auto"
@@ -112,7 +120,7 @@ resumen:{
 diveditarborrar:{
 
         position:"absolute",
-        top:"0",
+        bottom:"0",
         right:"0",
         width:"90px"
 },
@@ -158,6 +166,29 @@ divTexto:{
                 margin:"5vw 5vw 0"
         }
 }
+
+,botonLikes:{
+        color:"#35b37c",
+        margin:"8px 0px 0x 0px",
+        border:"1px solid"
+
+
+    },
+
+    botonPdf:{
+        position:"absolute",
+        bottom:"55px",
+        right:'0px',
+        [theme.breakpoints.down("sm")]:{
+                position:'unset'
+        }
+}
+,
+textUpVote:{
+        fontFamily:"nunito",
+        textAlign:"center",
+        color:"#808080"     
+     }
 ,
 
 
@@ -233,6 +264,99 @@ history.push(`/tag/${valor.id}`)
       
     }      
 
+
+    const megustaSinValidarUsuario=(valor)=>{
+
+
+        // if(usuario==null) {
+        //         return history.push("/login")
+        // }
+
+
+
+
+       
+
+        if(valor.haVotado==undefined){
+                var antiguoHaVotado=[]
+         }else{
+                var antiguoHaVotado=valor.haVotado
+         }
+
+
+//      if(antiguoHaVotado.includes(usuario.uid)){
+//              console.log(antiguoHaVotado)
+
+//         antiguoHaVotado=antiguoHaVotado.filter(function(obj){
+//                 return obj!==usuario.uid
+//         })
+//         valor.likes=valor.likes-1
+
+//         let  nuevoValor={
+//                 ...valor,
+//                  likes:valor.likes,
+//                 haVotado:antiguoHaVotado
+//         }
+
+
+//         firebase.db.collection("paper").doc(valor.id).update(nuevoValor)
+
+
+//         // armar de nuevo el arreglo con el valor
+
+//          armararreglo(nuevoValor)
+
+//        // mapear etiquetas
+
+//         valor.etiquetas.map(valordos=>{
+//                 firebase.db.collection("etiquetas").doc(valordos.id).collection("paper").doc(valor.id).update({
+//                         ...valor,
+//                         likes:valor.likes,
+//                        haVotado:antiguoHaVotado
+
+//                 })
+//         })
+
+
+         //setpaper({...valor,likes:valor.likes})
+        // actualizar la etiquetas
+
+
+
+
+
+
+
+   //  }else{
+
+     const nuevoHaVotado = [...antiguoHaVotado, usuario.uid];
+     valor.likes=valor.likes+1
+
+
+     let  nuevoValor={
+        ...valor,
+         likes:valor.likes,
+        haVotado:nuevoHaVotado
+        }
+firebase.db.collection("paper").doc(valor.id).update(nuevoValor)
+
+      // mapear etiquetas
+
+      valor.etiquetas.map(valordos=>{
+        firebase.db.collection("etiquetas").doc(valordos.id).collection("paper").doc(valor.id).update({
+                ...valor,
+                likes:valor.likes,
+                haVotado:nuevoHaVotado
+
+        })
+})
+
+//armararreglo(nuevoValor)
+     //setpaper({...valor,likes:valor.likes})
+
+     // }
+      console.log("final")
+}
 
 
 const borrar=(e)=>{
@@ -707,67 +831,54 @@ useEffect(async() => {
                                                 
         <Grid xs={12} sm={12} md={2}>
 
-        <Typography variant="subtitle1" className={clases.centrarComponente}>
-
-           {cargandoCorazon?
-
-                <div>
-                <div className={clases.divCircular} >
-                        <CircularProgress className={clases.circular}></CircularProgress>
-                </div>
-                </div>
-
-                :
-
-                <Button
-                onClick={()=>megusta(valor)}
-               style={{color:"#35b37c",
-               marginTop:"40px"
-       }}
-       startIcon={
+        <div className={clases.cajaMeGusta}>
+                                                                 <Typography className={clases.centrarComponente} variant="subtitle1" >
+                                                                <Button onClick={()=>megustaSinValidarUsuario(valor)}
+                                                                className={clases.botonLikes}
+                                                                startIcon={
+                                                                funcionCorazon(valor)?
+                                                                // <CorazonLleno></CorazonLleno>
+                                                                <>
+                                                                <img height="25" src={CorazonLleno}></img>
                                                                 
-        funcionCorazon(valor)?
-        // <CorazonLleno></CorazonLleno>
-        <img height="40" src={CorazonLleno}></img>
+                                                                </>
+                                                                :
+                                                                //  <Corazon></Corazon>
+                                                                <>
+                                                                <img  height="25"  src={Corazon}></img>
+                                                               
+                                                                </>
+                                                               }
+                                                                >
+                                                                        {valor.likes}
+                                                                </Button>
+                                                                <Typography className={clases.textUpVote} variant='subtitle2' >
+                                                                 upvote
+                                                                 </Typography>
+                                                                
+                                                </Typography>
+                                                </div>
+                                               
+                                               
+                                               
+                                               <div className={clases.botonPdf}>
+                                                <Typography  className={clases.centrarComponente} variant="subtitle1"
+                                                          >
+                                                <a href={valor.pdf==null?
+                                                    valor.link:valor.pdf
+                                                }  style={{textDecoration:"none"}} target="_blank">
+                                                <Button  className="botoneditar" variant="contained"
+                                                startIcon={<InsertDriveFileIcon />}
+                                                >
+                                                        get it
+                                                </Button>
+                                                </a>
+                                                </Typography>
+                                                </div>    
 
-        :
-        <img  height="40"  src={Corazon}></img>
-
-        //  <Corazon></Corazon>
-        
-       }
-               >
-
-                       {valor.likes}
-               </Button>
 
 
 
-
-           }                     
-
-
-
-                 
-        </Typography>
-
-
-        <Typography variant="subtitle1" className={clases.centrarComponente}   >
-        <a href={valor.pdf}  style={{textDecoration:"none"}} target="_blank">                                               
-        <Button  className="botoneditar" variant="contained"
-        
-        startIcon={<InsertDriveFileIcon />}
-        
-        >
-
-                pdf 
-        </Button>
-
-        </a>     
-
-        </Typography>
-
-          
         {usuario==null?
 
 

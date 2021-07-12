@@ -86,52 +86,11 @@ const AdministrarNosotros = (props) => {
 
 
 
-    //Now the function:
-const convertImages = (htmlText) =>{
-    console.log("hola mundo")
-    const regex =  /<div\s[^>]*?style\s*=\s*['\"]text-align([^'\"]*?)['\"][^>]*?>/g;
-    let m;
-    while ((m = regex.exec(htmlText)) !== null) {
-      
-        if (m.index === regex.lastIndex) regex.lastIndex++;
-        
-        let repl = null,type = null;
-        m.forEach((match, groupIndex) => {
-             //console.log(match)
-          //console.log(groupIndex)
-           if(groupIndex==0)repl = match;
-          if(groupIndex==1)type = match;
-           console.log(repl)
-             console.log(type)
-
-
-      if(repl && type){
-             console.log("hola mundo 2")
-              // if(type.includes('none')){ htmlText = htmlText.replace(repl, `<div style="text-align: center;width: 100%;" >drna</div>`)};
-             if(type.includes('none')){ htmlText = htmlText.replace(repl, `<div style="text-align: center;width: 100%;">`)};
-              //     else htmlText = htmlText.replace(repl, `<div style="text-align; width: 100%;">`+repl+'</div>');
-            //     repl = null;
-            //     type = null;
-             }
-
-
-        //     if(repl && type){
-        //       // console.log("hola mundo 2")
-        //         if(type.includes('none')) htmlText = htmlText.replace(repl, `<div style="text-align: center;width: 100%;">`+repl+'</div>');
-        //         else htmlText = htmlText.replace(repl, `<div style="text-align ${type}; width: 100%;">`+repl+'</div>');
-        //         repl = null;
-        //         type = null;
-        //     }
-        });
-    }
-   return htmlText;
-}
 
 const remplazarTexto =(htmlText)=>{
   console.log(htmlText)
 
   //<div style="text-align:none;">
- //let textoprueba=htmlText.replace( /<div\s[^>]*?style\s*=\s*['\"]text-align([^'\"]*?)['\"][^>]*?>/g,`<div style="text-align: center; width: 100%;">`)
  let textoprueba=htmlText.replace(`<div style="text-align:none;">`,`<div style="text-align: center; width: 100%;">`)
 
  

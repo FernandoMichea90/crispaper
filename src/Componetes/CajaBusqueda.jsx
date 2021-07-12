@@ -118,12 +118,47 @@ resumen:{
         fontFamily:"nunito",
         margin:"15px auto"
 },
+
+
+
+
 diveditarborrar:{
         position:"absolute",
-        top:"0",
+        bottom:"0",
         right:"9px",
         width:"90px"
 },
+
+
+botonPdf:{
+        position:"absolute",
+        bottom:"55px",
+        right:'0px',
+        [theme.breakpoints.down("sm")]:{
+                position:'unset'
+        }
+}
+,
+
+textUpVote:{
+        fontFamily:"nunito",
+        textAlign:"center",
+        color:"#808080"     
+     }
+,
+
+cajaMeGusta:{
+        position:'absolute',
+        top:'8px',
+        right:'12px',
+[theme.breakpoints.down("sm")]:{
+        position:'unset'
+}
+
+
+},
+
+
 divFoto:{
 
         width:"250px",
@@ -171,8 +206,8 @@ divFoto:{
 
     },botonLikes:{
         color:"#35b37c",
-        margin:"25px 0"
-
+        margin:"8px 0px 0x 0px",
+        border:"1px solid"
 
     },
     margenChip:{
@@ -1047,6 +1082,99 @@ const armararreglo=(nuevoValor)=>{
 }
 
 
+const megustaSinValidarUsuario=(valor)=>{
+
+
+        // if(usuario==null) {
+        //         return history.push("/login")
+        // }
+
+
+
+
+       
+
+        if(valor.haVotado==undefined){
+                var antiguoHaVotado=[]
+         }else{
+                var antiguoHaVotado=valor.haVotado
+         }
+
+
+//      if(antiguoHaVotado.includes(usuario.uid)){
+//              console.log(antiguoHaVotado)
+
+//         antiguoHaVotado=antiguoHaVotado.filter(function(obj){
+//                 return obj!==usuario.uid
+//         })
+//         valor.likes=valor.likes-1
+
+//         let  nuevoValor={
+//                 ...valor,
+//                  likes:valor.likes,
+//                 haVotado:antiguoHaVotado
+//         }
+
+
+//         firebase.db.collection("paper").doc(valor.id).update(nuevoValor)
+
+
+//         // armar de nuevo el arreglo con el valor
+
+//          armararreglo(nuevoValor)
+
+//        // mapear etiquetas
+
+//         valor.etiquetas.map(valordos=>{
+//                 firebase.db.collection("etiquetas").doc(valordos.id).collection("paper").doc(valor.id).update({
+//                         ...valor,
+//                         likes:valor.likes,
+//                        haVotado:antiguoHaVotado
+
+//                 })
+//         })
+
+
+         //setpaper({...valor,likes:valor.likes})
+        // actualizar la etiquetas
+
+
+
+
+
+
+
+   //  }else{
+
+     const nuevoHaVotado = [...antiguoHaVotado, usuario.uid];
+     valor.likes=valor.likes+1
+
+
+     let  nuevoValor={
+        ...valor,
+         likes:valor.likes,
+        haVotado:nuevoHaVotado
+        }
+firebase.db.collection("paper").doc(valor.id).update(nuevoValor)
+
+      // mapear etiquetas
+
+      valor.etiquetas.map(valordos=>{
+        firebase.db.collection("etiquetas").doc(valordos.id).collection("paper").doc(valor.id).update({
+                ...valor,
+                likes:valor.likes,
+                haVotado:nuevoHaVotado
+
+        })
+})
+
+armararreglo(nuevoValor)
+     //setpaper({...valor,likes:valor.likes})
+
+     // }
+      console.log("final")
+}
+
 
 
 
@@ -1151,44 +1279,68 @@ const armararreglo=(nuevoValor)=>{
                                         
                                                 <Grid xs={12} sm={12} md={2}>
 
-                                                <Typography variant="subtitle1"  className={clases.centrarComponente}  >
+                                                 <div className={clases.cajaMeGusta}>
+                                                                 <Typography className={clases.centrarComponente} variant="subtitle1" >
 
-                                                                <Button onClick={()=>megusta(valor)}
+                                                                <Button onClick={()=>megustaSinValidarUsuario(valor)}
                                                                 className={clases.botonLikes}
                                                                 startIcon={
-                                                                
+
                                                                 funcionCorazon(valor)?
-                                                                   // <CorazonLleno></CorazonLleno>
-                                                                   <img height="40" src={CorazonLleno}></img>
-                                                                   :
-                                                                   //  <Corazon></Corazon>
-                                                                   <img  height="40"  src={Corazon}></img>
-                                                                   
+                                                                // <CorazonLleno></CorazonLleno>
+                                                                <>
+                                                                <img height="25" src={CorazonLleno}></img>
                                                                 
+                                                                </>
+                                                                :
+
+                                                                //  <Corazon></Corazon>
+                                                                <>
+                                                                <img  height="25"  src={Corazon}></img>
+                                                               
+                                                                </>
+
                                                                }
                                                                 >
 
                                                                         {valor.likes}
                                                                 </Button>
 
-                                                </Typography>
-                                        
+                                                                <Typography className={clases.textUpVote} variant='subtitle2' >
+                                                                 upvote
+                                                                 </Typography>
+                                                                
 
-                                                <Typography variant="subtitle1" className={clases.centrarComponente}  >
-                                                <a href={valor.pdf}  style={{textDecoration:"none"}} target="_blank">                                               
+                                                </Typography>
+                                                </div>
+                                               
+                                               
+                                               
+                                               <div className={clases.botonPdf}>
+                                                <Typography  className={clases.centrarComponente} variant="subtitle1"
+                                                          >
+
+
+
+
+                                                <a href={valor.pdf==null?
+                                                    valor.link:valor.pdf
+                                                }  style={{textDecoration:"none"}} target="_blank">
                                                 <Button  className="botoneditar" variant="contained"
-                                                
+
                                                 startIcon={<InsertDriveFileIcon />}
-                                                
+
                                                 >
 
-                                                        pdf 
+                                                        get it
                                                 </Button>
 
-                                                </a>     
+                                                </a>
 
                                                 </Typography>
+                                                </div>        
 
+           
 
                                               {usuario==null?
 

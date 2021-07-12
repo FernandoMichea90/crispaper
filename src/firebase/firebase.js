@@ -3,7 +3,7 @@ import firebaseConfig from './config'
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import admin from 'firebase-admin'
+
 
 
 
@@ -15,7 +15,7 @@ class Firebase{
     constructor(){
      if(!app.apps.length){             
       app.initializeApp(firebaseConfig)
-      admin.initializeApp(firebaseConfig)
+    
      }
 
 
@@ -23,7 +23,7 @@ class Firebase{
      this.auth=app.auth();
      this.db = app.firestore();
      this.storage = app.storage();
-    this.admin=admin.auth()
+    
      
      
 

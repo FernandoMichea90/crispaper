@@ -173,7 +173,8 @@ export default function SignInSide(props) {
   const iniciarCorreoGmail=()=>{
        // alert("paso por el boton")
        Firebase.registrarCorreo()
-
+       props.history.push("/")
+      
        
    }
 
@@ -192,7 +193,7 @@ export default function SignInSide(props) {
       try{
       await Firebase.login(user)
        recordar()
-
+        props.history.push("/")
 
       }catch(error){
 
