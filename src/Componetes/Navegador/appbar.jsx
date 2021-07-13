@@ -622,7 +622,7 @@ console.log(buscador.buscado)
         value={buscador.buscado}
         name="buscado"
         autoComplete="off"
-        placeholder="Buscar..."
+        placeholder="Search..."
 
       />
        <IconButton onClick={()=>{buscarDos()}} color="primary" aria-label="search">
@@ -698,7 +698,7 @@ d
                 overflow:"hidden"
                 }}>
                  <Typography className={classes.noRegistro} align="left" variant="h6">
-                  no hay  resultados
+                 no results
                   </Typography>
 
                   </div>
@@ -730,7 +730,7 @@ d
           <div className="divHover">
             <Typography >
 
-              Recientes
+              Lastest
 
             </Typography>
             <div className="subrayado"></div>
@@ -742,7 +742,7 @@ d
           <div className="divHover">
             <Typography >
 
-              Mejor valorados
+              Trending
 
             </Typography>
             <div className="subrayado"></div>
@@ -761,7 +761,7 @@ d
           <Link href="/etiquetas" className={ classes.linkclass}>
           <div className="divHover">
             <Typography >
-              Etiquetas
+              Tags
 
             </Typography>
             <div className="subrayado"></div>
@@ -781,7 +781,7 @@ d
           <div className="divHover">
               <Typography align="center" >
 
-                Nosotros
+                About
                   {/* <Button
                       variant="contained"
                       color="primary"
@@ -842,7 +842,7 @@ d
                       variant="contained"
                       color="primary"
                   >
-                      mas
+                      More
                   </Button>
 
               </Typography>
@@ -862,7 +862,7 @@ d
         <div className="divHover">
             <Typography align="center" >
 
-              Nosotros
+              About
                 {/* <Button
                     variant="contained"
                     color="primary"
@@ -938,7 +938,7 @@ d
 
             {usuario?
             <Button variant="outlined" color="primary"  onClick={()=>cerrarSesion()}>
-                     Cerrar sesion
+                     Sign out
             </Button>
 
                 :
@@ -1029,7 +1029,7 @@ d
         value={buscador.buscado}
         name="buscado"
         autoComplete="off"
-        placeholder="Buscar..."
+        placeholder="Search..."
         inputProps={{ 'aria-label': 'search google maps' }}
       />
   <IconButton  onClick={()=>{buscarDos()}}  color="primary" aria-label="search">
@@ -1102,12 +1102,12 @@ container
               <>
               <Link  onClick={()=>props.reciente()}   className={classes.linkList} >
               <Typography className={props.recientes?classes.linkLiDos:classes.linkLi} align="center" variant="subtitle1">
-                        Recientes
+                        Lastest
               </Typography>
               </Link>
               <Link onClick={()=>props.mejorvalorados()} className={classes.linkList} >
               <Typography className={props.valorados?classes.linkLiDos:classes.linkLi} align="center" variant="subtitle1">
-                        Mejor valorados
+                        Trending
               </Typography>
               </Link>
               </>
@@ -1116,7 +1116,7 @@ container
 
                 <Link href="/etiquetas" className={classes.linkList}>
               <Typography className={classes.linkLi} align="center" variant="subtitle1">
-                        Etiquetas
+                        Tags
               </Typography>
               </Link>
 
@@ -1130,7 +1130,8 @@ container
                           history.push("/nosotros")}
                       }} className={classes.linkList} >
                       <Typography className={classes.linkLi} align="center" variant="subtitle1">
-                                Nosotros
+                                About
+
                       </Typography>
                       </Link>
                         <Link onClick={()=>dejarUnComentario()} className={classes.linkList} >
@@ -1157,7 +1158,7 @@ container
                                     variant="contained"
                                     color="primary"
                                 >
-                                    mas
+                                    more
                                 </Button>
 
                             </Typography>
@@ -1187,11 +1188,11 @@ container
 
                 {usuario?
                 <Button color="primary" variant="outlined" onClick={()=>cerrarSesion()} >
-                Cerrar sesion
+                Log out
               </Button>
                 :
                 <Button color="primary" variant="outlined" href="/login" >
-                Iniciar Sesion
+                Log in
               </Button>
 
                 }

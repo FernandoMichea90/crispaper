@@ -155,7 +155,8 @@ const buscaretiquetas=async()=>{
              const listacuatro= listatres.docs.map(doc=>{
                     return {
                         id:doc.id,
-                        ...doc.data()
+                        ...doc.data(),
+                        click:false,
                     }  
              }
              )       
@@ -201,26 +202,53 @@ function manejarSnapshot(snapshot){
 
 
 const armarconsultrecientes=(lista)=>{
-
     lista.sort((a,b)=>(a.subida<b.subida)?1:-1)
     return lista 
-
-
 }
 const armarconsultvalorados=(lista)=>{
 
     lista.sort((a,b)=>(a.likes<b.likes)?1:-1)
     return lista 
 
-
 }
-
 const megusta=(valor)=>{
-
         console.log(valor)
         megustacuatro(valor)
+}
+// Éste va a ser el me gusta sin validar usuario
+const megustaSinValidarUsuario=(paperNuevo)=>{
 
+    // recorrer arreglo en donde esta etiqueta y paper 'paperArray'
+    //crear nueva constante del paper
+    const nuevoPaperArray=paperArray.map(paperMap=>{
 
+                    //recorrer solo arreglo paper 
+                    //paperMap = paper[]
+                    console.log(paperArray)
+                     let paper=paperMap.paper.map((paperNew)=>{
+                                //validar que los paper coincidan 
+                                if(paperNew.id==paperNuevo.id){
+                                    console.log(paperMap.etiquetas.id)
+
+                                        //
+
+                                    return paperNuevo
+                                } else{
+                                    return paperNew
+                                }       
+                        })                
+                // crear nuevo objeto con  la etiqueta y el paper 
+                let nuevoObjeto={
+                    etiquetas:paperMap.etiquetas,
+                    paper:paper   
+                }
+                //retornar objeto  
+                return nuevoObjeto
+    })
+// insertar  paperArray
+  setpaperArray(nuevoPaperArray)
+
+    
 }
 
 
@@ -500,7 +528,7 @@ setcargando(false)
 
 
         
-            <div className={clases.root} style={{marginTop:"88px"}} >
+            <div className={clases.root}  >
 
 
                 
@@ -510,7 +538,7 @@ setcargando(false)
                                 className={clases.texto}
                         >
                             
-                                Etiquetas 
+                                Tags
                             </Typography> 
 
 
@@ -560,7 +588,7 @@ setcargando(false)
                                                     paper.paper.length!=0?
                                                                paper.paper.map(doc=>(
                                                              <div>
-                                                                <Paperdos  paper={doc}  buscaretiquetas={buscaretiquetas}   length={paper.paper.length}   changeLike={changeLike} setChangeLike={setChangeLike}   megusta={megusta}  ></Paperdos>
+                                                                <Paperdos  paper={doc}  buscaretiquetas={buscaretiquetas}   length={paper.paper.length}   changeLike={changeLike} setChangeLike={setChangeLike}   megusta={megusta} cambiarLike={megustaSinValidarUsuario}  ></Paperdos>
                                                                          
                                                             
                                                             
@@ -606,7 +634,7 @@ setcargando(false)
                                                        
                                                     
                                                     >
-                                                    ver mas 
+                                                    see more
                                                             </Button> 
                                                  </Typography>
                                                     :
@@ -621,7 +649,7 @@ setcargando(false)
                                                                    
                                                                 
                                                                 >
-                                                                ver mas
+                                                                see more
                                                                         </Button> 
                                                 </Typography>   }             
 

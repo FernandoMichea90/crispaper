@@ -35,7 +35,7 @@ function Copyright() {
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" >
-        Cris Paper
+      Planetcolab
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -358,7 +358,7 @@ const recuperarContrasena=async()=>{
             <LockOutlinedIcon color="secondary" />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Ingresar
+          Sign in
           </Typography>
           <div className={classes.form} >
 
@@ -371,7 +371,7 @@ const recuperarContrasena=async()=>{
               required
               fullWidth
            
-              label="Correo"
+              label="Email address"
               name="email"
               onChange={handleChange}
               autoComplete="email"
@@ -387,7 +387,7 @@ const recuperarContrasena=async()=>{
             required
             fullWidth
             id="email"
-            label="Correo"
+            label="Email address"
             name="email"
             autoComplete="email"
           
@@ -406,7 +406,7 @@ margin="normal"
 required
 fullWidth
 name="password"
-label="Contraseña"
+label="Password"
 type="password"
 id="password"
 autoComplete="current-password"
@@ -423,7 +423,7 @@ helperText={errores.password}
           required
           fullWidth
           name="password"
-          label="Contraseña"
+          label="Password"
           type="password"
           onChange={handleChange}
           id="password"
@@ -438,7 +438,7 @@ helperText={errores.password}
           
             <FormControlLabel
               control={<Checkbox  checked={recuerdame.recuerdame} name="recuerdame" onChange={handleChangeCheck} value="remember" color="primary" />}
-              label="Recuerdame"
+              label="Remember me"
             />
             <Button
               type="submit"
@@ -448,7 +448,7 @@ helperText={errores.password}
               className={classes.submit}
               onClick={()=>iniciarSesion()}
             >
-              Iniciar Sesion
+              Sign In
             </Button>
 
             <Button
@@ -463,17 +463,17 @@ helperText={errores.password}
            >
 
              <img className={classes.imagenGoogle} src ={Google} height="25" />
-             Iniciar sesion con Google 
+             login with google
            </Button>
             <Grid container>
               <Grid item xs>
                 <Link onClick={()=> recuperarContrasena()} variant="body2">
-                  ¿Olvidaste tu contraseña?
+                  Forgot you password?
                 </Link>
               </Grid>
               <Grid item>
                 <Link  href="/crearcuenta"  variant="body2">
-                  {"¿Aun no estas registrado?"}
+                  {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
             </Grid>

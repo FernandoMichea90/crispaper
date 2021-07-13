@@ -267,7 +267,7 @@ if(valorados){
                             className={clases.texto}
                     >
                           
-                            Etiquetas 
+                            Tags
                         </Typography> 
 
 

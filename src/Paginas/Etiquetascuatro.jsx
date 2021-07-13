@@ -196,6 +196,48 @@ const megusta=(valor)=>{
 
 
 }
+
+
+
+// Éste va a ser el me gusta sin validar usuario
+const megustaSinValidarUsuario=(paperNuevo)=>{
+
+    // recorrer arreglo en donde esta etiqueta y paper 'paperArray'
+    //crear nueva constante del paper
+    const nuevoPaperArray=paperArray.map(paperMap=>{
+
+                    //recorrer solo arreglo paper 
+                    //paperMap = paper[]
+                    console.log(paperArray)
+                     let paper=paperMap.paper.map((paperNew)=>{
+                                //validar que los paper coincidan 
+                                if(paperNew.id==paperNuevo.id){
+                                    console.log(paperMap.etiquetas.id)
+
+                                        //
+
+                                    return paperNuevo
+                                } else{
+                                    return paperNew
+                                }       
+                        })                
+                // crear nuevo objeto con  la etiqueta y el paper 
+                let nuevoObjeto={
+                    etiquetas:paperMap.etiquetas,
+                    paper:paper   
+                }
+                //retornar objeto  
+                return nuevoObjeto
+    })
+// insertar  paperArray
+  setpaperArray(nuevoPaperArray)
+
+    
+}
+
+
+
+
 const megustacuatro=async(valor)=>{ 
     setcargando(true)
     if(usuario==null) {
@@ -326,7 +368,8 @@ const listaconid=async(valor,ruta)=>{
          return {
  
              id:doc.id,
-             ...doc.data()
+             ...doc.data(),
+             click:false
          }
  
     
@@ -469,7 +512,8 @@ setcargando(false)
                 // console.log(doc.data())
                         return{
                             id:doc.id,
-                            ...doc.data()
+                            ...doc.data(),
+                            click:false
 
                         }
 
@@ -523,7 +567,7 @@ setcargando(false)
                                                         {
                                                         etiquetarray.map(doc=>(
                                                                 <div>
-                                                                    <Paperdos   paper={doc}  buscaretiquetas={buscaretiquetas}   length={etiquetarray.length}   changeLike={changeLike} setChangeLike={setChangeLike}   megusta={megusta}  ></Paperdos>
+                                                                    <Paperdos   paper={doc}  buscaretiquetas={buscaretiquetas}   length={etiquetarray.length}   changeLike={changeLike} setChangeLike={setChangeLike}   megusta={megusta} cambiarLike={megustaSinValidarUsuario}  ></Paperdos>
                                                                             
                                                                 
                                                                 

@@ -426,7 +426,7 @@ const buscarTexto=async(texto_busqueda,recientes,valorados)=>{
 
          let pruebatexto=texto_busqueda       
         setcargando(true)
-        setTituloGeneral(`Resultados de la busqueda : "${pruebatexto}" `)
+        setTituloGeneral(`Search results : "${pruebatexto}" `)
        
         try {   
            
@@ -441,7 +441,9 @@ const buscarTexto=async(texto_busqueda,recientes,valorados)=>{
 
                         const resultado=query.docs.map((paperObje)=>{
                         console.log(pruebatexto)        
-                        return paperObje.data()})
+                        return {...paperObje.data(),
+                        click:false
+                        }})
                         console.log(resultado)
                         setlistapaper(resultado)
                         // .then((coleccion)=>
@@ -550,6 +552,22 @@ const buscarTexto=async(texto_busqueda,recientes,valorados)=>{
 
 
 }
+
+
+
+const funcionCorazondos=(valor)=>{
+
+        if(valor.likes>0){
+            return true       
+        }else{
+           return false
+        }
+
+
+
+}
+
+
 
 
 const pedirpaper=()=>{
@@ -1083,97 +1101,51 @@ const armararreglo=(nuevoValor)=>{
 
 
 const megustaSinValidarUsuario=(valor)=>{
+    
 
-
-        // if(usuario==null) {
-        //         return history.push("/login")
-        // }
-
-
-
-
-       
-
-        if(valor.haVotado==undefined){
-                var antiguoHaVotado=[]
-         }else{
-                var antiguoHaVotado=valor.haVotado
-         }
-
-
-//      if(antiguoHaVotado.includes(usuario.uid)){
-//              console.log(antiguoHaVotado)
-
-//         antiguoHaVotado=antiguoHaVotado.filter(function(obj){
-//                 return obj!==usuario.uid
-//         })
-//         valor.likes=valor.likes-1
-
-//         let  nuevoValor={
-//                 ...valor,
-//                  likes:valor.likes,
-//                 haVotado:antiguoHaVotado
-//         }
-
-
-//         firebase.db.collection("paper").doc(valor.id).update(nuevoValor)
-
-
-//         // armar de nuevo el arreglo con el valor
-
-//          armararreglo(nuevoValor)
-
-//        // mapear etiquetas
-
-//         valor.etiquetas.map(valordos=>{
-//                 firebase.db.collection("etiquetas").doc(valordos.id).collection("paper").doc(valor.id).update({
-//                         ...valor,
-//                         likes:valor.likes,
-//                        haVotado:antiguoHaVotado
-
-//                 })
-//         })
-
-
-         //setpaper({...valor,likes:valor.likes})
-        // actualizar la etiquetas
-
-
-
-
-
-
-
-   //  }else{
-
-     const nuevoHaVotado = [...antiguoHaVotado, usuario.uid];
-     valor.likes=valor.likes+1
-
-
-     let  nuevoValor={
-        ...valor,
-         likes:valor.likes,
-        haVotado:nuevoHaVotado
-        }
-firebase.db.collection("paper").doc(valor.id).update(nuevoValor)
-
-      // mapear etiquetas
-
-      valor.etiquetas.map(valordos=>{
-        firebase.db.collection("etiquetas").doc(valordos.id).collection("paper").doc(valor.id).update({
-                ...valor,
-                likes:valor.likes,
-                haVotado:nuevoHaVotado
-
-        })
-})
-
-armararreglo(nuevoValor)
-     //setpaper({...valor,likes:valor.likes})
-
-     // }
-      console.log("final")
-}
+        if(valor.click){    
+          valor.likes=valor.likes-1
+          valor.click=false
+     }else{
+          valor.likes=valor.likes+1
+          valor.click=true
+     }
+     
+          const nuevoHaVotado = [];
+          let  nuevoValor={
+             ...valor,
+              likes:valor.likes,
+             haVotado:nuevoHaVotado
+             }
+     
+     
+     
+            //guarda datos en el paper
+            firebase.db.collection("paper").doc(valor.id).update({
+             ...valor,
+             likes:valor.likes,
+             haVotado:nuevoHaVotado
+     
+     })
+     
+           // mapear etiquetas
+           valor.etiquetas.map(valordos=>{
+     
+             //guarda datos  en las etiquetas
+             firebase.db.collection("etiquetas").doc(valordos.id).collection("paper").doc(valor.id).update({
+                     ...valor,
+                     likes:valor.likes,
+                     haVotado:nuevoHaVotado
+     
+             })
+     })
+     
+     armararreglo(nuevoValor)
+          //setpaper({...valor,likes:valor.likes})
+     
+          // }
+           console.log("final")
+     }
 
 
 
@@ -1286,7 +1258,7 @@ armararreglo(nuevoValor)
                                                                 className={clases.botonLikes}
                                                                 startIcon={
 
-                                                                funcionCorazon(valor)?
+                                                                funcionCorazondos(valor)?
                                                                 // <CorazonLleno></CorazonLleno>
                                                                 <>
                                                                 <img height="25" src={CorazonLleno}></img>

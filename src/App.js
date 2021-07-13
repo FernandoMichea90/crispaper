@@ -90,7 +90,7 @@ const mejorvalorados=()=>{
       //     setrecientes(false)
       
       //   } 
-        setTextoGeneral("Lo mejor valorado")
+        setTextoGeneral("Trending")
         setvalorados(true)
         setrecientes(false)
       

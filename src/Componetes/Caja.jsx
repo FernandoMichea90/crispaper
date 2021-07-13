@@ -304,7 +304,9 @@ const Caja = (props) => {
 
                             if(coleccion.size!=0){
                                         console.log("paso por aca ")
-                                        const lista =coleccion.docs.map((paperObje)=>paperObje.data())
+                                        const lista =coleccion.docs.map((paperObje)=>{return {...paperObje.data(),
+                                        click:false
+                                        }})
                                         setultimoDocumento(lista[lista.length-1].id)
                                         setlistapaper((listapaper)=>[...listapaper,...lista])
                                         setcargando(false)
@@ -773,6 +775,23 @@ if(papermatch){
 
 
 
+
+ const funcionCorazondos=(valor)=>{
+
+             if(valor.likes>0){
+                 return true       
+             }else{
+                return false
+             }
+
+
+
+ }
+
+
+
+
+
   const pedirMas=async()=>{
                 setcargandodos(true)
                 const recientes=props.recientes
@@ -1057,83 +1076,37 @@ armararreglo(nuevoValor)
 
 
 const megustaSinValidarUsuario=(valor)=>{
+    
 
-
-        // if(usuario==null) {
-        //         return history.push("/login")
-        // }
-
-
-
-
-       
-
-        if(valor.haVotado==undefined){
-                var antiguoHaVotado=[]
-         }else{
-                var antiguoHaVotado=valor.haVotado
-         }
-
-
-//      if(antiguoHaVotado.includes(usuario.uid)){
-//              console.log(antiguoHaVotado)
-
-//         antiguoHaVotado=antiguoHaVotado.filter(function(obj){
-//                 return obj!==usuario.uid
-//         })
-//         valor.likes=valor.likes-1
-
-//         let  nuevoValor={
-//                 ...valor,
-//                  likes:valor.likes,
-//                 haVotado:antiguoHaVotado
-//         }
-
-
-//         firebase.db.collection("paper").doc(valor.id).update(nuevoValor)
-
-
-//         // armar de nuevo el arreglo con el valor
-
-//          armararreglo(nuevoValor)
-
-//        // mapear etiquetas
-
-//         valor.etiquetas.map(valordos=>{
-//                 firebase.db.collection("etiquetas").doc(valordos.id).collection("paper").doc(valor.id).update({
-//                         ...valor,
-//                         likes:valor.likes,
-//                        haVotado:antiguoHaVotado
-
-//                 })
-//         })
-
-
-         //setpaper({...valor,likes:valor.likes})
-        // actualizar la etiquetas
-
-
-
-
-
-
-
-   //  }else{
+   if(valor.click){    
+     valor.likes=valor.likes-1
+     valor.click=false
+}else{
+     valor.likes=valor.likes+1
+     valor.click=true
+}
 
      const nuevoHaVotado = [];
-     valor.likes=valor.likes+1
-
-
      let  nuevoValor={
         ...valor,
          likes:valor.likes,
         haVotado:nuevoHaVotado
         }
-firebase.db.collection("paper").doc(valor.id).update(nuevoValor)
+
+
+
+       //guarda datos en el paper
+       firebase.db.collection("paper").doc(valor.id).update({
+        ...valor,
+        likes:valor.likes,
+        haVotado:nuevoHaVotado
+
+})
 
       // mapear etiquetas
-
       valor.etiquetas.map(valordos=>{
+
+        //guarda datos  en las etiquetas
         firebase.db.collection("etiquetas").doc(valordos.id).collection("paper").doc(valor.id).update({
                 ...valor,
                 likes:valor.likes,
@@ -1356,7 +1329,7 @@ const dejarUnaColaboracion=async()=>{
                                                                 className={clases.botonLikes}
                                                                 startIcon={
 
-                                                                funcionCorazon(valor)?
+                                                                funcionCorazondos(valor)?
                                                                 // <CorazonLleno></CorazonLleno>
                                                                 <>
                                                                 <img height="25" src={CorazonLleno}></img>
@@ -1499,7 +1472,7 @@ const dejarUnaColaboracion=async()=>{
         onClick={()=>{
                 pedirMas()
         }} >
-        ver mas
+        See More
 
                 </Button>
 </Typography>   }

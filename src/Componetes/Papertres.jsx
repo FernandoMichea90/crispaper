@@ -253,7 +253,7 @@ const Paper = (props) => {
         const megusta=props.megusta
         const tamaño =props.length
         const [ultimoDocumento, setultimoDocumento] = useState(0)
-
+        const cambiarLike=props.cambiarLike
 
 
 
@@ -268,88 +268,59 @@ history.push(`/tag/${valor.id}`)
     const megustaSinValidarUsuario=(valor)=>{
 
 
-        // if(usuario==null) {
-        //         return history.push("/login")
-        // }
 
 
+                        
+                        const nuevoHaVotado=[]
 
 
-       
+                                if(valor.click){
+                        valor.likes=valor.likes-1
+                        valor.click=false
+                        }else{
 
-        if(valor.haVotado==undefined){
-                var antiguoHaVotado=[]
-         }else{
-                var antiguoHaVotado=valor.haVotado
-         }
+                        valor.likes=valor.likes+1
+                        valor.click=true
+                        }         
 
+                        let  nuevoValor={
+                                ...valor,
+                                likes:valor.likes,
+                                haVotado:nuevoHaVotado
+                                }
 
-//      if(antiguoHaVotado.includes(usuario.uid)){
-//              console.log(antiguoHaVotado)
+                        //guarda datos en el paper
+                        firebase.db.collection("paper").doc(valor.id).update({
+                                ...valor,
+                                likes:valor.likes,
+                                haVotado:nuevoHaVotado
 
-//         antiguoHaVotado=antiguoHaVotado.filter(function(obj){
-//                 return obj!==usuario.uid
-//         })
-//         valor.likes=valor.likes-1
+                        })
 
-//         let  nuevoValor={
-//                 ...valor,
-//                  likes:valor.likes,
-//                 haVotado:antiguoHaVotado
-//         }
+                                valor.etiquetas.map(valordos=>{
+                                        firebase.db.collection("etiquetas").doc(valordos.id).collection("paper").doc(valor.id).update({
+                                                ...valor,
+                                                likes:valor.likes,
+                                                haVotado:nuevoHaVotado
+                                
+                                        })})
 
-
-//         firebase.db.collection("paper").doc(valor.id).update(nuevoValor)
-
-
-//         // armar de nuevo el arreglo con el valor
-
-//          armararreglo(nuevoValor)
-
-//        // mapear etiquetas
-
-//         valor.etiquetas.map(valordos=>{
-//                 firebase.db.collection("etiquetas").doc(valordos.id).collection("paper").doc(valor.id).update({
-//                         ...valor,
-//                         likes:valor.likes,
-//                        haVotado:antiguoHaVotado
-
-//                 })
-//         })
+                listaPaperdos(nuevoValor,valor.likes,nuevoHaVotado);
+                cambiarLike(nuevoValor)
 
 
-         //setpaper({...valor,likes:valor.likes})
-        // actualizar la etiquetas
-
-
-
-
-
-
-
-   //  }else{
-
-     const nuevoHaVotado = [...antiguoHaVotado, usuario.uid];
-     valor.likes=valor.likes+1
-
-
-     let  nuevoValor={
-        ...valor,
-         likes:valor.likes,
-        haVotado:nuevoHaVotado
-        }
-firebase.db.collection("paper").doc(valor.id).update(nuevoValor)
+//firebase.db.collection("paper").doc(valor.id).update(nuevoValor)
 
       // mapear etiquetas
 
-      valor.etiquetas.map(valordos=>{
-        firebase.db.collection("etiquetas").doc(valordos.id).collection("paper").doc(valor.id).update({
-                ...valor,
-                likes:valor.likes,
-                haVotado:nuevoHaVotado
+//       valor.etiquetas.map(valordos=>{
+//         firebase.db.collection("etiquetas").doc(valordos.id).collection("paper").doc(valor.id).update({
+//                 ...valor,
+//                 likes:valor.likes,
+//                 haVotado:nuevoHaVotado
 
-        })
-})
+//         })
+// })
 
 //armararreglo(nuevoValor)
      //setpaper({...valor,likes:valor.likes})
@@ -669,6 +640,19 @@ const listaPaperdos=(valor,megusta,nuevosvotos)=>
 
 
 
+ const funcionCorazondos=(valor)=>{
+
+             if(valor.likes>0){
+                 return true       
+             }else{
+                return false
+             }
+
+
+
+ }
+
+
 const funcionCorazon=(valor)=>{
        
         let votos_usuarios=[]
@@ -836,7 +820,7 @@ useEffect(async() => {
                                                                 <Button onClick={()=>megustaSinValidarUsuario(valor)}
                                                                 className={clases.botonLikes}
                                                                 startIcon={
-                                                                funcionCorazon(valor)?
+                                                                funcionCorazondos(valor)?
                                                                 // <CorazonLleno></CorazonLleno>
                                                                 <>
                                                                 <img height="25" src={CorazonLleno}></img>
