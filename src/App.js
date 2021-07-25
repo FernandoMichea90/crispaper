@@ -49,7 +49,7 @@ const [valorados, setvalorados] = useState(false)
 const [match, setmatch] = useState()  
 const usuario=useContext(UsuarioContext)
 //  agregar  un texto general  
-const [textoGeneral, setTextoGeneral]=useState("The Lastest")
+const [textoGeneral, setTextoGeneral]=useState("The Latest")
 
  const reciente=()=>{
 
