@@ -67,7 +67,7 @@ const [textoGeneral, setTextoGeneral]=useState("The Lastest")
 
 //   }
 
-        setTextoGeneral("The Lastest")
+        setTextoGeneral("The Latest")
         setvalorados(false)
         setrecientes(true)
 
@@ -90,7 +90,7 @@ const mejorvalorados=()=>{
       //     setrecientes(false)
       
       //   } 
-        setTextoGeneral("Trending")
+        setTextoGeneral("Popular")
         setvalorados(true)
         setrecientes(false)
       
@@ -126,8 +126,8 @@ useEffect(() => {
                 <Route  path="/search"  render={(props)=>(<Search {...props}  valorados={valorados}  recientes={recientes} />)} ></Route> 
                 <Route  path="/adminetiquetas"  render={(props)=>(<AdmEtiquetas {...props}   />)} ></Route>
                 <Route  path="/admin" render={(props)=>(<Login {...props}  />)} ></Route>
-                <Route  path="/nosotros" component={Nosotros}></Route>
-                <Route  path="/listusuarios" component={Usuarios}></Route>
+                <Route  path="/nostros" component={Nosotros}></Route>
+                <Route  path="/lisotusuarios" component={Usuarios}></Route>
                 <Route  path="/listacomentarios" component={ListarComentarios}></Route>
                 <Route  path="/colaborate" component={Colaboraciones}></Route>
                 <Route  path="/administrarnosotros"  component={AdministrarNosotros} ></Route>

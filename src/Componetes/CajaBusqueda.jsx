@@ -1300,7 +1300,6 @@ const megustaSinValidarUsuario=(valor)=>{
                                                 }  style={{textDecoration:"none"}} target="_blank">
                                                 <Button  className="botoneditar" variant="contained"
 
-                                                startIcon={<InsertDriveFileIcon />}
 
                                                 >
 

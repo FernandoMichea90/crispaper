@@ -37,8 +37,8 @@ const useStyles = makeStyles((theme) => ({
 
 
   "& .MuiButton-outlinedPrimary": {
-    color:"#21cbce",
-    border:"1px solid rgba(33, 203, 206, 0.5)",
+    color:"#4a9341",
+    border:"1px solid #4a9341",
     margin:"0px 15px"
 },
 
@@ -144,7 +144,7 @@ const useStyles = makeStyles((theme) => ({
   linkclassdos:{
     cursor:"pointer",
     padding:"5px 25px 5px 25px",
-    background:"#21cbce29",
+    background:"#43434329",
     borderRadius:"25px"
 
 
@@ -263,7 +263,7 @@ linkLiDos:{
   margin:"3px auto",
   borderRadius:"21px",
   color:"white",
-  background:"#21cbce"
+  background:"#4a9341"
 
 }
   ,
@@ -730,7 +730,7 @@ d
           <div className="divHover">
             <Typography >
 
-              Lastest
+              Latest
 
             </Typography>
             <div className="subrayado"></div>
@@ -742,8 +742,7 @@ d
           <div className="divHover">
             <Typography >
 
-              Trending
-
+                Popular
             </Typography>
             <div className="subrayado"></div>
           </div>
@@ -761,7 +760,7 @@ d
           <Link href="/etiquetas" className={ classes.linkclass}>
           <div className="divHover">
             <Typography >
-              Tags
+            Environmental Topics
 
             </Typography>
             <div className="subrayado"></div>
@@ -1102,12 +1101,12 @@ container
               <>
               <Link  onClick={()=>props.reciente()}   className={classes.linkList} >
               <Typography className={props.recientes?classes.linkLiDos:classes.linkLi} align="center" variant="subtitle1">
-                        Lastest
+                        Latest
               </Typography>
               </Link>
               <Link onClick={()=>props.mejorvalorados()} className={classes.linkList} >
               <Typography className={props.valorados?classes.linkLiDos:classes.linkLi} align="center" variant="subtitle1">
-                        Trending
+                        Popular
               </Typography>
               </Link>
               </>
@@ -1116,7 +1115,7 @@ container
 
                 <Link href="/etiquetas" className={classes.linkList}>
               <Typography className={classes.linkLi} align="center" variant="subtitle1">
-                        Tags
+              Environmental Topics
               </Typography>
               </Link>
 

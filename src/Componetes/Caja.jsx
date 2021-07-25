@@ -36,7 +36,7 @@ import PublicIcon from '@material-ui/icons/Public';
 
 
             "& .botoneditar":{
-                background:"#1ab37c",
+                background:"#4a9341",
                 color:"#ffffff",
 
                 "&:hover": {
@@ -66,7 +66,7 @@ import PublicIcon from '@material-ui/icons/Public';
             },
 
             "& .botoneditar":{
-                background:"#1ab37c",
+                background:"#4a9341",
                 color:"#ffffff",
                 marginTop:"10px",
 
@@ -160,7 +160,7 @@ divFoto:{
          backgroundSize:"260px auto",
          backgroundRepeat:"no-repeat",
          backgroundPosition:"50%",
-         borderRadius:"0",
+         borderRadius:"16px",
          display:"block",
          margin:"auto",
          marginTop:"15px",
@@ -1154,7 +1154,7 @@ const dejarUnaColaboracion=async()=>{
         const { value: text } = await Swal.fire({
           input: 'textarea',
           title: 'Would you like to collaborate?',
-          inputPlaceholder: 'Please describe here the environment information ,report,paper,software or tool  that you want to share',
+          inputPlaceholder: 'Please tell us about the environmental software or sources of environmental information that you know',
           confirmButtonColor: '#21cbce',
           denyButtonText: `Cancel`,
           confirmButtonText: `Send`,
@@ -1371,7 +1371,7 @@ const dejarUnaColaboracion=async()=>{
                                                 }  style={{textDecoration:"none"}} target="_blank">
                                                 <Button  className="botoneditar" variant="contained"
 
-                                                startIcon={<InsertDriveFileIcon />}
+                                              
 
                                                 >
 
@@ -1467,7 +1467,7 @@ const dejarUnaColaboracion=async()=>{
 
                 endIcon={<ExpandMoreIcon></ExpandMoreIcon>}
                 variant ="contained"
-                color="primary"
+                className="botonVerMas"
 
         onClick={()=>{
                 pedirMas()

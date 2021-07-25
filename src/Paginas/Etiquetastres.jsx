@@ -8,8 +8,7 @@ import Paperdos from "../Componetes/Papertres"
 import { UsuarioContext } from '../Provedores/UsuarioContext';
 import {actualizarPaper,ActualizarPaperEnEtiquetas} from '../Funciones/PaperDoc'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
-
+import Pajaro from '../../src/pajaro.svg'
 
 
 
@@ -52,7 +51,17 @@ const estilos=makeStyles((theme)=>({
     
 
 
-    },textoDos:{
+    },
+
+    divEtiqueta: {
+
+        height:"100%",
+        margin:"auto"
+    },
+    
+    
+    
+    textoDos:{
         fontFamily:"nunito",
         fontWeight:"300",
         textTransform:"uppercase"
@@ -538,7 +547,7 @@ setcargando(false)
                                 className={clases.texto}
                         >
                             
-                                Tags
+                            Environmental Topics
                             </Typography> 
 
 
@@ -554,13 +563,28 @@ setcargando(false)
                                     <div  >
                                         <div id="etiqueta" className={clases.divEtiqueta} >
                             
-                                    <Typography   className={clases.textoDos} variant="h4" align="left">
-                                        <EtiquetasIcon color="primary"/>
-                                            {paper.etiquetas !=undefined&&
-                                            
-                                            paper.etiquetas.descripcion}
-        
-                                        </Typography> 
+                                         
+                                      
+                                                    {/* <EtiquetasIcon color="primary"/> */}
+
+
+                                                <Grid container>
+                                                <Grid xs={1}>
+                                                        
+                                                            <img height="100" src={Pajaro}></img>
+                                                       
+                                                </Grid>
+                                                <Grid xs={11}>
+                                                <div className={clases.divEtiqueta}>
+                                                        <Typography   className={clases.textoDos} variant="h4" align="left">
+                                                            {paper.etiquetas !=undefined&&
+                                                            
+                                                            paper.etiquetas.descripcion}
+                        
+                                                        </Typography> 
+                                                 </div>
+                                                    </Grid>
+                                                </Grid>
 
 
 
@@ -629,7 +653,7 @@ setcargando(false)
                                                     <Button 
                                                             endIcon={<ExpandMoreIcon></ExpandMoreIcon>}
                                                             variant ="contained"
-                                                            color="primary"
+                                                            className="botonVerMas"
                                                            onClick={()=>pedirMore()}
                                                        
                                                     
@@ -644,7 +668,7 @@ setcargando(false)
                                                                 <Button 
                                                                         endIcon={<ExpandMoreIcon></ExpandMoreIcon>}
                                                                         variant ="contained"
-                                                                        color="primary"
+                                                                        className="botonVerMas"
                                                                         href= {`/tag/${paper.etiquetas.id}`}
                                                                    
                                                                 

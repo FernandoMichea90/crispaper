@@ -7,7 +7,8 @@ const theme=createMuiTheme({
 
         palette:{
             primary:{
-                main:"#21cbce",
+                // main:"#21cbce",
+                main: "#434343",
                 dark:"#303f9f",
                 contrastText:"#ffffff"
             },
@@ -22,7 +23,10 @@ const theme=createMuiTheme({
                 dark: "#1976d2"
 
             }
-        }
+        },
+        // typography:{
+        //     fontFamily:"oswald",
+        // }
 
 
 

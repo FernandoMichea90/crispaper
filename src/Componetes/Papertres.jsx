@@ -144,7 +144,7 @@ divImagen:{
         backgroundSize:"260px auto",
         backgroundRepeat:"no-repeat",
         backgroundPosition:"50%",
-        borderRadius:"0",
+        borderRadius:"16px",
         display:"block",
         margin:"auto",
         marginTop:"15px",
@@ -852,7 +852,7 @@ useEffect(async() => {
                                                     valor.link:valor.pdf
                                                 }  style={{textDecoration:"none"}} target="_blank">
                                                 <Button  className="botoneditar" variant="contained"
-                                                startIcon={<InsertDriveFileIcon />}
+                                               
                                                 >
                                                         get it
                                                 </Button>
