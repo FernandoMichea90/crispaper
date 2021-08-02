@@ -126,7 +126,7 @@ useEffect(() => {
                 <Route  path="/search"  render={(props)=>(<Search {...props}  valorados={valorados}  recientes={recientes} />)} ></Route> 
                 <Route  path="/adminetiquetas"  render={(props)=>(<AdmEtiquetas {...props}   />)} ></Route>
                 <Route  path="/admin" render={(props)=>(<Login {...props}  />)} ></Route>
-                <Route  path="/nostros" component={Nosotros}></Route>
+                <Route  path="/about" component={Nosotros}></Route>
                 <Route  path="/lisotusuarios" component={Usuarios}></Route>
                 <Route  path="/listacomentarios" component={ListarComentarios}></Route>
                 <Route  path="/colaborate" component={Colaboraciones}></Route>

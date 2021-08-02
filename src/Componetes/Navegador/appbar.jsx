@@ -30,6 +30,18 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
 
 
+
+   "& .MuiTypography-body1":{
+    fontFamily:"Nunito",
+    fontWeight:"800"
+
+   },
+   "& .MuiTypography-subtitle1":{
+    fontFamily:"Nunito",
+    fontWeight:"800"
+   },
+
+
   "& .swal2-textarea": {
    fontFamily:"Nunito !important",
    color:"#21cbce",
@@ -513,7 +525,7 @@ if(history.location.pathname=="/login" ){
 
 }else{
 
-  if(history.location.pathname=="/adminetiquetas"||history.location.pathname=="/nosotros") {
+  if(history.location.pathname=="/adminetiquetas"||history.location.pathname=="/ab") {
 
     setappBar(true)
   }else{
@@ -776,7 +788,7 @@ d
 
           <>
 
-          <Link  href="/nosotros" className={classes.linkclass}>
+          <Link  href="/about" className={classes.linkclass}>
           <div className="divHover">
               <Typography align="center" >
 
@@ -857,7 +869,7 @@ d
 :
 
     <>
-        <Link  href="/nosotros" className={classes.linkclass}>
+        <Link  href="/about" className={classes.linkclass}>
         <div className="divHover">
             <Typography align="center" >
 
@@ -973,7 +985,7 @@ d
               >
                 <MenuItem onClick={()=>{handleClose()
                 abrirCerrarMenu()
-                history.push("/nosotros")
+                history.push("/about")
                 }}>Nosotros</MenuItem>
                   <MenuItem onClick={()=>{handleClose()
                 abrirCerrarMenu()
@@ -1126,7 +1138,7 @@ container
                       <Link onClick={()=>{
                     {             handleClose()
                           abrirCerrarMenu()
-                          history.push("/nosotros")}
+                          history.push("/about")}
                       }} className={classes.linkList} >
                       <Typography className={classes.linkLi} align="center" variant="subtitle1">
                                 About
@@ -1190,9 +1202,11 @@ container
                 Log out
               </Button>
                 :
-                <Button color="primary" variant="outlined" href="/login" >
-                Log in
-              </Button>
+
+                <></>
+              //   <Button color="primary" variant="outlined" href="/login" >
+              //   Log in
+              // </Button>
 
                 }
 

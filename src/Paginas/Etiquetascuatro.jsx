@@ -8,6 +8,7 @@ import Paperdos from "../Componetes/Papertres"
 import { UsuarioContext } from '../Provedores/UsuarioContext';
 import {actualizarPaper,ActualizarPaperEnEtiquetas} from '../Funciones/PaperDoc'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Pajaro from '../../src/pajaro.svg'
 
 
 
@@ -539,7 +540,7 @@ setcargando(false)
                                 className={clases.texto}
                         >
                             
-                                Etiquetas 
+                            Environmental Topics
                             </Typography> 
 
 
@@ -553,12 +554,23 @@ setcargando(false)
                                         
                                     <div>
                                         <div id="etiqueta" className={clases.divEtiqueta} >
-                            
-                                                    <Typography   className={clases.textoDos} variant="h4" align="left">
-                                                        <EtiquetasIcon color="primary"/>
-                                                            {etiquet.descripcion}
-                        
-                                                    </Typography> 
+
+                                        <Grid container>
+                                                <Grid xs={1}>
+                                                        
+                                                            <img height="100" src={Pajaro}></img>
+                                                       
+                                                </Grid>
+                                                <Grid xs={11}>
+                                                <div className={clases.divEtiqueta}>
+                                                        <Typography   className={clases.textoDos} variant="h4" align="left">
+                                                              {etiquet.descripcion}
+
+
+                                                        </Typography> 
+                                                 </div>
+                                                    </Grid>
+                                                </Grid>
                                                 
                                         </div>     
                                         <div>
@@ -594,12 +606,13 @@ setcargando(false)
                                                                           { esconderboton==false&&      <Button 
                                                                                         endIcon={<ExpandMoreIcon></ExpandMoreIcon>}
                                                                                         variant ="contained"
-                                                                                        color="primary"
+                                                                                        className="botonVerMas"
+                                                                        
                                                                                 
                                                                                 onClick={()=>{
                                                                                     listardesdeelultimo()
                                                                                 }} >
-                                                                                ver mas
+                                                                                see more
                                                                             </Button> }
                                                             </Typography>                 
         
