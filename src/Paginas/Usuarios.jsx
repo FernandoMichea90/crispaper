@@ -218,7 +218,7 @@ const [cargando, setcargando] = useState(false)
                                      
                                         <Grid container>
                                             
-                                                    <Grid xs={4}>
+                                                    <Grid xs={12} md={4}>
                                                     <div >
                                                         {doc.photoURL==null?
                                                              
@@ -231,12 +231,16 @@ const [cargando, setcargando] = useState(false)
                                                     
                                                     </div>
                                             </Grid>
-                                            <Grid xs={4}>
+                                            <Grid xs={12} md={4}>
+                                                <Typography align="center">
                                                     {doc.nombre}
+                                                </Typography>    
                                             </Grid>
 
-                                            <Grid xs={4}>
+                                            <Grid xs={12} md={4}>
+                                                <Typography align="center">
                                                     {doc.correo}
+                                                 </Typography>   
                                             </Grid>
 
                                                <Grid xs={12}>

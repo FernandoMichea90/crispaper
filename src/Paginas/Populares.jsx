@@ -3,14 +3,11 @@ import {Grid,makeStyles, Typography, Button,IconButton,CircularProgress, setRef}
 import Paper from '@material-ui/core/Paper';
 import firebase from '../firebase/firebase'
 import moment from 'moment'
-import {Link} from 'react-router-dom'
 import Swal from 'sweetalert2'
 import {Chip} from '@material-ui/core'
 import "moment/locale/es"
 import SaveIcon from '@material-ui/icons/Save';
-//import Corazon from '@material-ui/icons/FavoriteBorder';
 import Basurero from '@material-ui/icons/Delete';
-//import CorazonLleno from '@material-ui/icons/Favorite';
 import Lapiz from '@material-ui/icons/Create';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import {UsuarioContext} from "../Provedores/UsuarioContext"
@@ -19,7 +16,9 @@ import { useHistory } from 'react-router-dom';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import CorazonLleno from "../imagen/iconos/arbolLleno.png"
 import Corazon from "../imagen/iconos/arbolVacio.png"
- import BotonMenu from './Tarjeta/BotonMenu'
+ import BotonMenu from '../Componetes/Tarjeta/BotonMenu'
+ import BotonFlotante from '../Componetes/BotonFlotante';
+import Titulo from '../Componetes/Titulo/Titulo';
 
    
       
@@ -31,7 +30,7 @@ import Corazon from "../imagen/iconos/arbolVacio.png"
 
     margen:{
 
-            margin:"45px auto ",
+            margin:"0px auto ",
 
 
 
@@ -115,7 +114,7 @@ import Corazon from "../imagen/iconos/arbolVacio.png"
     [theme.breakpoints.down("md")]:{
         height:"unset"
     }
-
+    
     }
 
 ,
@@ -289,10 +288,12 @@ divFoto:{
 
 
 
-const Caja = (props) => {
+const   Populares = (props) => {
 
     const history = useHistory();
     const clases =estilos()
+    const recientes =false   
+    const populares = true
     const usuario =useContext(UsuarioContext)
     const [listapaper,setlistapaper]=useState([])
     const [cargando, setcargando] = useState(false)
@@ -310,7 +311,7 @@ const Caja = (props) => {
       
  const listadepaper=async(recientes,valorados)=>{
         console.log("inicio")
-
+     
         try {
 
         if(recientes){
@@ -571,30 +572,13 @@ const pedirpaper=()=>{
 //
 setcargando(true)
 
-const {papermatch}=props.paperid
-
-if(papermatch){
-
-        buscarPorId(papermatch)
-
-}else{
-
   // LLAMAR A LOS PAPER
-
-
 
   listadepaper(props.recientes,props.valorados)
 
+
+
 }
-
-}
-
-
-
-
-
-
-
 const borrar=(e)=>{
 
 
@@ -720,30 +704,21 @@ const borrar=(e)=>{
 
 }
 
-
-
-
  useEffect(() => {
 
 //buscar si  ahi un paper en especifico
 //
 setcargando(true)
 
-const {papermatch}=props.paperid
 
-if(papermatch){
-
-        buscarPorId(papermatch)
-
-}else{
 
   // LLAMAR A LOS PAPER
 
 
 
-  listadepaper(props.recientes,props.valorados)
+  listadepaper(recientes, populares)
 
-}
+
 
                 // if(props.busqueda!=undefined){
                 //         const texto_busqueda=props.busqueda.buscado
@@ -757,9 +732,6 @@ if(papermatch){
                 //    setlistapaper([])
 
  }, [props.recientes,props.paperid,props.busqueda])
-
-
-
 
  const funcionCorazon=(valor)=>{
 
@@ -790,24 +762,13 @@ if(papermatch){
 
  }
 
-
-
-
  const funcionCorazondos=(valor)=>{
-
              if(valor.likes>0){
                  return true       
              }else{
                 return false
              }
-
-
-
  }
-
-
-
-
 
   const pedirMas=async()=>{
                 setcargandodos(true)
@@ -1175,24 +1136,35 @@ const armararreglo=(nuevoValor)=>{
 //                             ver mas
 // </Button>
 
-
+<>
+{usuario?
+        <div>
+            {usuario.administrador? <div>
+             <BotonFlotante>
+            
+            </BotonFlotante>
+            </div>:
+            <div></div>
+            }
+        
+         </div>:
+         <></>
+     }
 
 
 
         <div  className={clases.margen}>
-
-
+       
                 <div className={clases.divTituloGeneral}>
-
+                <Titulo></Titulo>
                 <Grid container>
-                <Grid xs={8} md={7}>
+                <Grid xs={12} md={3} lg={6}>
                          <Typography variant="h4" className={clases.tituloGeneral}>
-                                {props.textoGeneral}
                         </Typography>
                 </Grid>
 
-                <Grid xs={4} md={5}>
-
+                <Grid xs={12} md={9} lg={6}>
+                <div style={{margin:'10px 0px'}}>
                 <Button
                 id='mandarina'
         variant="contained"
@@ -1234,7 +1206,7 @@ const armararreglo=(nuevoValor)=>{
       </Button>
 
 
-                               
+                   </div>            
 
                 </Grid>
                 </Grid>
@@ -1531,8 +1503,8 @@ const armararreglo=(nuevoValor)=>{
 
 
         </div>
-
+</>
  )
 }
 
-export default Caja
+export default Populares

@@ -21,6 +21,8 @@ import Icono from "../../pajaro.svg"
 import { withRouter } from "react-router";
 import Swal from "sweetalert2"
 import FuncionesFirebase from '../../Funciones/FuncionesFirebase';
+import PublicIcon from '@material-ui/icons/Public';
+import Dialogo from './Dialogo';
 
 
 
@@ -29,7 +31,19 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
 
+    "& .botonCollaborate":{
+      background:"#ffffff",
+      color:"#1ab37c !important",
+      fontSize:'12px',
+      marginLeft:'5px',
 
+      "&:hover": {
+         background:"#ffffff",
+         color:"#1ab37c !important",
+       },
+
+
+  },
 
    "& .MuiTypography-body1":{
     fontFamily:"Nunito",
@@ -144,14 +158,33 @@ const useStyles = makeStyles((theme) => ({
 
   linkclass:{
         cursor:"pointer",
-        padding:"5px 25px 5px 25px",
+        padding:"5px 10px 5px 10px",
+        '&:hover':{
+          padding:"5px 10px 5px 10px",
+          background:"#43434329",
+          borderRadius:"25px"
 
+        }
+          ,
         [theme.breakpoints.down("sm")]:{
           padding:"unset"
-        }
-
+        },
+        
 
   },
+
+
+  linkclassnohover:{
+    cursor:"pointer",
+    padding:"5px 25px 5px 25px",
+   
+      
+    [theme.breakpoints.down("sm")]:{
+      padding:"unset"
+    },
+    
+
+},
 
   linkclassdos:{
     cursor:"pointer",
@@ -233,42 +266,26 @@ estiloIcono:{
     transition:"height 0.25s  ease-out"
   },
   cajaListMenu:{
-
     border: "0.01px solid",
     borderColor:"#e5e5e5",
     margin: "11px 11px 11px",
     background:"#ffffff"
-
-
   },
   input:{
     marginLeft:"5px",
     [theme.breakpoints.down("md")]:{
       width:"85%"
-
     }
-
   },
   linkList:{
-
     padding:"5px 0px",
     textDecoration:"none",
     color:"rgb(0 0 0 / 30%)",
     cursor:"pointer"
-
   },
   linkLi:{
-
     padding:"9px 0px",
     cursor:"pointer"
-
-
-
-
-
-
-
-
   },
 linkLiDos:{
   width:"50%",
@@ -314,45 +331,83 @@ const ButtonAppBar=(props) =>{
     const[buscador,setbuscador]=useState({
       buscado:""
     })
-
-
-    const [titulo,settitulo]=useState()
-
+    const [abrir, setabrir] = useState(false)
     const open = Boolean(anchorEl);
     const usuario=useContext(UsuarioContext)
 const wrapperRef =useRef(null)
 
+const abrirVentana=()=>{
+  setabrir(true)
+}
+const cerrarVentana=()=>{
+  setabrir(false)
+}
+const dejarUnaColaboracion=async()=>{
+
+        const { value: text } = await Swal.fire({
+          input: 'textarea',
+          title: 'Would you like to collaborate?',
+          inputPlaceholder: 'Please tell us about the environmental software or sources of environmental information that you know',
+          confirmButtonColor: '#21cbce',
+          denyButtonText: `Cancel`,
+          confirmButtonText: `Send`,
+          showDenyButton: true,
+        })
+
+        if (text) {
 
 
-    const abrirCerrarMenu=()=>{
+
+
+
+          let user="anonimo"
+          let anonimo=true
+
+          if(usuario!=null){
+            user={
+              nombre:usuario.displayName,
+              email:usuario.email,
+              imagen:usuario.photoURL
+            }
+            anonimo=false
+
+          }
+          //Swal.fire(text)
+
+
+          let Comentario={
+            fecha: new Date(),
+            usuario:user,
+            comentario:text,
+            anonimo
+          }
+
+          console.log(Comentario)
+
+          FuncionesFirebase.IngresarColaboracion(Comentario)
+        }
+
+
+
+      }
+const abrirCerrarMenu=()=>{
 
           setmenu(!menu)
     }
 
-    const handleClose = () => {
+const handleClose = () => {
         setAnchorEl(null);
 
       };
-
-
-
     // handle menu
-
-    const handleMenu = (event) => {
+const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
-
       };
-
-
-    const buscarPaper=(papermatch)=>{
-
+const buscarPaper=(papermatch)=>{
         history.push(`/buscar/${papermatch.id}`)
         setlistapaper([])
     }
-
       // cerrar sesion
-
-
      const cerrarSesion=()=>{
 
           Firebase.cerrarSesion()
@@ -364,20 +419,14 @@ const wrapperRef =useRef(null)
           var string = titulo;
           var length = 50;
           var trimmedString = string.substring(0,length);
-
-
           if(trimmedString.length<20){
             var trimmedStringdos=trimmedString
-
           }else{
             var trimmedStringdos=trimmedString+"..."
           }
           console.log(trimmedStringdos)
           return trimmedStringdos
-
      }
-
-
      const formatTitleDos=(titulo)=>{
       var string = titulo;
       var length = 30;
@@ -585,13 +634,11 @@ console.log(buscador.buscado)
 
   return (
     <div className={classes.root} >
+      <Dialogo abierto={abrir} cerrar={cerrarVentana}  ></Dialogo>
       <AppBar  position="static" color="secondary" elevation={0} >
         <Toolbar>
-
-
-
             <Typography align="center">
-                      <Link href="/" className={classes.linkclass}>
+                      <Link href="/" className={classes.linkclassnohover}>
 
                               <img className={classes.estiloIcono} src={Icono} alt="" />
 
@@ -737,8 +784,7 @@ d
           {!appBar?
 
         <>
-         <Link onClick={()=>props.reciente()}  className={props.recientes?
-            classes.linkclassdos:classes.linkclass}>
+         <Link href='/latest'  className={classes.linkclass}>
           <div className="divHover">
             <Typography >
 
@@ -748,9 +794,8 @@ d
             <div className="subrayado"></div>
           </div>
           </Link>
-          <Link onClick={()=>props.mejorvalorados()}  className={
-            props.valorados?
-            classes.linkclassdos:classes.linkclass}>
+          <Link href="/popular" className={
+              classes.linkclass}>
           <div className="divHover">
             <Typography >
 
@@ -769,10 +814,10 @@ d
         <div></div>
         }
 
-          <Link href="/etiquetas" className={ classes.linkclass}>
+          <Link href="/choose" className={classes.linkclass}>
           <div className="divHover">
             <Typography >
-            Environmental Topics
+                Topics
 
             </Typography>
             <div className="subrayado"></div>
@@ -808,11 +853,11 @@ d
               <div className="subrayado"></div>
             </div>
             </Link>
-            <Link  onClick={()=>dejarUnComentario()} className={classes.linkclass}>
+            <Link  href="/why" className={classes.linkclass}>
           <div className="divHover">
               <Typography align="center" >
 
-                Feedback
+                Why
                   {/* <Button
                       variant="contained"
                       color="primary"
@@ -828,6 +873,35 @@ d
               <div className="subrayado"></div>
             </div>
             </Link>
+            {/* <Link  onClick={()=>dejarUnComentario()} className={classes.linkclass}>
+          <div className="divHover">
+              <Typography align="center" >
+
+                Feedback
+                  {/* <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      endIcon={<AddIcon></AddIcon>}
+                      variant="contained"
+                      color="primary"
+                  >
+                      mas
+                  </Button> */}
+
+              {/* </Typography>
+              <div className="subrayado"></div>
+            </div>
+            </Link> */}
+
+            <Button onClick={()=>abrirVentana()}     className="botonCollaborate" variant="contained"
+
+startIcon={<PublicIcon />}
+
+>
+
+        Share info
+</Button>
 
 
         </>
@@ -839,7 +913,7 @@ d
           usuario.administrador?
 
 
-         <Link onClick={handleMenu} className={classes.linkclass}>
+         <Link onClick={handleMenu} className={classes.linkclassnohover}>
 
           <div className="divHover">
               <Typography align="center" >
@@ -889,27 +963,9 @@ d
             <div className="subrayado"></div>
           </div>
           </Link>
-          <Link  onClick={()=>dejarUnComentario()} className={classes.linkclass}>
-        <div className="divHover">
-            <Typography align="center" >
+     
 
-              Feedback
-                {/* <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    endIcon={<AddIcon></AddIcon>}
-                    variant="contained"
-                    color="primary"
-                >
-                    mas
-                </Button> */}
-
-            </Typography>
-            <div className="subrayado"></div>
-          </div>
-          </Link>
-
+    
 
 
       </>
@@ -987,14 +1043,26 @@ d
                 abrirCerrarMenu()
                 history.push("/about")
                 }}>Nosotros</MenuItem>
+                <MenuItem onClick={()=>{handleClose()
+                abrirCerrarMenu()
+                history.push("/why")
+                }}>Why</MenuItem>
                   <MenuItem onClick={()=>{handleClose()
                 abrirCerrarMenu()
                 history.push("/administrarnosotros")
                 }}>Administrar Nosotros</MenuItem>
+                <MenuItem onClick={()=>{handleClose()
+                abrirCerrarMenu()
+                history.push("/admintitulo")
+                }}>Administrar Titulo</MenuItem>
                 <MenuItem onClick={()=>{history.push("/adminetiquetas")
                 setmenu(false)
                 handleClose()
               }}>Administrar Etiquetas</MenuItem>
+                 <MenuItem onClick={()=>{history.push("/adminwhy")
+                setmenu(false)
+                handleClose()
+              }}>Administrar Why</MenuItem>
                 <MenuItem onClick={()=>{history.push("/listacomentarios")
                 setmenu(false)
                 handleClose()
@@ -1111,21 +1179,21 @@ container
 
               {appBar?<div></div>:
               <>
-              <Link  onClick={()=>props.reciente()}   className={classes.linkList} >
+              <Link  href='/latest'   className={classes.linkList} >
               <Typography className={props.recientes?classes.linkLiDos:classes.linkLi} align="center" variant="subtitle1">
                         Latest
               </Typography>
               </Link>
-              <Link onClick={()=>props.mejorvalorados()} className={classes.linkList} >
+              <Link href='/popular' className={classes.linkList} >
               <Typography className={props.valorados?classes.linkLiDos:classes.linkLi} align="center" variant="subtitle1">
                         Popular
               </Typography>
-              </Link>
+              </Link> 
               </>
                 }
 
 
-                <Link href="/etiquetas" className={classes.linkList}>
+                <Link href="/choose" className={classes.linkList}>
               <Typography className={classes.linkLi} align="center" variant="subtitle1">
               Environmental Topics
               </Typography>
@@ -1145,22 +1213,19 @@ container
 
                       </Typography>
                       </Link>
-                        <Link onClick={()=>dejarUnComentario()} className={classes.linkList} >
+                        {/* <Link onClick={()=>dejarUnComentario()} className={classes.linkList} >
                         <Typography className={classes.linkLi} align="center" variant="subtitle1">
                                   Feedback
                         </Typography>
-                        </Link>
+                        </Link> */}
 
                         </>
                         :
 
                         usuario.administrador?
                         <Link onClick={handleMenu} className={classes.linkclass}>
-
                         <div className="divHover">
                             <Typography align="center" >
-
-
                                 <Button
                                     variant="contained"
                                     color="primary"
@@ -1171,12 +1236,10 @@ container
                                 >
                                     more
                                 </Button>
-
                             </Typography>
                             <div className="subrayado"></div>
                           </div>
                           </Link>
-
                         :
                                 <>
                                   <Link className={classes.linkList} >
@@ -1185,11 +1248,7 @@ container
                                   </Typography>
                                   </Link>
 
-                                  <Link onClick={()=>dejarUnComentario()} className={classes.linkList} >
-                                  <Typography className={classes.linkLi} align="center" variant="subtitle1">
-                                            Feedback
-                                  </Typography>
-                                  </Link>
+                               
                                 </>
 
                }

@@ -1,0 +1,46 @@
+
+
+#botonMandarina{
+
+    /* color:#EC6933!important ; */
+    border: 1px solid #EC6933 !important ;
+}
+
+
+#botonMandarina .MuiIcon-root{
+ color:#EC6933 ;
+
+}
+
+#botonVerde{
+
+    border: 1px solid #4B9965  !important;
+}
+
+#botonVerde .MuiIcon-root{
+
+    color: #4B9965 ;
+}
+
+#botonMorado{
+
+    border: 1px solid #9372B6  !important;
+}
+
+#botonMorado .MuiIcon-root{
+
+    color: #9372B6 ;
+}
+
+#botonAzul{
+
+    border: 1px solid #4CA9B2  !important;
+}
+
+#botonAzul .MuiIcon-root{
+
+    color: #4CA9B2 ;
+}
+
+
+

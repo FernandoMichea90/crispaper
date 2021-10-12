@@ -8,6 +8,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import CloseIcon from '@material-ui/icons/Close';
 import {UsuarioContext} from '../Provedores/UsuarioContext'
 import {actualizarVariosPaper,ActualizarVariosEtiquetas} from '../Funciones/PaperDoc'
+import Icon from '@material-ui/core/Icon';
 
 
 
@@ -24,6 +25,9 @@ const useStyles=makeStyles((theme)=>({
             color:"#5fcccf",
             border:"1px solid"
         },
+    },
+    caja: {
+        margin:"15px 0px"
     },
 
     circular:{
@@ -52,10 +56,28 @@ const useStyles=makeStyles((theme)=>({
         },
 
 
-    
-        buttonAgregar:{
-            margin:"0px 30px",
+        buttonEliminar:{
+            margin:"5px 0px",
             padding:"14px",
+            width:"100%",
+            background:"#f44336",
+            [theme.breakpoints.down("xs")]:
+            {
+                width:"100%",
+                margin:"10px auto",
+                padding:"14px"
+            },
+            '&:hover': {
+                background:"#ffffff",
+                color:"#f44336 !important",
+            }
+        },
+
+
+        buttonAgregar:{
+            margin:"5px 0px",
+            padding:"14px",
+            width:"100%",
             [theme.breakpoints.down("xs")]:
             {
                 width:"100%",
@@ -107,7 +129,8 @@ const [errores, seterrores] = useState({
 })
 const [cargando, setcargando] = useState(false)
 const [tag, settag] = useState({
-    descripcion:""
+    descripcion:"",
+    icono:"",
 })
 
 const usuario=useContext(UsuarioContext)
@@ -158,9 +181,31 @@ const handleChange=(e)=>{
     settag({...tag,[e.target.name]:e.target.value})
 }
 
+
+const cancelarEdicion = ()=>{
+    settag({
+        descripcion:"",
+        icono:""
+    })
+}
+
 const guardarEtiqueta=async()=>{
 
     setcargando(true)
+
+    //validaciones
+    try {
+        if(tag.icono.trim()==''){
+            tag.icono=null
+        }
+    } catch (error) {
+        tag.icono=null
+    }
+ 
+
+
+
+    validaciones()
     if(tag.descripcion){
 
             let coincide=false
@@ -187,8 +232,12 @@ const guardarEtiqueta=async()=>{
                         icon:"success",
                         title:"Guardado Correctamente"
                     })
+                    settag({descripcion:"",
+                    icono:""
+                })  
+                setcargando(false)
       
-    }
+    }               
        ).catch(()=>{
            Swal.fire({
         icon:"error",
@@ -213,9 +262,26 @@ const guardarEtiqueta=async()=>{
     })
 }
 
+
+const validaciones =()=>{
+
+            if(tag.descripcion){
+                seterrores({...errores,descripcion:"debes ingresar un valor"})
+
+            }
+            if(tag.icono){
+                settag({...tag,icono:null})
+            }
+
+
+
+}
+
+
+
 const agregarEtiquetas=async()=>{
 
-    await Firebase.db.collection("etiquetas").onSnapshot(manejarSnapshot)
+    await Firebase.db.collection("etiquetas").orderBy('descripcion').onSnapshot(manejarSnapshot)
   
 }
 
@@ -542,55 +608,44 @@ console.log(listaPaper)
 
 
 
-const editarEtiquetas=(valor)=>{
 
-    Swal.fire({
 
-        title:"Editar Etiqueta",
-        input:"text",
-        showCancelButton:"true",
-        cancelButtonText:"Cancelar",
-        confirmButtonText:"Editar",
-        confirmButtonColor: '#21cbce',
-        cancelButtonColor: '#d33',
-        inputValue:`${valor.descripcion}`,
-        allowOutsideClick:()=>!Swal.isLoading()
+const editarEtiquetasDos=(valor)=>{
 
-    }).then(async(result)=>{
+    settag(valor)
+
+}
+
+
+const createoredit=()=>{
+
+    if(tag.id==null){
+           alert("creando") 
+
+    }else{
+        alert("editando")
+    }
+}
+
+
+const editarEtiquetas=async()=>{
+
+   
         setcargando(true)
-        if(result.isConfirmed){
-
-
-
+      
             // buscar paper que tenga esa etiqueta 
 
-                    // mostrar el valor 
-
-                  
-                
+                    // mostrar el valor           
                     
-                     let nuevoValor={...valor,descripcion:result.value}
-
-
+                     let nuevoValor=tag
 
                      let coincide=false
 
-                     etiquetas.map(doc=>{
+                 
          
-                         if(doc.descripcion==result.value){
-                             coincide=true
-                         }
-                     })
-         
+                      
                  // buscar si esa etiqueta ya existe
-                     if(coincide){
-         
-                         Swal.fire({
-                             icon:"info",
-                             title:"Ese registro ya esta disponible"
-                           }).then(()=>{
-                               setcargando(false)
-                           })}else{
+                
 
                                     const listaPaper=await modificarPaperdelastag(nuevoValor)
                                     
@@ -602,10 +657,6 @@ const editarEtiquetas=(valor)=>{
                                         ActualizarVariosEtiquetas(listaPaper,nuevoValor)
                                         //
 
-
-
-
-
                                     // modificar  todos los paper             
                                     // modificar todas las etiquetas con ese paper
                                     // retorna la lista que de los papers que contienes esa etiqueta
@@ -615,8 +666,8 @@ const editarEtiquetas=(valor)=>{
 
                                     // actualiza la etiqueta 
                                     //valor id es el id de la etiqueta
-                                await Firebase.db.collection("etiquetas").doc(valor.id).update({
-                                    descripcion:result.value
+                                await Firebase.db.collection("etiquetas").doc(tag.id).update({
+                                    ...tag
                                 }).then(()=>{
                                     Swal.fire({
                                         title:"Editado Correctamente",
@@ -625,6 +676,9 @@ const editarEtiquetas=(valor)=>{
                                       
                                     })
                                     setcargando(false)
+                                    settag({descripcion:"",
+                                    icono:""
+                                })  
                                 
                                 }).catch((error)=>{
                                         Swal.fire({
@@ -634,8 +688,8 @@ const editarEtiquetas=(valor)=>{
                                                     })})
                                                 
                                                     setcargando(false)
-                                                }         
-                                                }else{setcargando(false)}}) 
+                                                         
+                                                 
 
 
         }
@@ -651,20 +705,52 @@ const editarEtiquetas=(valor)=>{
                         
                         <div className={clases.divAgregar}> 
                             <div className={clases.formAgregar}>
+
+                                <div className={clases.caja}>
                                 <TextField variant="outlined"
                                 className={clases.textoAgregar}
                                 placeholder="agregar etiqueta"
                                 name="descripcion"
                                 onChange={handleChange}
                                 value={tag.descripcion}
-                               
+                               fullWidth
 
                                 ></TextField>
+                                </div>
+                                <div className={clases.caja}>
+                        <TextField variant="outlined"
+                                className={clases.textoAgregar}
+                                placeholder="agregar icono"
+                                name="icono"
+                                onChange={handleChange}
+                                value={tag.icono}
+                                fullWidth
 
-                      
-                           <Button onClick={()=>guardarEtiqueta()} className={clases.buttonAgregar} variant="contained" color="primary">
-                            Guardar
-                            </Button>  
+
+                                ></TextField>
+   </div>
+                        {tag.id==null?
+                         <Button onClick={()=>guardarEtiqueta()} className={clases.buttonAgregar} variant="contained" color="primary">
+                         Guardar
+                         </Button>  :
+                         <>
+                          <Button onClick={()=>editarEtiquetas()} className={clases.buttonAgregar} variant="contained" color="primary">
+                          Editar
+                          </Button>  
+                           <Button onClick={()=>cancelarEdicion()} className={clases.buttonEliminar} variant="contained" color="primary">
+                           Cancelar
+                           </Button>  
+                           </>
+                        }
+
+
+                        <Typography align="center"   style={{margin:'10px 0px'}}>
+                            <a href="https://fonts.google.com/icons" target="_blank" style={{textDecoration:'none'}}>
+                                  ¿ deseas ver los iconos ?   
+                            </a>
+
+                        </Typography>
+                          
                             </div>
 
 
@@ -711,25 +797,41 @@ severity="error">{errores.descripcion}</Alert>
                   
                     <Paper   elevation ={0} className={clases.paperEstilo}>
                      <Grid container>
-                  <Grid xs={8}>
+                     <Grid xs={12} md={2}>
+                      <div>
+                          <Typography align="center" variant="h4">
+                            <Icon>
+                            {valor.icono==null?
+                                <> local_offer</>
+                            :
+                                valor.icono
+                            }
+                            </Icon>
+                                
+                          </Typography>
+                      </div>
+                  </Grid>      
+                  <Grid xs={12} md={6}>
                       <div>
                           <Typography align="center" variant="h4">
                                         {valor.descripcion}  
                           </Typography>
                       </div>
                   </Grid>
-                  <Grid container xs={4}>
+                  <Grid container xs={12} md={4}>
                         <Grid xs={6}>
+                        <Typography align="center" variant="h4">
                              <IconButton  >
-                                <CreateIcon color="primary" onClick={()=>{editarEtiquetas(valor)}}></CreateIcon>
+                                <CreateIcon color="primary" onClick={()=>{editarEtiquetasDos(valor)}}></CreateIcon>
                             </IconButton>   
-                          
+                            </Typography>
                         </Grid>
                         <Grid xs={6}>
+                        <Typography align="center" variant="h4">
                              <IconButton   >
                                 <DeleteIcon color="error" onClick={()=>{borrarEtiquetas(valor)}}></DeleteIcon>
                             </IconButton>
-                             
+                         </Typography>    
                         </Grid>    
                   </Grid>
                   </Grid>

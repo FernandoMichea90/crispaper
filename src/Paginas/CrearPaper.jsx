@@ -16,7 +16,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import LinkIcon from '@material-ui/icons/Link';
 
 
-
 import swal  from 'sweetalert2'
 import { purple } from '@material-ui/core/colors';
 import { Link } from 'react-router-dom';
@@ -230,7 +229,7 @@ function manejarSnapshot(snapshot){
 
 //llamar etiquetas
 const llamarEtiquetas=()=>{
-    firebase.db.collection("etiquetas").onSnapshot(manejarSnapshot)
+    firebase.db.collection("etiquetas").orderBy("descripcion").onSnapshot(manejarSnapshot)
     
   }
 
@@ -1002,6 +1001,13 @@ const editorcreate= async (id)=>{
 
       setpdf({
         file:test.pdf
+
+
+
+
+
+
+
 
   })  
   setLink(test.link)

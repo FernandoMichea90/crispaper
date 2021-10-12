@@ -574,9 +574,12 @@ setcargando(false)
                                                 
                                         </div>     
                                         <div>
-                                                    <div>
+                                                   
                                                         
-                                                        {
+                                                        {etiquetarray.length!=[]?
+
+                                                        <div>  
+                                                            {  
                                                         etiquetarray.map(doc=>(
                                                                 <div>
                                                                     <Paperdos   paper={doc}  buscaretiquetas={buscaretiquetas}   length={etiquetarray.length}   changeLike={changeLike} setChangeLike={setChangeLike}   megusta={megusta} cambiarLike={megustaSinValidarUsuario}  ></Paperdos>
@@ -589,10 +592,10 @@ setcargando(false)
 
                                                 
                                         
-                                                    </div> 
+                                                
 
-
-                                                         {cargandodos?
+                                                      
+                                                        { cargandodos==true?
 
                                                                     <div>
                                                                     <div className={clases.divCircular} >
@@ -617,22 +620,33 @@ setcargando(false)
                                                             </Typography>                 
         
                                                          }       
-
+                                                        
                                                    
-                                        </div> 
-                                    </div>                        
-                                                                
+                                        
+                                             </div>     
+                                            
+                   
+                                                            
                                       :  
-                                    <div>
-                                            <div className={clases.divCircular} >
-                                                    <CircularProgress className={clases.circular}></CircularProgress>
-                                                </div>
-                                    </div>
+                                                    <div>
+                                                        <Typography align="center" variant="h5" style={{color:'#808080'}}>
 
-                           
-                     
-                        }
-                   </div>
+                                                                  Environmental topics does not contain information
+
+                                                        </Typography>
+
+                                                          
+                                                    </div>  }
+                                    </div>  
+                                    </div>  
+                                     :<div>
+                                           <div className={clases.divCircular} >
+                                                                    <CircularProgress className={clases.circular}></CircularProgress>
+                                                  </div>
+                                     </div>
+                                    }
+
+                        </div>
 
 
                   

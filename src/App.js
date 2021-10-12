@@ -18,7 +18,14 @@ import Usuarios from '../src/Paginas/Usuarios'
 import ListarComentarios from './Paginas/ListarComentarios'
 import AdministrarNosotros from "../src/Paginas/AdministrarNosotros"
 import Colaboraciones  from "../src/Paginas/Colaboraciones"
-
+import Eligeetiqueta from './Paginas/Eligeetiqueta'
+import Info from './Paginas/Info'
+import Verinfo from './Paginas/Verinfo'
+import Populares from './Paginas/Populares'
+import Recientes from './Paginas/Recientes'
+import WhyPag from './Paginas/WhyPag'
+import WhyPagAdmin from './Paginas/admin/WhyPagAdmin'
+import Titulo from './Paginas/admin/Titulo/Titulo'
 
 const estilos =makeStyles((theme)=>({
 
@@ -110,8 +117,7 @@ useEffect(() => {
   
     <ThemeProvider theme={theme}>
    
-          
-
+         
 
                 <div className={clases.root}>
                   <Navegador  mejorvalorados={mejorvalorados} recientes={recientes} valorados={valorados} reciente ={reciente} ></Navegador>
@@ -127,17 +133,24 @@ useEffect(() => {
                 <Route  path="/adminetiquetas"  render={(props)=>(<AdmEtiquetas {...props}   />)} ></Route>
                 <Route  path="/admin" render={(props)=>(<Login {...props}  />)} ></Route>
                 <Route  path="/about" component={Nosotros}></Route>
-                <Route  path="/lisotusuarios" component={Usuarios}></Route>
+                <Route  path="/listusuarios" component={Usuarios}></Route>
                 <Route  path="/listacomentarios" component={ListarComentarios}></Route>
                 <Route  path="/colaborate" component={Colaboraciones}></Route>
                 <Route  path="/administrarnosotros"  component={AdministrarNosotros} ></Route>
-                <Route exac path="/"  render={(props)=>(<Inicio {...props}  textoGeneral={textoGeneral}  valorados={valorados} recientes={recientes} />)} ></Route> 
+                <Route  path="/info/:id"  render={(props)=>(< Info {...props}  valorados={valorados} recientes={recientes} />)} ></Route>
+                <Route  path="/information/:id"  render={(props)=>(<Verinfo {...props}  valorados={valorados} recientes={recientes} />)} ></Route>
+                <Route exac path="/popular"  render={(props)=>(<Populares {...props}  textoGeneral={textoGeneral}  valorados={valorados} recientes={recientes} />)} ></Route> 
+                <Route exac path="/latest"  render={(props)=>(<Recientes {...props}  textoGeneral={textoGeneral}  valorados={valorados} recientes={recientes} />)} ></Route> 
+                <Route exac path="/why"  render={(props)=>(<WhyPag {...props}  textoGeneral={textoGeneral}  valorados={valorados} recientes={recientes} />)} ></Route> 
+                <Route exac path="/adminwhy"  render={(props)=>(<WhyPagAdmin {...props}  textoGeneral={textoGeneral}  valorados={valorados} recientes={recientes} />)} ></Route> 
 
-              
-                </Switch>
-    
+                {/* /<Route exac path="/"  render={(props)=>(<Inicio {...props}  textoGeneral={textoGeneral}  valorados={valorados} recientes={recientes} />)} ></Route>  */}
+                <Route  path="/information/:id?fbclid"  render={(props)=>(<Eligeetiqueta {...props}  valorados={valorados} recientes={recientes} />)} ></Route>
+                <Route  path="/admintitulo"  render={(props)=>(<Titulo  {...props}  valorados={valorados} recientes={recientes} />)} ></Route>
+                <Route  path="/"  render={(props)=>(<Eligeetiqueta {...props}  valorados={valorados} recientes={recientes} />)} ></Route>
 
-                </div>
+          </Switch>
+        </div>
         
                 
       

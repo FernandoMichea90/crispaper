@@ -27,7 +27,7 @@ comentario:{
 
 })))
 
-const Comentario = (props) => {
+const   Comentario = (props) => {
     const clases=estilos()
     const Comentario=props.Comentario
     return (
@@ -35,7 +35,7 @@ const Comentario = (props) => {
             
 
             <Grid container>
-                        <Grid xs="2">
+                        <Grid xs={12} md={2}>
 
 
                         <Avatar    src={`${Comentario.usuario.imagen}`}  style={{top:"25%",left:"36%"
@@ -43,7 +43,7 @@ const Comentario = (props) => {
 
 
                         </Grid>
-                        <Grid xs="10">
+                        <Grid xs={12} md={10}>
 
                             <Grid xs="12">
                                 <Typography variant="subtitle2" className={clases.fecha}>
@@ -65,7 +65,15 @@ const Comentario = (props) => {
                                     Comentario.usuario.email}
                                 </Typography>
                             </Grid>
-
+                            <Grid xs={12}>
+                                
+                            <Typography variant="subtitle2" className={clases.fecha}>
+                            {Comentario.website!==undefined&&
+                                    <a href={Comentario.website} target='_blank'>
+                                    {Comentario.website}
+                                    </a>}
+                                </Typography>
+                            </Grid>
                           
                         </Grid>
 

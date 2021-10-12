@@ -16,11 +16,11 @@ import { UsuarioContext } from '../Provedores/UsuarioContext';
 import { useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
 import {RetornarPaper,RenovarPaperMapEtiqueta} from '../Funciones/Funciones'
 import {actualizarPaper,ActualizarPaperEnEtiquetas} from '../Funciones/PaperDoc'
 import CorazonLleno from "../imagen/iconos/arbolLleno.png"
 import Corazon from "../imagen/iconos/arbolVacio.png"
+import BotonMenu from '../Componetes/Tarjeta/BotonMenu'
 
 
 const  estilos = makeStyles((theme)=>({
@@ -780,13 +780,21 @@ useEffect(async() => {
                                                                                 </div>
                                                  </Grid>
                                             
-                                                <Grid xs={12} sm={12} md={6}>
+ <Grid xs={12} sm={12} md={6}>
         <div className={clases.divTexto}>             
 
 
-        <Typography variant="h5" className={clases.titulo} >
-                        {valor.titulo}             
-        </Typography>
+<Typography variant="h5" className={clases.titulo} >
+{valor.info==true?
+
+<a  style={{textDecoration:"none"}} href={`/information/${valor.id}`} >
+
+
+   {valor.titulo}
+</a>        
+:
+    valor.titulo            }                                                                  
+</Typography>
 
         <Typography className={clases.fecha} variant="subtitle2">
                         {moment(new Date(valor.subida.seconds*1000)).format("D MMM YYYY")}    
@@ -797,22 +805,35 @@ useEffect(async() => {
                 {valor.resumen}
         </Typography>
 
-        <Typography variant="subtitle1">
-
-                {valor.etiquetas.map((valor)=>(
-                
-                <Chip variant="outlined" className={clases.margenChip} onClick={()=>buscarChips(valor)} color="primary" size="small" label={valor.descripcion} />
-                     
-                                ))}
-
-
-        </Typography>
-
-
+    
         </div>        
         </Grid>
 
-                                                
+         
+        <Grid xs={12} sm={12} md={4}>
+                                                                <Typography variant="subtitle1" align="center">  
+                                                                aplicaciones en :
+                                                                </Typography>
+
+                                                                
+                                                          </Grid>    
+
+                                                           <Grid xs={12} sm={12} md={8}>
+
+                                                                <Typography variant="subtitle1">
+
+                                                                        {valor.etiquetas.map((valor)=>(
+                                                                        //      <Link style={{textDecoration:"none"}} to={`/etiquetas/${valor}`}>
+                                                                        <Chip variant="outlined"  className={clases.margenChip} onClick={()=>buscarChips(valor)} color="primary" size="small" label={valor.descripcion} />
+                                                                        //    </Link>
+                                                                                        ))}
+
+
+                                                                </Typography>
+                                                                
+                                                                
+                                                          </Grid>                     
+                                                                                         
         <Grid xs={12} sm={12} md={2}>
 
         <div className={clases.cajaMeGusta}>
@@ -880,12 +901,7 @@ usuario.administrador?
          <Grid xs={6}>
         
                 <Typography variant="subtitle1" align="center">
-                        <Link href={`/editarpaper/${valor.id}`}>
-                                <IconButton  variant="outlined" color="primary">
-                                <Lapiz></Lapiz>
-                                </IconButton>
-                        </Link>
-
+                   <BotonMenu id={valor.id}></BotonMenu>
                 </Typography>
         </Grid>
         <Grid  xs={6}>

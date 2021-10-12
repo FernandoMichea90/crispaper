@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
      position:"fixed",
      bottom:"50px",
      right:"50px",
+     zIndex:"1",
 
      " & .MuiFab-primary:hover" :{
       backgroundColor: "#ffffff",
