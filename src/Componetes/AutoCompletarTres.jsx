@@ -22,42 +22,36 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const crearEtiqueta=async(valor)=>{
-
-  const id=await Firebase.db.collection("etiquetas").add({descripcion:valor,contar:0}).then((docRef) => {
-    //console.log("Document written with ID: ", docRef.id);
-
-    return docRef.id
-})
-return id
-}
-
 export default function Tags(props) {
   const classes = useStyles();
   const etiquetas=props.etiquetas
   const settag=props.settag
   const tag=props.tag
-  const removerEtiqueta=props.removerEtiqueta
- //const [prueba1,setprueba1] =useState(["hola","chao"])
- const [prueba2,setprueba2] =useState(props.tag)
- const [prueba1,setprueba1] =useState([])
  const [tagdos, settagdos] = useState(props.tag)
 
 
  
    const recorrertag=()=>{
-    
-
-    
-      let resultado=etiquetas.filter(({id:id1})=>tag.some(({id:id2})=>id2===id1))
-      
-
-    console.log(resultado)
+   
+  let resultado=etiquetas.filter(({id:id1})=>tag.some(({id:id2})=>id2===id1))
     settagdos(resultado)
    }
 
 
+const crearEtiqueta=async(valor)=>{
+
+  const id=await Firebase.db.collection(props.firebase).add({descripcion:valor,contar:0}).then((docRef) => {
+    //console.log("Document written with ID: ", docRef.id);
+    return docRef.id
+})
+console.log('creando')
+props.llamarEtiquetasDos()
+return id
+}
+
+
    useEffect(() => {
+     console.log('cambio')
     recorrertag()
    }, [props])
 
@@ -84,49 +78,53 @@ export default function Tags(props) {
           })
         }}
         renderInput={(params) => {
-         return  <TextField {...params}   variant="outlined" label="Etiquetas" placeholder="Etiquetas" />
+         return  <TextField {...params}   variant="outlined" label={props.label} placeholder={props.label} />
         }}
       />
       </Grid>
       <Grid xs={2}>
 
-      <IconButton color="primary"  onClick={()=>{
-          Swal.fire({
+      <IconButton color="primary"  onClick={async()=>{
+         const {value:valor} =await Swal.fire({
      
-            title: 'Ingrese nueva etiqueta',
+            title: `Ingrese ${props.descripcion}`,
             input:"text",
             showCancelButton:true,
             confirmButtonColor: '#21cbce',
+          
             cancelButtonColor: '#d33',
             confirmButtonText:"Ingresar",
-           preConfirm:(valor)=>{
-              var coincide=false 
-              etiquetas.map((etiquet)=>{
+            inputValidator: (value) => {
+              if (!value) {
+                return 'El campo no puede estar vacio!'
+              }
+            }
+          })
+          if(valor){ 
 
-                if(etiquet.descripcion==valor){
-                  coincide=true
-                  
-                }
-              })
+          var coincide=false 
+          etiquetas.map((etiquet)=>{
 
-             if(coincide){
-              Swal.fire({
-                icon:"info",
-                title:"Ese registro ya esta disponible"
-              })
-             }else{
-              const id = crearEtiqueta(valor)
-              Swal.fire({
-                icon:"success",
-                title:"Nuevo Registro Creado"    
+            if(etiquet.descripcion==valor){
+              coincide=true
+              
+            }
+          })
 
-              })
-
-             }
-
-}             
+         if(coincide){
+          Swal.fire({
+            icon:"info",
+            title:"Ese registro ya esta disponible"
+          })
+         }else{
+          const id = crearEtiqueta(valor)
+          Swal.fire({
+            icon:"success",
+            title:"Nuevo Registro Creado"    
 
           })
+
+         }}
       }}>
           {/* <PostAddIcon /> */}
           {/* <LabelIcon></LabelIcon> */}

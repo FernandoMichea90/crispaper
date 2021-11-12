@@ -89,8 +89,8 @@ tamanoIconoMargen: {
 },descripcionWhy:{
     fontWeight:"300",
 },divImgWhy:{
-    width: '260px',
-    height: '260px',
+    width: '160px',
+    height: '160px',
     margin: 'auto',
     display: 'block',
     marginTop: '15px',
@@ -199,11 +199,38 @@ botonRojoAlert:{
      marginTop:'10px',
      marginBottom:'10px'
 
+ },negroTransparente:{
+     height:'100%',
+     width:'100%',
+     background:'#00000078',
+     position:'absolute',
+     top:'0',
+
+ },negroTexto:{
+     fontSize:"25px",
+     fontWeight:'800',
+     position:'absolute',
+     top:'40%',
+     width:'100%', 
+     color:'#ffffff',
+     fontFamily:'nunito'
+ },
+ linkImagen:{
+     cursor:'pointer'
+ },
+ CajaBusc:{
+     background:'#0000000a',
+     width:'300px',
+     padding:'2px 10px',
+     borderRadius:'17px',
+     [theme.breakpoints.down("xs")]:{
+         margin:'20px 0px'
+     }
+
+ },
+ Busc:{
+     width:'246px'
  }
-
-
-
-
 
 }))
 

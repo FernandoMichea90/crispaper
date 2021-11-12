@@ -6,16 +6,23 @@ import Progreso from '../Componetes/Progreso'
 import Funciones from '../Funciones/FuncionesFirebase'
 import SaveIcon from '@material-ui/icons/LocalOffer';
 import '../estilos/botones.css'
+import EstilosDos from '../Componetes/Estilos'
+import Titulo from '../Componetes/Titulo/Titulo';
+import Buscador from '../Componetes/Buscador';
+
 
 const  estilos = makeStyles((theme)=>({
 
     divMargin:{
 
-        margin:'20px'
+        margin:'20px',
+        [theme.breakpoints.down('md')]:{
+            margin:'5px',
+        }
     },
     divMarginPrincipal:{
 
-        margin:'0px 200px',
+        margin:'0px 25px',
         [theme.breakpoints.down('md')]:{
             margin:'0px 0px',
         }
@@ -23,7 +30,26 @@ const  estilos = makeStyles((theme)=>({
     },botonColor:{
         width:'100%',
         height:'80px'
+    },
+    
+divImagen:{
+    height:"274px",
+    width:"260px",
+    backgroundSize:"260px auto",
+    position:"relative",
+    backgroundRepeat:"no-repeat",
+    backgroundPosition:"50%",
+    borderRadius:"20px",
+    display:"block",
+    overflow:"hidden",
+    margin:"auto",
+    marginTop:"15px",
+    [theme.breakpoints.down("xs")]:{
+            width:"auto",
+            marginTop:"0px",
+            height:"220px",
     }
+}
 
 
 }))
@@ -37,20 +63,30 @@ const Prueba =()=> (
 const Eligeetiqueta = (props) => {
 
     const clases =estilos()
+    const clasesDos=EstilosDos()
     let test =Prueba()
 
 
     const [cargando, setcargando] = useState(true)
     const [etiqueta, setetiqueta] = useState([])
+    //guardar todas los etiquetas 
+    const [todasEtiquetas, settodasEtiquetas] = useState([])
+    //state de lo ingresado en el buscadorn
+    const [buscador, setbuscador] = useState({buscador:''})
 
 const  pedirEtiqueta=async () => {
         let lista = await Funciones.ListarEtiquetas()
-        
+        // agregar etiqueta general
+  
+        lista=agregarBusqueda(lista)
+        console.log(lista)
         repartirColores(lista)
         setcargando(false)
         //setetiqueta(lista)    
 
 }
+
+
 
 const  repartirColores = (lista)=>{
 
@@ -58,20 +94,37 @@ const  repartirColores = (lista)=>{
     let contador=0
     nuevaLista=lista.map(doc =>{
         contador=contador+1
-         console.log(contador,doc)   
          let resultado=switchColor(contador,doc)
          contador=resultado[0]
-         console.log(resultado[1])
          return resultado[1]
     })
 
     setetiqueta(nuevaLista)
+    settodasEtiquetas(nuevaLista)
 }
 
 const redirecionar=(doc)=>{
 
     props.history.push(`/tag/${doc.id}`)
 }
+// agregar el campo busqueda a la lista
+const agregarBusqueda= (lista)=>{
+let nuevaLista=[]
+   nuevaLista=lista.map(doc=>{
+        return {...doc,busqueda:doc.descripcion.toLowerCase()}
+    })
+    return nuevaLista
+}
+// filtrar por letra ingresada
+const filterItems = (arr, query) => {
+    return arr.filter(el => el.busqueda.toLowerCase().indexOf(query.toLowerCase()) !== -1)
+  }
+const filtrado=(e)=>{
+    e.preventDefault()
+    setbuscador({[e.target.name]:e.target.value})
+    setetiqueta(filterItems(todasEtiquetas,e.target.value))
+}
+
 
 const switchColor=(contador,doc)=>{
     let objeto=[]
@@ -105,7 +158,6 @@ const switchColor=(contador,doc)=>{
 
     useEffect(() => {
              
-        console.log('paso por aca')
          pedirEtiqueta()
 
 
@@ -116,12 +168,16 @@ const switchColor=(contador,doc)=>{
     
     return (
         <div>
-
-            <Typography variant="h6" align="center">
-         
-    Select your topycs of interest 
-            </Typography>
-
+            <div>
+            <Grid container> 
+            <Grid xs={1}></Grid>
+            <Grid xs={10}>   
+            <Titulo></Titulo>
+            <Buscador buscador={buscador} filtrado={filtrado} />
+            </Grid>
+            <Grid xs={1}></Grid>
+            </Grid>
+            </div>
 
                 {cargando? 
                 
@@ -129,7 +185,7 @@ const switchColor=(contador,doc)=>{
                 :
                 
                     <div className={clases.divMarginPrincipal} >                        
-
+                    
                     <Grid container 
                     direction="row"
                     justifyContent="center"
@@ -137,26 +193,38 @@ const switchColor=(contador,doc)=>{
                                         >
                         {
                          etiqueta.map(doc=> (
-                           <Grid xs={12} sm={6} md={3} lg={3} >
+                           <Grid xs={6} sm={6} md={4} lg={3} >
 
-                                
-                                <div className={clases.divMargin}>
+                      
+                                <div  className={clases.divMargin}>
                                   <Typography variant="h6" align="center">
-           
-                                <Button
-                                        id={doc.color}
-                                        variant="outlined"
-                                        size="large"
-                                        onClick={()=>redirecionar(doc)}
-                                        startIcon={<Icon>{doc.icono==null?
-                                            <> local_offer</>
-                                        :
-                                            doc.icono
-                                        }</Icon>}
-                                        className={clases.botonColor}
-                                    >
-                                        {doc.descripcion}
-                                </Button>
+                                {doc.imagen?
+                                  <a className={clasesDos.linkImagen} onClick={()=>redirecionar(doc)}>
+                                <div className={clases.divImagen}> 
+                                                            
+                                <img src={doc.imagen} style={{height:"100%"}}/>
+                                <div className={clasesDos.negroTransparente} style={{background:`rgb(0 0 0 / ${doc.transparencia}%)` }}>   
+                                </div>
+                                <div className={clasesDos.negroTexto}>
+                                {doc.descripcion}
+                                </div>
+                                </div>
+                                 </a>
+                            :
+                         
+                            <a className={clasesDos.linkImagen} onClick={()=>redirecionar(doc)}>
+                            <div className={clases.divImagen}> 
+                                                        
+                            <img src='http://localhost:3000/static/media/pajaro.7bde4732.svg' style={{height:"100%"}}/>
+                            <div className={clasesDos.negroTransparente}>   
+                            </div>
+                            <div className={clasesDos.negroTexto}>
+                            {doc.descripcion}
+                            </div>
+                            </div>
+                             </a>
+                            }    
+                             
                                 </Typography>
                                 </div>
                            </Grid>         

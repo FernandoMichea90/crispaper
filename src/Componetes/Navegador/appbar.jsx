@@ -32,14 +32,14 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
 
     "& .botonCollaborate":{
-      background:"#ffffff",
-      color:"#1ab37c !important",
+      background:"#f44336",
+      color:"#ffffff !important",
       fontSize:'12px',
       marginLeft:'5px',
 
       "&:hover": {
-         background:"#ffffff",
-         color:"#1ab37c !important",
+         background:"#f44336",
+         color:"#ffffff !important",
        },
 
 
@@ -248,8 +248,8 @@ estiloIcono:{
   },
   cajaMenu:{
     padding:"2px 5px 0px 5px",
-    height:"453px",
-    transition:"height 0.25s ease-in",
+    height:"190px",
+    transition:"height 0.45s ease-in",
     overflow:"hidden",
   },
   cajaMenuTres:{
@@ -263,7 +263,7 @@ estiloIcono:{
     height:"0px",
 
     overflow:"hidden",
-    transition:"height 0.25s  ease-out"
+    transition:"height 0.45s  ease-out"
   },
   cajaListMenu:{
     border: "0.01px solid",
@@ -664,107 +664,7 @@ console.log(buscador.buscado)
     </Hidden>
 
        <Hidden mdDown>
-          <div ref={wrapperRef}     className={classes.search}>
-            <div>
-           <form  onSubmit={pruebaFormulario}>
-            <InputBase
-
-          // onBlur={()=>{
-          //   setbuscador({
-          //     buscado:""
-          //   })
-          // }}
-        className={classes.input}
-        onChange={e=>buscar(e) }
-
-
-        value={buscador.buscado}
-        name="buscado"
-        autoComplete="off"
-        placeholder="Search..."
-
-      />
-       <IconButton onClick={()=>{buscarDos()}} color="primary" aria-label="search">
-        <SearchIcon />
-      </IconButton>
-        </form>
-            </div>
-
-          {listapaper.length>0?
-            <div className={classes.divlista}>
-
-            {listapaper.map((valor)=>(
-
-
-                <div style={{height:"54px",
-                overflow:"hidden"
-                }}  >
-
-
-
-                          <Button
-                            className={classes.botonOpciones}
-                            startIcon={<BookIcon></BookIcon>}
-                          color="primary"
-                          onClick={()=>buscarPaper(valor)}
-                          >
-
-
-
-                                {
-                                  formatTitle(valor.titulo)
-                                }
-
-                          </Button>
-
-
-
- {/* <Link onCli >
-<Grid
-container
->
-
-
-  <Grid xs={1}>
-        <div>
-          <BookIcon className={classes.icono}  />
-        </div>
-  </Grid>
-  <Grid xs={11}>
-d
-        <Typography align="left" className={classes.resumen}  variant="body1" >
-           {valor.titulo}
-        </Typography>
-  </Grid>
-
-</Grid>
-</Link> */}
-</div>
-
-
-
-
-
-
-          ))}
-
-
-            </div>
-          :
-          noFound&&
-          <div className={classes.divlista}>
-                <div style={{height:"54px",
-                overflow:"hidden"
-                }}>
-                 <Typography className={classes.noRegistro} align="left" variant="h6">
-                 no results
-                  </Typography>
-
-                  </div>
-            </div>
-
-         }
-          </div>
+       
 
 
 
@@ -784,27 +684,7 @@ d
           {!appBar?
 
         <>
-         <Link href='/latest'  className={classes.linkclass}>
-          <div className="divHover">
-            <Typography >
-
-              Latest
-
-            </Typography>
-            <div className="subrayado"></div>
-          </div>
-          </Link>
-          <Link href="/popular" className={
-              classes.linkclass}>
-          <div className="divHover">
-            <Typography >
-
-                Popular
-            </Typography>
-            <div className="subrayado"></div>
-          </div>
-          </Link>
-
+        
 
 
           </>
@@ -814,15 +694,7 @@ d
         <div></div>
         }
 
-          <Link href="/choose" className={classes.linkclass}>
-          <div className="divHover">
-            <Typography >
-                Topics
-
-            </Typography>
-            <div className="subrayado"></div>
-          </div>
-          </Link>
+       
 
 
 
@@ -838,17 +710,7 @@ d
               <Typography align="center" >
 
                 About
-                  {/* <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                      endIcon={<AddIcon></AddIcon>}
-                      variant="contained"
-                      color="primary"
-                  >
-                      mas
-                  </Button> */}
-
+            
               </Typography>
               <div className="subrayado"></div>
             </div>
@@ -858,41 +720,14 @@ d
               <Typography align="center" >
 
                 Why
-                  {/* <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                      endIcon={<AddIcon></AddIcon>}
-                      variant="contained"
-                      color="primary"
-                  >
-                      mas
-                  </Button> */}
+               
 
               </Typography>
               <div className="subrayado"></div>
             </div>
             </Link>
-            {/* <Link  onClick={()=>dejarUnComentario()} className={classes.linkclass}>
-          <div className="divHover">
-              <Typography align="center" >
+          
 
-                Feedback
-                  {/* <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                      endIcon={<AddIcon></AddIcon>}
-                      variant="contained"
-                      color="primary"
-                  >
-                      mas
-                  </Button> */}
-
-              {/* </Typography>
-              <div className="subrayado"></div>
-            </div>
-            </Link> */}
 
             <Button onClick={()=>abrirVentana()}     className="botonCollaborate" variant="contained"
 
@@ -948,26 +783,13 @@ startIcon={<PublicIcon />}
             <Typography align="center" >
 
               About
-                {/* <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    endIcon={<AddIcon></AddIcon>}
-                    variant="contained"
-                    color="primary"
-                >
-                    mas
-                </Button> */}
+            
 
             </Typography>
             <div className="subrayado"></div>
           </div>
           </Link>
      
-
-    
-
-
       </>
 
 
@@ -1049,6 +871,10 @@ startIcon={<PublicIcon />}
                 }}>Why</MenuItem>
                   <MenuItem onClick={()=>{handleClose()
                 abrirCerrarMenu()
+                history.push("/nuevopaper")
+                }}>Nuevo Paper</MenuItem>
+                  <MenuItem onClick={()=>{handleClose()
+                abrirCerrarMenu()
                 history.push("/administrarnosotros")
                 }}>Administrar Nosotros</MenuItem>
                 <MenuItem onClick={()=>{handleClose()
@@ -1100,104 +926,20 @@ startIcon={<PublicIcon />}
 
 
                 <div ref={wrapperRef} className={classes.search}>
-            <div className={classes.cajaListMenu}>
           
-            <InputBase
-        className={classes.input}
-        onChange={e=>buscar(e) }
-        value={buscador.buscado}
-        name="buscado"
-        autoComplete="off"
-        placeholder="Search..."
-        inputProps={{ 'aria-label': 'search google maps' }}
-      />
-  <IconButton  onClick={()=>{buscarDos()}}  color="primary" aria-label="search">
-        <SearchIcon />
-      </IconButton>
 
-
-  
-            </div>
-
-          {listapaper.length>0?
-            <div className={classes.divlista}>
-
-            {listapaper.map((valor)=>(
-
-
-
-                      <div style={{height:"54px",
-                      overflow:"hidden"
-                      }}  >
-
-
-
-          <Button
-            className={classes.botonOpciones}
-            startIcon={<BookIcon></BookIcon>}
-          color="primary"
-          onClick={()=>buscarPaper(valor)}
-          >
-
-                {formatTitleDos(valor.titulo)
-                }
-          </Button>
-
-
-
- {/* <Link onCli >
-<Grid
-container
->
-
-
-  <Grid xs={1}>
-        <div>
-          <BookIcon className={classes.icono}  />
-        </div>
-  </Grid>
-  <Grid xs={11}>
-
-        <Typography align="left" className={classes.resumen}  variant="body1" >
-           {valor.titulo}
-        </Typography>
-  </Grid>
-
-</Grid>
-</Link> */}
-</div>
-
-
-          ))}
-
-
-            </div>
-          :<div></div>}
+        
 
           {/* <div className={menu?classes.mostrar:classes.esconder}> */}
 
 
               {appBar?<div></div>:
               <>
-              <Link  href='/latest'   className={classes.linkList} >
-              <Typography className={props.recientes?classes.linkLiDos:classes.linkLi} align="center" variant="subtitle1">
-                        Latest
-              </Typography>
-              </Link>
-              <Link href='/popular' className={classes.linkList} >
-              <Typography className={props.valorados?classes.linkLiDos:classes.linkLi} align="center" variant="subtitle1">
-                        Popular
-              </Typography>
-              </Link> 
+             
               </>
                 }
 
 
-                <Link href="/choose" className={classes.linkList}>
-              <Typography className={classes.linkLi} align="center" variant="subtitle1">
-              Environmental Topics
-              </Typography>
-              </Link>
 
 
 
@@ -1213,6 +955,27 @@ container
 
                       </Typography>
                       </Link>
+                      <Link onClick={()=>{
+                    {             handleClose()
+                          abrirCerrarMenu()
+                          history.push("/why")}
+                      }} className={classes.linkList} >
+                      <Typography className={classes.linkLi} align="center" variant="subtitle1">
+                                
+                                Why
+
+                      </Typography>
+                      </Link>
+<Typography align="center" >
+            <Button onClick={()=>abrirVentana()}     className="botonCollaborate" variant="contained"
+
+            startIcon={<PublicIcon />}
+
+            >
+
+                    Share info
+            </Button>
+</Typography>
                         {/* <Link onClick={()=>dejarUnComentario()} className={classes.linkList} >
                         <Typography className={classes.linkLi} align="center" variant="subtitle1">
                                   Feedback

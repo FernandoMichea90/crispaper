@@ -1,4 +1,4 @@
-import React, { useEffect,useState ,useContext} from 'react'
+import React, { useEffect,useState ,useContext,useRef} from 'react'
 import { Grid, Typography,IconButton, makeStyles,CircularProgress, TextField, Button, Paper } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete';
 import CreateIcon from '@material-ui/icons/Create';
@@ -9,12 +9,19 @@ import CloseIcon from '@material-ui/icons/Close';
 import {UsuarioContext} from '../Provedores/UsuarioContext'
 import {actualizarVariosPaper,ActualizarVariosEtiquetas} from '../Funciones/PaperDoc'
 import Icon from '@material-ui/core/Icon';
-
-
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import ImageIcon from '@material-ui/icons/Image';
+import AdminEtiqueta from '../Componetes/AdministrarEtiqueta/adminEtiqueta'
+import Estilos from '../Componetes/Estilos'
+import LinkIcon from '@material-ui/icons/Link';
+import Cargando from '../Componetes/Cargando';
+import VentanaEmergente from '../Componetes/AdministrarEtiqueta/VentanaEmergente';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
+  
+ 
 const useStyles=makeStyles((theme)=>({
 
 
@@ -23,11 +30,17 @@ const useStyles=makeStyles((theme)=>({
         " & .MuiButton-containedPrimary:hover" :{
             backgroundColor: "#303f9f00",
             color:"#5fcccf",
-            border:"1px solid"
+            border:"1px solid",
+            [theme.breakpoints.down('sm')]:{
+                
+            }
         },
     },
     caja: {
         margin:"15px 0px"
+    },
+    margenLink:{
+        margin:'15px 0px'
     },
 
     circular:{
@@ -51,7 +64,7 @@ const useStyles=makeStyles((theme)=>({
             width:"360px",
             [theme.breakpoints.down("xs")]:
             {
-              
+              width:'auto'
             }
         },
 
@@ -100,9 +113,15 @@ const useStyles=makeStyles((theme)=>({
     padding: "14px",
     color: "#21cbce",
     border: "1px solid #21cbce",
+    [theme.breakpoints.down("sm")]:{
+        width:'unset'
+    }
         }
     ,botonEditar:{
         color:""
+    },
+    divTitulo:{
+        height:'85px'
     }
     ,textNoDisponible:{
 
@@ -113,6 +132,60 @@ const useStyles=makeStyles((theme)=>({
 
 
 
+},
+divTransparencia:{
+    height:'100%',
+    width:'100%',
+    position:'absolute',
+    top:'0',
+    background:'rgb(0 0 0 /100%)'
+
+},
+
+imgFoto:{
+    color:"#21cbce",
+    position:"absolute",
+    margin:"auto",
+    top:"0",
+    bottom:"0",
+    left:"0",
+    right:"0",
+    fontSize:"3rem"
+},
+divImagen:{
+    height:"274px",
+    width:"260px",
+    backgroundSize:"260px auto",
+    position:"relative",
+    backgroundRepeat:"no-repeat",
+    border: "2px dashed #21cbce",
+    backgroundPosition:"50%",
+    borderRadius:"0",
+    display:"block",
+    overflow:"hidden",
+    margin:"auto",
+    marginTop:"15px",
+    [theme.breakpoints.down("sm")]:{
+            marginTop:"30px"
+    }
+}
+,
+divImagenDos:{
+    height:"274px",
+    width:"260px",
+    backgroundSize:"260px auto",
+    position:"relative",
+    backgroundRepeat:"no-repeat",
+    border: "2px  #21cbce",
+    backgroundPosition:"50%",
+    borderRadius:"25px",
+    display:"block",
+    overflow:"hidden",
+    margin:"auto",
+    marginTop:"15px",
+    [theme.breakpoints.down("sm")]:{
+            marginTop:"30px"
+    }
 }
 
     
@@ -122,25 +195,26 @@ const useStyles=makeStyles((theme)=>({
 
 const AdmEtiquetas = (props) => {
 const clases=useStyles()
-
+const clasesEstilos=Estilos()
+const myRef = useRef(null)
+const [transparencia, settransparencia] = useState(30)
 const [etiquetas, setetiquetas] = useState([])
 const [errores, seterrores] = useState({
     descripcion:null
 })
 const [cargando, setcargando] = useState(false)
+const [imagen, setimagen] = useState({url:null})
+const [sponsor, setsponsor] = useState({url:null})
 const [tag, settag] = useState({
     descripcion:"",
     icono:"",
 })
+// estado de la ventana emergente
+const [open, setOpen] =useState(false);
+// mensaje informativo para la ventana emegente
+const [mensajeInformativo, setMensajeInformativo] = useState({mensaje:''})
 
 const usuario=useContext(UsuarioContext)
-
-
-
-
-
-
-
 
 
 
@@ -173,6 +247,17 @@ useEffect(() => {
    
 }, [usuario])
     
+// abrir ventana emergente
+const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+const executeSroll=()=>{
+ 
+   myRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' }) 
+}
 
 const handleChange=(e)=>{
 
@@ -206,7 +291,7 @@ const guardarEtiqueta=async()=>{
 
 
     validaciones()
-    if(tag.descripcion){
+    if(tag.descripcion!==""){
 
             let coincide=false
 
@@ -225,6 +310,9 @@ const guardarEtiqueta=async()=>{
                     title:"Ese registro ya esta disponible"
                   })
             }else{
+                tag.imagen=imagen.url
+                tag.sponsor=sponsor.url
+                tag.transparencia=transparencia
                 Firebase.db.collection("etiquetas").add({...tag,contar:0
                     }).then(()=>{
                    
@@ -235,6 +323,9 @@ const guardarEtiqueta=async()=>{
                     settag({descripcion:"",
                     icono:""
                 })  
+                settransparencia(30)
+                setimagen({url:null})
+                setsponsor({url:null})
                 setcargando(false)
       
     }               
@@ -252,7 +343,7 @@ const guardarEtiqueta=async()=>{
 }
     }else{
        
-        seterrores({...errores,descripcion:"debes ingresar un valor"})
+        seterrores({...errores,descripcion:"debes ingresar una descripcion"})
         setcargando(false)  
     }
 
@@ -265,14 +356,14 @@ const guardarEtiqueta=async()=>{
 
 const validaciones =()=>{
 
-            if(tag.descripcion){
-                seterrores({...errores,descripcion:"debes ingresar un valor"})
+            if(tag.descripcion.trim()==""){
+                seterrores({...errores,descripcion:"debes ingresar una descripcion"})
 
             }
             if(tag.icono){
                 settag({...tag,icono:null})
             }
-
+           
 
 
 }
@@ -316,16 +407,9 @@ const borrarEtiquetas=async(valor)=>{
         }).then(async(result)=>{
             if(result.isConfirmed){
                 setcargando(true)
-
-
                 //buscar todos los registros con esa etiqueta
-
-
                 //buscarPapers(valor)
-
-                console.log("paso por aca ")
-                
-
+                console.log(valor)
                  let nuevalista=await  Firebase.db.collection("etiquetas").doc(valor.id).collection("paper").get()
                   
                  let nuevalistados=nuevalista.docs.map((doc)=>{
@@ -410,13 +494,8 @@ const borrarEtiquetas=async(valor)=>{
         }
 
 
-const removerEtiqueta=(antiguo,chips)=>{
-
-
-
-         
+const removerEtiqueta=(antiguo,chips)=>{      
     let nuevoPaper=[]
-
     antiguo.map(async(valor)=>{
 
           
@@ -611,13 +690,22 @@ console.log(listaPaper)
 
 
 const editarEtiquetasDos=(valor)=>{
-
+    console.log(valor)
+    setimagen({url:valor.imagen})
+    setsponsor({url:valor.sponsor}) 
+    if(valor.transparencia!=undefined){
+        settransparencia(valor.transparencia)
+    }else{
+        settransparencia(30)
+    }
     settag(valor)
+    executeSroll()
+
 
 }
 
 
-const createoredit=()=>{
+const createoredit=async()=>{
 
     if(tag.id==null){
            alert("creando") 
@@ -631,14 +719,13 @@ const createoredit=()=>{
 const editarEtiquetas=async()=>{
 
    
-        setcargando(true)
+        handleClickOpen()
       
-            // buscar paper que tenga esa etiqueta 
-
-                    // mostrar el valor           
-                    
-                     let nuevoValor=tag
-
+        setMensajeInformativo({mensaje:'...Creando Nueva Variable...'})
+            //crear nuevo valorados                      
+                     let nuevoValor={...tag,transparencia:transparencia,imagen:imagen.url,sponsor:sponsor.url}
+                     
+                 
                      let coincide=false
 
                  
@@ -646,7 +733,7 @@ const editarEtiquetas=async()=>{
                       
                  // buscar si esa etiqueta ya existe
                 
-
+                 setMensajeInformativo({mensaje:'...Actualizando etiqueta...'})
                                     const listaPaper=await modificarPaperdelastag(nuevoValor)
                                     
                                     // registrar  en la base de datos 
@@ -666,8 +753,15 @@ const editarEtiquetas=async()=>{
 
                                     // actualiza la etiqueta 
                                     //valor id es el id de la etiqueta
+                                if(nuevoValor.sponsor==undefined) {
+                                    nuevoValor.sponsor=null
+                                }
+                                if(nuevoValor.sponsorUrl==undefined){
+                                    nuevoValor.sponsorUrl=null
+                                }
+                                setMensajeInformativo({mensaje:'...Ingresando a la base de datos...'})
                                 await Firebase.db.collection("etiquetas").doc(tag.id).update({
-                                    ...tag
+                                    ...nuevoValor
                                 }).then(()=>{
                                     Swal.fire({
                                         title:"Editado Correctamente",
@@ -679,6 +773,9 @@ const editarEtiquetas=async()=>{
                                     settag({descripcion:"",
                                     icono:""
                                 })  
+                                     setimagen({url:null})
+                                     setsponsor({url:null})
+                                     settransparencia({url:null})
                                 
                                 }).catch((error)=>{
                                         Swal.fire({
@@ -687,29 +784,109 @@ const editarEtiquetas=async()=>{
                                                 
                                                     })})
                                                 
-                                                    setcargando(false)
+                                              handleClose()
                                                          
                                                  
 
 
         }
-    return (
+
+
+const agregarUrl=async()=>{
+    const { value: url } = await Swal.fire({
+        input: 'url',
+        inputLabel: 'URL direccion',
+        inputPlaceholder: 'Ingrese URL'
+      })
+      
+      if (url) {
+        Swal.fire('Exito','La imagen ha sido ingresada','success')
+        let img=url
+        setimagen({url:img})
+
+      }
+}
+const agregarUrlSponsor=async()=>{
+    const { value: url } = await Swal.fire({
+        input: 'url',
+        inputLabel: 'URL imagen',
+        inputPlaceholder: 'Ingrese URL'
+      })
+      
+      if (url) {
+        Swal.fire('Exito','La imagen ha sido ingresada','success')
+        let img=url
+        setsponsor({url:img})
+
+      }
+}
+const agregarUrlRedireccionSponsor=async()=>{
+    const { value: url } = await Swal.fire({
+        input: 'url',
+        inputLabel: 'URL Sponsor',
+        inputPlaceholder: 'Ingrese URL'
+      })
+      
+      if (url) {
+        Swal.fire('Exito','La URL ha sido ingresada','success')
+        let img=url
+        settag({...tag,sponsorUrl:img})
+
+      }
+}
+
+        return (
         <div className={clases.root}>
 
             <Grid container>
-                <Grid xs={12} sm={1} md={1} >
+                <Grid xs={12} sm={12} md={1} >
                        
                 </Grid> 
    
-                <Grid container xs={12} sm={10} md={10} >
+                <Grid container xs={12} sm={12} md={10} >
                         
-                        <div className={clases.divAgregar}> 
+                <Grid container>
+        
+                     <Grid  xs={12} sm={12} md={6}>
+                     
+                        <div ref={myRef} className={clases.divAgregar}> 
                             <div className={clases.formAgregar}>
+                                <Typography align='center' variant="h4">
+                                    <div className={clases.divTitulo}>
+                                    Ingrese topico ambiental
+                                    </div>
+                                </Typography> 
+                                <Typography align='center'>
+                                 
+                                    {imagen.url==null ?
+                                     <div className={clases.divImagen}>
+                                    < ImageIcon className={clases.imgFoto}></ImageIcon>
+                                    </div>
+                                    :
+                                    <>
+                                    <div className={clases.divImagenDos}>
+                                    <img src={imagen.url} style={{height:"100%"}}/>
+                                    <div className={clases.divTransparencia} style={{background:`rgb(0 0 0 / ${transparencia}%)` }} ></div>
+                                    <div className={clasesEstilos.negroTexto}>
+                                       
+                                            {tag.descripcion}
+                                        
+                                    </div>
+                                    </div>
+                                    <AdminEtiqueta  transparencia={transparencia} settransparencia={settransparencia} style={{marginTop:'50px'}}></AdminEtiqueta>
+                                  </>
+                                  }      
 
+                                
+
+                                </Typography>
+                                <Button onClick={()=>agregarUrl()}  startIcon={<AddAPhotoIcon/>} className={clases.buttonAgregar} variant="contained" color="primary">
+                         
+                         </Button>
                                 <div className={clases.caja}>
                                 <TextField variant="outlined"
                                 className={clases.textoAgregar}
-                                placeholder="agregar etiqueta"
+                                placeholder="agregar topico ambiental"
                                 name="descripcion"
                                 onChange={handleChange}
                                 value={tag.descripcion}
@@ -717,39 +894,11 @@ const editarEtiquetas=async()=>{
 
                                 ></TextField>
                                 </div>
-                                <div className={clases.caja}>
-                        <TextField variant="outlined"
-                                className={clases.textoAgregar}
-                                placeholder="agregar icono"
-                                name="icono"
-                                onChange={handleChange}
-                                value={tag.icono}
-                                fullWidth
+                            
+                    
 
 
-                                ></TextField>
-   </div>
-                        {tag.id==null?
-                         <Button onClick={()=>guardarEtiqueta()} className={clases.buttonAgregar} variant="contained" color="primary">
-                         Guardar
-                         </Button>  :
-                         <>
-                          <Button onClick={()=>editarEtiquetas()} className={clases.buttonAgregar} variant="contained" color="primary">
-                          Editar
-                          </Button>  
-                           <Button onClick={()=>cancelarEdicion()} className={clases.buttonEliminar} variant="contained" color="primary">
-                           Cancelar
-                           </Button>  
-                           </>
-                        }
 
-
-                        <Typography align="center"   style={{margin:'10px 0px'}}>
-                            <a href="https://fonts.google.com/icons" target="_blank" style={{textDecoration:'none'}}>
-                                  ¿ deseas ver los iconos ?   
-                            </a>
-
-                        </Typography>
                           
                             </div>
 
@@ -783,9 +932,70 @@ severity="error">{errores.descripcion}</Alert>
 
 }                 
 
-                    </div>   
+                       </div>   
                     
-                    {cargando==false?
+                 
+                     </Grid> 
+
+                     <Grid item xs={12} sm={12} md={6}>
+                     <div className={clases.formAgregar}>
+                    <Typography align='center'variant="h4" >
+                    <div className={clases.divTitulo} >
+                    Ingrese sponsor
+                    </div>
+                    </Typography>
+                     <Typography align='center'>
+
+ 
+                                    {sponsor.url==null ?
+                                    <div className={clases.divImagen} style={{height:'150px'}}>
+                                   < ImageIcon className={clases.imgFoto}></ImageIcon>
+                                    </div> :
+                                    
+                                    <div className={clases.divImagenDos} style={{height:'150px'}}>
+                                    <img src={sponsor.url} style={{height:"100%"}}/>
+                                    </div>
+                                    }      
+                                </Typography>
+                                <Button onClick={()=>agregarUrlSponsor()}  startIcon={<AddAPhotoIcon/>} className={clases.buttonAgregar} variant="contained" color="primary">
+                         
+                         </Button>
+                               
+                         <Button onClick={()=>agregarUrlRedireccionSponsor()}  startIcon={<LinkIcon/>} className={clases.buttonAgregar} variant="contained" color="primary">
+                         
+                         </Button>    
+                         <Typography className={clases.margenLink} align='center'>
+                             {tag.sponsorUrl !==undefined&&
+                             <a href={tag.sponsorUrl}>
+                             {tag.sponsorUrl}
+                             </a>
+                                }
+                         </Typography>
+
+
+                     
+                          
+                    </div>
+
+                     </Grid>  
+
+                     <Grid item xs={12}>
+                     {tag.id==null?
+                         <Button onClick={()=>guardarEtiqueta()} className={clases.buttonAgregar} variant="contained" color="primary">
+                         Guardar
+                         </Button>  :
+                         <>
+                          <Button onClick={()=>editarEtiquetas()} className={clases.buttonAgregar} variant="contained" color="primary">
+                          Editar
+                          </Button>  
+                           <Button onClick={()=>cancelarEdicion()} className={clases.buttonEliminar} variant="contained" color="primary">
+                           Cancelar
+                           </Button>  
+                           </>
+                        }
+                     </Grid>
+                     <Grid xs={12}>
+                     {cargando==false?
                     
                     
                     etiquetas.length!=0?
@@ -848,20 +1058,23 @@ severity="error">{errores.descripcion}</Alert>
                             </div>
                         
                         :
-                            
-                        <div className={clases.divCircular} >
-                                <CircularProgress className={clases.circular}></CircularProgress>
-                         </div>
-                                
+                        <Cargando></Cargando>
+                       
                         }
+
+                     </Grid>
+
+                     </Grid> 
+                     
                 </Grid> 
-                <Grid xs={12} sm={1} md={1} >
+                <Grid xs={12} sm={12} md={1} >
                        
                 </Grid> 
    
 
             </Grid>
             
+            <VentanaEmergente mensajeInformativo={mensajeInformativo} open={open}></VentanaEmergente>
         </div>
     )
 }

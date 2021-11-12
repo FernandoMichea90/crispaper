@@ -1,8 +1,6 @@
 import React,{useState,useEffect} from 'react'
-
 import { Grid, Typography, makeStyles, Button,TextField,IconButton,CircularProgress } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add';
-
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import Etiquetas from '../Componetes/Etiquetas'
@@ -14,12 +12,11 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import MuiAlert from '@material-ui/lab/Alert';
 import CloseIcon from '@material-ui/icons/Close';
 import LinkIcon from '@material-ui/icons/Link';
-
-
 import swal  from 'sweetalert2'
 import { purple } from '@material-ui/core/colors';
 import { Link } from 'react-router-dom';
-
+import FuncionesFirebase from '../Funciones/FuncionesFirebase'
+import SliderNota from '../Componetes/CrearPaper/SliderNota'
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
@@ -47,7 +44,8 @@ const useStyles=makeStyles((theme)=>({
 
     margenArriba:{
 
-        marginTop:"100px"
+        marginTop:"50px"
+        ,marginBottom:'25px'
     },
     estilo_mensaje_informativo:{
 
@@ -145,6 +143,10 @@ const CrearPaper = (props) => {
     const clases=useStyles()
     const [imagen,setimagen]=useState({file:null,imagen:null})
     const [etiquetas,setetiquetas]=useState([])
+    const [region,setregion]=useState([])
+    const [informacion,setinformacion]=useState([])
+    const [tagregion,settagregion]=useState([])
+    const [taginformacion,settaginformacion]=useState([])  
     const [tag,settag]=useState([]) 
     const [cargando, setcargando] = useState(false)
     const [mensaje_informativo,set_mensaje_informativo]=useState("")
@@ -208,16 +210,12 @@ const CrearPaper = (props) => {
 
                     //remover etiqueta 
 
- const removerEtiqueta=(e)=>{
-
-            
-            //setetiquetas(etiquetas.filter(item=>item.descripcion!==e.descripcion))
-
- }
+ 
 
 //manejar snapshot 
 
 function manejarSnapshot(snapshot){
+    console.log('mapeo')
     const  lista =snapshot.docs.map(doc=>{
         return{
             id:doc.id,
@@ -229,11 +227,21 @@ function manejarSnapshot(snapshot){
 
 //llamar etiquetas
 const llamarEtiquetas=()=>{
+    console.log("paso por aqui")
     firebase.db.collection("etiquetas").orderBy("descripcion").onSnapshot(manejarSnapshot)
-    
+    llamarRegiones()
+    llamarTipoInformacion()
   }
-
-
+// llamar regiones
+  const llamarRegiones=async()=>{
+      const consulta=await FuncionesFirebase.llamarRegion()
+      setregion(consulta)
+  }
+// llamar regiones 
+  const llamarTipoInformacion=async()=>{
+      const consulta=await FuncionesFirebase.llamarTopicos()
+      setinformacion(consulta)
+  }
 // validaciones 
 
 // primera validacion de vacio 
@@ -269,21 +277,12 @@ const validacionuno=()=>{
 //nuevo paper 
 
 const NuevoPaper=async()=>{
-
-    
     setcargando(true)
-
     set_mensaje_informativo("...verificando informacion")
       let  errores  = validacionuno()
       seterrores(errores)
-
-
-   
     if(Object.keys(errores).length){
-     
     }else{   
-
-
 
         const respuesta=await IngresarPaper()
 
@@ -423,7 +422,10 @@ try {
                         pdf:pdf,
                         etiquetas:tagdos,
                         id:id,
-                        link:link
+                        link:link,
+                        TopicoInformacion:taginformacion,
+                        Regiones:tagregion
+                        
                 })
             
                 
@@ -533,6 +535,8 @@ const AddRemovePaperTag=async(tagdos,paperdos,tag)=>{
     imagen:imgURL,
     pdf:pdfURL,
     etiquetas:tag,
+    TopicoInformacion:taginformacion,
+    Regiones:tagregion,
     link:link,
     busqueda:paper.titulo.toLocaleLowerCase()
 }
@@ -650,11 +654,7 @@ swal.fire(
   )
 
 }
-
-
-
 // actualizar paper
-
 const ActualizarPaperDos=async()=>{
     setcargando(true)
 
@@ -731,6 +731,8 @@ let paperSuplente={
     imagen:imgURL,
     pdf:pdfURL,
     etiquetas:tagDefinitivo,
+    TopicoInformacion:taginformacion,
+    Regiones:tagregion,
     busqueda:paper.titulo.toLocaleLowerCase()
 }
 
@@ -946,7 +948,7 @@ const actualizarState=(e)=>
 
 
 useEffect(() => {
-
+    console.log('prueba de consumo crear paper')
     const {id}=props.match.params
    
  
@@ -993,34 +995,32 @@ const editorcreate= async (id)=>{
       }) 
       // 
 
-
       setimagen({
             file:test.imagen
-
       })  
-
       setpdf({
         file:test.pdf
-
-
-
-
-
-
-
-
   })  
   setLink(test.link)
 
 
   
   settag(test.etiquetas)
-    
+  if(test.Regiones!=undefined){
+ 
+    settagregion(test.Regiones)
+  }
+  if(test.TopicoInformacion!=undefined){
+  settaginformacion(test.TopicoInformacion)
+}
+      
     //   test.etiquetas.map((valor)=>{
        
     //      settag(prev=>[...prev,valor.descripcion])
 
     //   }) 
+
+
       await  setpaper(test)
       setcargando(false)
     
@@ -1030,17 +1030,9 @@ const editorcreate= async (id)=>{
 
     return (
  
-        <div className={clases.root}  >
-    
-          
-            
-            <div>
-                
-
-                
-             
+        <div className={clases.root}  >           
+            <div>                   
             </div>
-
 
             <Grid container>
                 <Grid xs={4}  sm={2} md={4}>
@@ -1051,11 +1043,7 @@ const editorcreate= async (id)=>{
 
 
                         {cargando?
-                        <div>
-                        
-                        
-                        
-                        
+                        <div>                 
                         <div className={clases.divCircular} >
                             <CircularProgress className={clases.circular}></CircularProgress>
 
@@ -1080,64 +1068,7 @@ const editorcreate= async (id)=>{
                                     }
 
 
-                    <Typography  align="center" variant="h3">
-                            <div className={clases.divImagen}>
-
-
-
-                              
-                                {imagen.file?
-                                
-                                    <img src={imagen.file} style={{height:"100%",width:"100%"}}/>
-                            
-                                    
-                                    // <div   className={clases.divImagen} style={{
-                                    //     backgroundImage:`url(${imagen.file})`,
-                                       
-                                    //   }} >
-
-                                              
-                                    //     </div>
-
-
-                                    :
-                                    < AddAPhotoIcon className={clases.imgFoto}></AddAPhotoIcon>
-                                    }
-                                
-
-
-                           
-                              
-                            </div>
-                            <Typography align="center" >
-
-                            <div>
-                                    <input
-                                    type="file"
-                                    id="subir"
-                                    accept="image/*"
-                                    style={{display:"none"}}
-                                    onChange={(e)=>seleccionarArchivo(e)}
-                                
-                                    >
-                                    </input>
-                                <Button variant="contained"
-                                        color="primary"
-                                        className={clases.margenButtonDos}
-                                  
-                                >
-                                <label
-                                    htmlFor="subir"
-                                    style={{padding:"6px 36px"}}
-                                    >
-                                        agregar imagen
-                                    </label>
-                                    </Button>     
-                            </div>
-
-                        </Typography>
-                    </Typography>
-                    <Typography align="center" >
+                    <Typography align="center"  >
                                 <TextField
                                     variant="outlined"
                                     margin="normal"
@@ -1248,26 +1179,29 @@ const editorcreate= async (id)=>{
 
                     </Typography>
                    
-
+                    <SliderNota quality={paper.likes} paper={paper} setpaper={setpaper}></SliderNota>
 
                         
 
 
 
-                   
+                    <Typography align="center" >
+            <AutocompletarTres label='Region' firebase="Region" descripcion="Region" etiquetas={region} tag={tagregion} settag={settagregion}   llamarEtiquetasDos={llamarEtiquetas}
+                     ></AutocompletarTres>
+            </Typography>       
 
              <Typography align="center" >
 
-                <AutocompletarTres etiquetas={etiquetas} tag={tag} settag={settag}  removerEtiqueta={removerEtiqueta} llamarEtiquetasDos={llamarEtiquetas}
-
-
-
+                <AutocompletarTres label='Topico Ambiental' firebase="etiquetas" descripcion="Etiquetas" etiquetas={etiquetas} tag={tag} settag={settag}   llamarEtiquetasDos={llamarEtiquetas}
                 ></AutocompletarTres>
 
                 </Typography>
 
-
-
+           
+            <Typography align="center" >
+            <AutocompletarTres label="Tipo de informacion" firebase="TopicoInformacion" descripcion="Topico de informacion" etiquetas={informacion} tag={taginformacion} settag={settaginformacion}   llamarEtiquetasDos={llamarEtiquetas}
+                     ></AutocompletarTres>
+            </Typography>
 
                 {id?
                      <Typography align="center" >

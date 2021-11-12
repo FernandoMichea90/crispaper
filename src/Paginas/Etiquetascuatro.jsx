@@ -1,657 +1,255 @@
-import React, { useEffect,useState ,useContext} from 'react'
-import Firebase from '../firebase/firebase'
-import { Typography,makeStyles,Grid,CircularProgress,Button } from '@material-ui/core'
-import Paper from "../Componetes/Paper"
-import EtiquetasIcon from '@material-ui/icons/LocalOffer';
+import React, { useEffect, useState, useContext } from 'react'
+import FuncionesFirebase from '../Funciones/FuncionesFirebase'
+import { Typography, makeStyles, Grid, CircularProgress, Button, ListItemSecondaryAction } from '@material-ui/core'
 import { useHistory } from 'react-router-dom';
-import Paperdos from "../Componetes/Papertres"
 import { UsuarioContext } from '../Provedores/UsuarioContext';
-import {actualizarPaper,ActualizarPaperEnEtiquetas} from '../Funciones/PaperDoc'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Pajaro from '../../src/pajaro.svg'
-
-
-
-
-const estilos=makeStyles((theme)=>({
-    
-    root:{
-
-        " & .MuiButton-containedPrimary:hover" :{
-            backgroundColor: "#303f9f00",
-            color:"#5fcccf",
-            border:"1px solid"
-        },
-
-
-        "& .botonEtiqueta":{
-            background:"#ffffff",
-            color:"#212121 !important",
-            marginTop:"10px",
-            fontSize:"27px",
-            fontFamily:"nunito",
-            "&:hover": {
-                background:"#36cbce",
-                color:"#ffffff!important",
-             },
-        
-        },
-        "& .botonEtiqueta .MuiSvgIcon-root":{
-            color:"#36cbce"
-        },
-        
-        "& .botonEtiqueta:hover .MuiSvgIcon-root":{
-            color:"#ffffff"
-        },
-    },
-    
-    texto:{
-        fontFamily:"nunito",
-        fontWeight:"300",
-    
-
-
-    },textoDos:{
-        fontFamily:"nunito",
-        fontWeight:"300",
-        textTransform:"uppercase"
-
-
-    },
-    divTag:{
-
-        padding:"50px 0px"
-    },
-    divEtiqueta:{
-
-        margin:"29px auto",
-        width:"75vw"
-
-    },
-    divReg:{
-
-        margin:"45px auto",
-        width:"75vw"
-
-    },
-    divCircular:{
-        marginTop:"50px",
-        marginBottom:"129px"
-
-    },
-    circular:{
-        height:"72px !important",
-        width:"72px !important",
-        display:"block",
-        margin:"auto"
-        }
-
-        ,textNoDisponible:{
-
-
-            fontFamily:"Nunito",
-            color:"#808080"
-        } }
-))
-
+import Titulo from '../Componetes/Titulo/Titulo';
+import Busc from '../Componetes/Tag/Buscador';
+import Tabla from '../Componetes/Tag/Tabla'
+import Cargando from '../Componetes/Cargando'
 
 
 const Etiquetas = (props) => {
- 
-const clases=estilos()    
-const history=useHistory()
+    const history = useHistory()
+    const usuario = useContext(UsuarioContext)
+    //state etiquet 
+    // guardar el valor 
+    const [paper, setpaper] = useState([])
+    const [cargando, setcargando] = useState(false)
+    // guardar la publicidad 
+    const [publicidad, setpublicidad] = useState({})
+    //guardad el state en el topico ambiental 
+    const [etiquet, setetiquet] = useState({})
+    //buscar todas las etiquetas
+    const [etiquetas, setetiquetas] = useState([])
+    //guardar todas las etiquetas antiguas
+    const [paperAntiguas, setpaperAntiguas] = useState([])
+    // etiquetas Regiones 
+    const [regiones, setregiones] = useState([])
+    //region seleccionada 
+    const [region, setregion] = useState({})
+    //tipo informacion seleccionada
+    const [tipoinformacion, settipoinformacion] = useState({})
+    //Topico informacion
+    const [topicoinformacion, settopicoinformacion] = useState([])
+    //armar filtro 
+    const [filtro, setfiltro] = useState({
+        topicoambiental: null,
+        region: null,
+        tipoinformacion: null
 
-const usuario =useContext(UsuarioContext)
-//state etiquet 
-const [etiquet, setetiquet] = useState([])
-// guardar el valor 
-const [elvalor, setelvalor] = useState()
-// state etiquet para pedir mas 
-const [etiquetarray, setetiquetarray] = useState([])
-const [etiquetas, setetiquetas] = useState([])
-const [pedirmas, setpedirmas] = useState(false)
-const [paper, setpaper] = useState([])
-const [cargando, setcargando] = useState(false)
-const [cargandodos, setcargandodos] = useState(false)
-const [esconderboton, setesconderboton] = useState(false)
-
-const [changeLike, setChangeLike] = useState({
-    cambio:false,
-    idEtiqueta:null,
-    paper:null
-
-
-})
-const recientes=props.recientes
-const valorados=props.valorados
-//  crear nuevo state para el  el nuevo arreglo 
-const [paperArray, setpaperArray] = useState([])
-const [ultimo, setultimo] = useState(0)
-const {id} =props.match.params
-
-
-const limite=5
-// buscar etiquetas 
-const buscaretiquetas=async()=>{
- setcargando(true)   
- 
-  const lista  =await Firebase.db.collection("etiquetas").get()
-
-  const listados = await Promise.all(lista.docs.map(async(doc)=>{
-            //console.log(doc.data())
-            // etiqueta 
-             let etiqueta= {id:doc.id,
-                 ...doc.data()}
-            console.log(etiqueta)  
-            //mapear etiqueta 
-             let listatres=[] 
-             
-                    if (valorados){
-                        listatres=await Firebase.db.collection("etiquetas").doc(etiqueta.id).collection("paper").orderBy("likes","desc").limit(2).get()
-                    }else{
-
-                                if(recientes){
-                                    listatres=await Firebase.db.collection("etiquetas").doc(etiqueta.id).collection("paper").orderBy("subida","desc").limit(2).get()
-
-
-                                }else{
-
-                                    listatres=await Firebase.db.collection("etiquetas").doc(etiqueta.id).collection("paper").limit(2).get()
-                                } 
-                    }
-
-             
-             const listacuatro= listatres.docs.map(doc=>{
-                    return {
-                        id:doc.id,
-                        ...doc.data()
-                    }  
-             }
-             )       
-             console.log(listacuatro)
-             return{
-                etiquetas:etiqueta,
-                paper:listacuatro
-
-            }
-                // return {
-                //     id:doc.id,
-                //     ...doc.data()
-                // }
-            }))  
-                         
-  console.log(listados)        
-  setpaperArray(listados)  
-  setcargando(false)
-
-
-}
-
-
-
-
-const megusta=(valor)=>{
-
-    
-        megustacuatro(valor)
-
-
-}
-
-
-
-// Éste va a ser el me gusta sin validar usuario
-const megustaSinValidarUsuario=(paperNuevo)=>{
-
-    // recorrer arreglo en donde esta etiqueta y paper 'paperArray'
-    //crear nueva constante del paper
-    const nuevoPaperArray=paperArray.map(paperMap=>{
-
-                    //recorrer solo arreglo paper 
-                    //paperMap = paper[]
-                    console.log(paperArray)
-                     let paper=paperMap.paper.map((paperNew)=>{
-                                //validar que los paper coincidan 
-                                if(paperNew.id==paperNuevo.id){
-                                    console.log(paperMap.etiquetas.id)
-
-                                        //
-
-                                    return paperNuevo
-                                } else{
-                                    return paperNew
-                                }       
-                        })                
-                // crear nuevo objeto con  la etiqueta y el paper 
-                let nuevoObjeto={
-                    etiquetas:paperMap.etiquetas,
-                    paper:paper   
-                }
-                //retornar objeto  
-                return nuevoObjeto
     })
-// insertar  paperArray
-  setpaperArray(nuevoPaperArray)
 
-    
-}
-
-
-
-
-const megustacuatro=async(valor)=>{ 
-    setcargando(true)
-    if(usuario==null) {
-            return history.push("/login")
+    const buscarPaper = async (valor) => {
+        const etiquetaBd = await FuncionesFirebase.retornarEtiqueta(valor)
+        console.log(etiquetaBd)
+        setpublicidad({sponsor:etiquetaBd.sponsor,sponsorURL:etiquetaBd.sponsorUrl } )
+        setfiltro({ ...filtro, topicoambiental: etiquetaBd.descripcion })
+        setetiquet(etiquetaBd.descripcion)
+        const paperBd = await FuncionesFirebase.buscarPorEtiquetas(etiquetaBd)
+        console.log(paperBd)
+        setregion(null)
+        settipoinformacion(null)
+        setpaper(paperBd)
+        setpaperAntiguas(paperBd)
+        const etiquetasBd = await FuncionesFirebase.ListarEtiquetas()
+        setetiquetas(etiquetasBd)
+        armarListaRegiones(paperBd)
+        armarListaTopicoInformacion(paperBd)
     }
-    // prueba de las funciones 
-    //const valorRenovado=  await RetornarPaper(valor.id)
-    //valor=valorRenovado
-    if(valor.haVotado==undefined){                    
-            var antiguoHaVotado=[]
-    }else{
-            var antiguoHaVotado=valor.haVotado
-    }                      
-    // nuevo paper 
-    let newPaper={}
-    let nuevaLista=[]
-    if(antiguoHaVotado.includes(usuario.uid)){ 
-            antiguoHaVotado=antiguoHaVotado.filter(function(obj){
-                    return obj!==usuario.uid
-            })
-            let megusta=valor.likes-1 
-             newPaper={
-                    ...valor,
-                     likes:megusta,
-                    haVotado:antiguoHaVotado
-            }
-             //listaPaperdos(newPaper,megusta,antiguoHaVotado)
-            //await firebase.db.collection("paper").doc(valor.id).update(nuevoPaper)
-            //RenovarPaperMapEtiqueta(nuevoPaper)
-            // 
-            nuevaLista= megustacinco(newPaper,megusta,antiguoHaVotado)
-    console.log(newPaper)
- }else{ 
-    
- const nuevoHaVotado = [...antiguoHaVotado, usuario.uid];
- console.log(nuevoHaVotado)
- let megusta=valor.likes+1   
- newPaper={
-    ...valor,
-     likes:megusta,
-    haVotado:nuevoHaVotado
-}
-nuevaLista=megustacinco(newPaper,megusta,nuevoHaVotado)
-console.log(newPaper,megusta,nuevoHaVotado)
+    //  renovar funcion state 
 
-}
-
-console.log(nuevaLista)
-setetiquetarray(nuevaLista)
-setcargando(false)
- actualizarPaper(newPaper)
- ActualizarPaperEnEtiquetas(newPaper)
-// buscaretiquetas()
-// props.setChangeLike({
-//         cambio:true,
-//         idEtiqueta:props.id,
-//         paper:newPaper
-//     })
-
-
-         
-
-
-
-
-}
-
-
-
-const  megustacinco=(valor,megusta,nuevosvotos)=>{
-
-
-  const nuevaLista =etiquetarray.map(doc=>{
-                                if(valor.id==doc.id){  
-                                    return {
-                                        ...valor,
-                                        likes:megusta,
-                                        haVotado:nuevosvotos       
-                                    }
-                            }else{
-                                return{...doc}
-                            }
-                    })
-
-
-  return nuevaLista
-
-
-}
-
-
-
-
-const listaconid=async(valor,ruta)=>{
-
-   
-    // guardar la etiqueta que se esta buscando 
-    setetiquetas(valor)
-    // ¿sera necesario ?
-      setpedirmas(true)
-
-    //esconder el button 
-    setesconderboton(false) 
-          
-
-
-            if(recientes){
-                var consulta = await Firebase.db.collection("etiquetas").doc(valor).collection("paper").orderBy("subida","desc").limit(limite).get()
-
-
-            }else{
-
-                if(valorados){
-
-                    var consulta = await Firebase.db.collection("etiquetas").doc(valor).collection("paper").orderBy("likes","desc").limit(limite).get()
-
-                }else{
-                    var consulta = await Firebase.db.collection("etiquetas").doc(valor).collection("paper").orderBy("id","desc").limit(limite).get()
-
-                }
-
-            }
-
-
-
-    var consult=consulta.docs.map(doc=>{
- 
-         return {
- 
-             id:doc.id,
-             ...doc.data(),
-             click:false
-         }
- 
-    
-     })
-     // guardar en el state la etiqueta 
-     setetiquetarray(consult)
-     if(consult.length){
-        let nuevoultimo=consult[consult.length-1].id
-                 console.log(nuevoultimo)
-                if(nuevoultimo!=undefined){
-                    setultimo(consult[consult.length-1].id)
-                    
-                }
-
-    }
-     
-
-// console.log(consult)
-
-
-
-
-// armar el objeto 
-
-setcargando(false)
-
-//  if(recientes){
-//          alert("prueba")
-//         var consult =  armarconsultrecientes(consult)
-// }
-// if(valorados){
-
-     
-    //     var consult =  armarconsultvalorados(consult)
-    // }
-
-
-    //      var res={
-    //         tag:valor,
-    //         lista:consult,
-    //         cantidad:consult.length
-    //      }
-        
-    //      setpaper([res])
-        
-    //      setcargando(false)
-            
-
-    }
-
-
-
-
- const listardesdeelultimo=async()=>{
-  
-    setcargandodos(true)
-
-
-    if (recientes){
-        
-        var consulta = await Firebase.db.collection("etiquetas").doc(etiquet.id).collection("paper").orderBy("subida","desc").limit(limite).get()
-
-        var consulta = await Firebase.db.collection("etiquetas").doc(etiquet.id).collection("paper").doc(ultimo).get().then(async doc=>{          
-            let nuevaLista=[]
-             let nuevaListados=await Firebase.db.collection("etiquetas").doc(etiquet.id).collection("paper").orderBy("subida","desc").startAfter(doc).limit(1).get()
-             return nuevaListados
-    
-            })
-
-    }else{
-
-            if(valorados){
-               
-                //var consulta = await Firebase.db.collection("etiquetas").doc(etiquet.id).collection("paper").orderBy("likes","desc").startAfter(ultimo).limit(1).get()
-                
-                var consulta = await Firebase.db.collection("etiquetas").doc(etiquet.id).collection("paper").doc(ultimo).get().then(async doc=>{
-                        
-                        let nuevaLista=[]
-                         let nuevaListados=await Firebase.db.collection("etiquetas").doc(etiquet.id).collection("paper").orderBy("likes","desc").startAfter(doc).limit(1).get()
-                         return nuevaListados
-                
-                        })
-
-               
-            }else{
-              
-                var consulta = await Firebase.db.collection("etiquetas").doc(etiquet.id).collection("paper").doc(ultimo).get().then(async doc=>{
-                        
-                    let nuevaLista=[]
-                     let nuevaListados=await Firebase.db.collection("etiquetas").doc(etiquet.id).collection("paper").orderBy("id","desc").startAfter(doc).limit(1).get()
-                     return nuevaListados
-            
-                    })
-            }
-
-    }
-    var consult=consulta.docs.map(doc=>{
- 
-        return {
-
-            id:doc.id,
-            ...doc.data()
+    const Renovar = (TopicAmb) => {
+        let valor = {
+            topicoambiental: TopicAmb,
+            region: null,
+            tipoinformacion: null
         }
-
-   
-    }) 
-    console.log(consult)   
-    setetiquetarray((viejo)=>[...viejo,...consult])
-    if(consult.length){
-        let nuevoultimo=consult[consult.length-1].id
-        setultimo(nuevoultimo)
-
-
-    }
-    
-    if(etiquet.contar==etiquetarray.length+consult.length){
-    setesconderboton(true)
-    }else{
-        setesconderboton(false)
+        setfiltro(valor)
+        setetiquet(valor.topicoambiental)
+        setregion(valor.region)
+        settipoinformacion(valor.tipoinformacion)
     }
 
-
-    console.log(cargandodos)
-   setcargandodos(false)
- } 
-
-
-    
-    useEffect(async() => {
-        
+    const buscarPaperTagDescricion = async (valor) => {
         setcargando(true)
-        setcargandodos(false)
-       
-        const {valor}=props.match.params
-      
-         //  guardar en un state en una etiqueta 
+        let renovar = false
+        let paperBd = []
+        //variable de la etiqueta para topicos ambientales
+        let etiquetaBd = {}
+        console.log(valor)
+        //retornar paper segun etiqueta
+        if (valor.topicoambiental == 'Todos') {
+            paperBd = await FuncionesFirebase.retornarTodosPaper()
+            setpublicidad()
+            etiquetaBd.descripcion = 'Todos'
+            renovar = true
+        } else {
+            if (valor.topicoambiental == filtro.topicoambiental) {
+                paperBd = paperAntiguas
+                console.log(paperBd)
+                etiquetaBd.descripcion = valor.topicoambiental
+            } else {
+                //buscar el topico ambiental segun la descrpcion
+                etiquetaBd = await FuncionesFirebase.retornarEtiquetaDescripcion(valor.topicoambiental)
+                paperBd = await FuncionesFirebase.buscarPorEtiquetas(etiquetaBd)
+                if (etiquetaBd.sponsor != undefined) { setpublicidad({sponsor:etiquetaBd.sponsor,sponsorURL:etiquetaBd.sponsorUrl }) } else { setpublicidad() }
+                setpaperAntiguas(paperBd)
+                console.log(paperBd)
+                etiquetaBd.descripcion = valor.topicoambiental
+                renovar = true
+            }
 
-            const etiquet = await Firebase.db.collection("etiquetas").doc(valor).get().then((doc)=>{
-                // console.log(doc.id)
-                // console.log(doc.data())
-                        return{
-                            id:doc.id,
-                            ...doc.data(),
-                            click:false
+        }
+        // se inserta valor del topico ambiental
+        setetiquet(etiquetaBd.descripcion)
+        // filtrar paper con las regiones
+        if (valor.region !== null) {
+            if (valor.region !== 'Todos') {
+                console.log(valor.region)
+                console.log(paperBd)
+                let nuevalista = filtrarPaperPorRegion(paperBd, valor.region)
+                paperBd = nuevalista
+                console.log(paperBd)
+                setregion(valor.region)
+            } else {
+                setregion(valor.region)
+            }
+        }
+        //filtrar por topico de informacion
+        //validacion 
+        console.log(valor)
+        if (valor.tipoinformacion !== null) {
+            if (valor.tipoinformacion !== 'Todos') {
+                paperBd = filtrarPaperPorTopicoInformacion(paperBd, valor.tipoinformacion)
+                console.log(paperBd)
+            }
+        }
+        settipoinformacion(valor.tipoinformacion)
+        setpaper(paperBd)
+        //const etiquetasBd=await FuncionesFirebase.ListarEtiquetas()
+        // setetiquetas(etiquetasBd)
+        armarListaRegiones(paperBd)
+        armarListaTopicoInformacion(paperBd)
+        if (renovar == true) {
+            Renovar(valor.topicoambiental)
+        }
+        setcargando(false)
 
-                        }
 
-                    })
+    }
+    const armarListaRegiones = (paperBd) => {
+        let nuevaLista = []
+        console.log(paperBd)
+        paperBd.map(doc => {
+            console.log(doc)
+            if (doc.Regiones != undefined) {
+                doc.Regiones.map(doc => {
+                    return nuevaLista.push(doc)
+                })
 
-      
-            setetiquet(etiquet)
-            listaconid(valor,false)
-    
+            } else { return nuevaLista }
+        })
+        let resultado = nuevaLista.filter((v, i, a) => a.findIndex(t => (t.descripcion === v.descripcion && t.id === v.id)) === i)
+        setregiones(resultado)
+    }
+    const filtrarPaperPorRegion = (listaPaper, region) => {
 
-    }, [props,id])
+        let list = []
+        listaPaper.map(paper => {
+
+            if (paper.Regiones != undefined) {
+                paper.Regiones.map(doc => {
+                    if (doc.descripcion == region) {
+                        console.log('coincide')
+                        list.push(paper)
+                    }
+                })
+            }
 
 
-        return (
+        })
+
+        return list
+    }
+    const filtrarPaperPorTopicoInformacion = (listaPaper, Informacion) => {
+
+        console.log(listaPaper)
+        console.log(Informacion)
+        let list = []
+        listaPaper.map(paper => {
+
+            if (paper.TopicoInformacion != undefined) {
+                paper.TopicoInformacion.map(doc => {
+                    if (doc.descripcion == Informacion) {
+                        console.log('coincide')
+                        list.push(paper)
+                    }
+                })
+            }
 
 
+        })
 
+        return list
+    }
+    const armarListaTopicoInformacion = (paperBd) => {
+        let nuevaLista = []
+        paperBd.map(doc => {
+            if (doc.TopicoInformacion != undefined)
+                doc.TopicoInformacion.map(doc => {
+                    return nuevaLista.push(doc)
+                })
+        })
+        let resultado = nuevaLista.filter((v, i, a) => a.findIndex(t => (t.descripcion === v.descripcion && t.id === v.id)) === i)
+        settopicoinformacion(resultado)
+    }
+    const handleChange = (event) => {
+        //buscarPaperTagDescricion(event.target.value)
+        setfiltro({ ...filtro, [event.target.name]: event.target.value })
+        const objeto = { ...filtro, [event.target.name]: event.target.value }
+        buscarPaperTagDescricion(objeto)
+    }
+
+    useEffect(async () => {
         
-            <div className={clases.root} style={{marginTop:"88px"}} >
-        
-                <div className={clases.divTag} >
-                        <Typography variant="h3" align="center"
-                                className={clases.texto}
-                        >
-                            
-                            Environmental Topics
-                            </Typography> 
+        const { valor } = props.match.params
+        buscarPaper(valor)
+        setcargando(false)
+        //  guardar en un state en una etiqueta 
+    }, [])
 
 
-                </div>  
-
-                {
-                    !cargando?
-                  
-                        
-                                  
-                                        
-                                    <div>
-                                        <div id="etiqueta" className={clases.divEtiqueta} >
-
-                                        <Grid container>
-                                                <Grid xs={1}>
-                                                        
-                                                            <img height="100" src={Pajaro}></img>
-                                                       
-                                                </Grid>
-                                                <Grid xs={11}>
-                                                <div className={clases.divEtiqueta}>
-                                                        <Typography   className={clases.textoDos} variant="h4" align="left">
-                                                              {etiquet.descripcion}
+    return (
+        <>
+            {
+                cargando ?
+                    <div>
+                        <Cargando></Cargando>
+                    </div>
+                    :
+                    <div>
+                        <Grid container>
+                            <Grid xs={1}></Grid>
+                            <Grid xs={10}><Titulo></Titulo></Grid>
+                            <Grid xs={1}></Grid>
+                        </Grid>
 
 
-                                                        </Typography> 
-                                                 </div>
-                                                    </Grid>
-                                                </Grid>
-                                                
-                                        </div>     
-                                        <div>
-                                                   
-                                                        
-                                                        {etiquetarray.length!=[]?
 
-                                                        <div>  
-                                                            {  
-                                                        etiquetarray.map(doc=>(
-                                                                <div>
-                                                                    <Paperdos   paper={doc}  buscaretiquetas={buscaretiquetas}   length={etiquetarray.length}   changeLike={changeLike} setChangeLike={setChangeLike}   megusta={megusta} cambiarLike={megustaSinValidarUsuario}  ></Paperdos>
-                                                                            
-                                                                
-                                                                
-                                                                </div>   
-                                                    
-                                                                ))}
-
-                                                
-                                        
-                                                
-
-                                                      
-                                                        { cargandodos==true?
-
-                                                                    <div>
-                                                                    <div className={clases.divCircular} >
-                                                                            <CircularProgress className={clases.circular}></CircularProgress>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    :
-
-                                                                    <Typography align="center">
-                                                                          { esconderboton==false&&      <Button 
-                                                                                        endIcon={<ExpandMoreIcon></ExpandMoreIcon>}
-                                                                                        variant ="contained"
-                                                                                        className="botonVerMas"
-                                                                        
-                                                                                
-                                                                                onClick={()=>{
-                                                                                    listardesdeelultimo()
-                                                                                }} >
-                                                                                see more
-                                                                            </Button> }
-                                                            </Typography>                 
-        
-                                                         }       
-                                                        
-                                                   
-                                        
-                                             </div>     
-                                            
-                   
-                                                            
-                                      :  
-                                                    <div>
-                                                        <Typography align="center" variant="h5" style={{color:'#808080'}}>
-
-                                                                  Environmental topics does not contain information
-
-                                                        </Typography>
-
-                                                          
-                                                    </div>  }
-                                    </div>  
-                                    </div>  
-                                     :<div>
-                                           <div className={clases.divCircular} >
-                                                                    <CircularProgress className={clases.circular}></CircularProgress>
-                                                  </div>
-                                     </div>
-                                    }
-
+                        <Busc tipoinformacion={tipoinformacion} publicidad={publicidad}  etiqueta={etiquet} region={region} handleChange={handleChange} etiquetas={etiquetas} regiones={regiones} topicoinformacion={topicoinformacion} setpaper={setpaper}></Busc>
+                        <div>
+                            <Tabla paper={paper}></Tabla>
                         </div>
 
 
-                  
-            
-        
+
+                    </div>
+            }
+
+
+        </>
+
     )
 }
 

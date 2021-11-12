@@ -11,8 +11,6 @@ export default {
 
 
         async IngresarComentario(Comentario){
-
-
        await Firebase.db.collection("Comentarios").add(Comentario).then(()=>
          Swal.fire({     
             icon: 'success',
@@ -270,6 +268,211 @@ async  guardarTitulo (Titulo){
 
   const consulta = await Firebase.db.collection('Paginas').doc('Titulo').set({...Titulo})
   return consulta
+},
+async buscarPorEtiquetas(Tag){
+  try {
+    const objeto ={id:Tag.id,descripcion:Tag.descripcion}
+    const consulta = await Firebase.db.collection("paper")
+    .where("etiquetas", "array-contains",objeto).get().then(doc=>{
+         let query=doc.docs.map(resp=>{   
+                return resp.data()
+         })
+          return query
+    })
+    return consulta
+  } catch (error) {
+    console.log(error)
+  }
+ 
+},
+
+async guardarTopicoInformacion(TopicoInformacion){
+ let mensaje=''
+  try {
+ const consulta= await Firebase.db.collection('TopicoInformacion').add(TopicoInformacion)
+ mensaje='Informacion guardada'
+ } catch (error) {
+   mensaje='Error al guardar'
+ }
+
+},
+
+async guardarRegion(Region){
+ let mensaje=''
+ let state=null
+  try {
+ const consulta= await Firebase.db.collection('Region').add(Region)
+   state={...Region,id:consulta.id}
+ mensaje='Informacion guardada'
+ 
+ } catch (error) {
+   mensaje='Error al guardar'
+ }
+ return state
+},
+async llamarTopicos (){
+  let lista =[]
+  try {
+    await Firebase.db.collection('TopicoInformacion').get().then((doc)=>{
+
+      lista= doc.docs.map((doc)=>{
+          return {...doc.data(),id:doc.id}
+      })
+     
+    })
+    console.log(lista)
+    return lista
+    
+  } catch (error) {
+
+    console.log(error)
+    
+  }
+} ,
+async llamarRegion (){
+  let lista =[]
+  try {
+    await Firebase.db.collection('Region').get().then(doc=>{
+      lista = doc.docs.map(doc=>{
+        return {...doc.data(),id:doc.id}
+      })
+    })
+    return lista
+    
+  } catch (error) {
+    console.log(error)
+  }
+}, 
+async noRepeatRegion (region){
+  let existe=false 
+  let lista=[]
+  try {
+    console.log(region.descripcion.trim())
+    await Firebase.db.collection("Region").where("descripcion", "==", region.descripcion.trim(  )).get().then(doc=>{
+      lista = doc.docs.map(doc=>{
+        return doc.data()
+      })
+      if(lista.length>0){
+        existe=true
+      }
+    })
+  } catch (error) { 
+    console.log(error)
+  }
+  return existe
+},
+
+async noRepeatInfo (region){
+  let existe=false 
+  let lista=[]
+  try {
+    console.log(region.descripcion.trim())
+    await Firebase.db.collection("TopicoInformacion").where("descripcion", "==", region.descripcion.trim(  )).get().then(doc=>{
+      lista = doc.docs.map(doc=>{
+        return doc.data()
+      })
+      console.log(lista)
+      if(lista.length>0){
+        existe=true
+      }
+    })
+  } catch (error) { 
+    console.log(error)
+  }
+  return existe
+},
+async editarTopicoInformacion(state){
+  let editado=false
+  try {
+    await Firebase.db.collection('TopicoInformacion').doc(state.id).update(state);
+    editado=true
+  } catch (error) {
+    console.log(error)
+    
+  }
+  return editado
+},
+async borrarInfo(state){
+  let borrado= false
+  try {
+    await Firebase.db.collection('TopicoInformacion').doc(state.id).delete()
+    borrado=true
+  } catch (error) {
+    console.log(error)
+  }
+  return borrado
+},
+async editarRegion(state){
+  let editado=false
+  try {
+    await Firebase.db.collection('Region').doc(state.id).update(state);
+    editado=true
+  } catch (error) {
+    console.log(error)
+    
+  }
+  return editado
+},
+async borrarRegion(state){
+  let borrado= false
+  try {
+    await Firebase.db.collection('Region').doc(state.id).delete()
+    borrado=true
+  } catch (error) {
+    console.log(error)
+  }
+  return borrado
+}
+// retornar etiqueta  
+,
+async retornarEtiqueta(id){
+  
+  const etiqueta= await Firebase.db.collection('etiquetas').doc(id).get().then(doc=>{
+   console.log('aqui va el doc')
+     return({...doc.data(),id:doc.id})
+  })
+  console.log(etiqueta)
+  return etiqueta
+} ,
+async retornarEtiquetaDescripcion(descripcion){
+  let lista=[]
+  console.log(descripcion)
+  const etiqueta= await Firebase.db.collection("etiquetas").where("descripcion", "==", descripcion).get().then(doc=>{
+  lista= doc.docs.map(tag=>{
+     return {...tag.data(),id:tag.id}
+   })
+   return lista
+  })
+  console.log(etiqueta)
+  return etiqueta[0]
+} 
+// borrar paper de la base de datos 
+,
+async borrarPaper (paper){
+try {
+  await Firebase.db.collection('paper').doc(paper.id).delete().then(()=>{
+    const etiquetas=paper.etiquetas
+    etiquetas.map(async(doc)=>{
+      await Firebase.db.collection('etiquetas').doc(doc.id).collection('paper').doc(paper.id).delete().then(()=>{console.log('borrado')})
+    })
+  })
+} catch (error) {
+  console.log(error)
+}
+},
+async retornarTodosPaper(){
+  let lista=[]
+  try {
+    await Firebase.db.collection('paper').get().then((doc)=>{
+      lista=doc.docs.map((doc)=>{
+          return {...doc.data(),id:doc.id}
+      })
+    })
+    
+  } catch (error) {
+    console.log(error)
+  }
+  return lista
 }
 
 

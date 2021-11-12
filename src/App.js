@@ -26,6 +26,7 @@ import Recientes from './Paginas/Recientes'
 import WhyPag from './Paginas/WhyPag'
 import WhyPagAdmin from './Paginas/admin/WhyPagAdmin'
 import Titulo from './Paginas/admin/Titulo/Titulo'
+import NavegacionEtiquetas from './Paginas/admin/Etiquetas/Navegacion'
 
 const estilos =makeStyles((theme)=>({
 
@@ -130,7 +131,7 @@ useEffect(() => {
                 <Route  path="/tag/:valor"  render={(props)=>(<EtiquetasDos {...props}  valorados={valorados} recientes={recientes} />)}></Route>
                 <Route  path="/buscar/:papermatch"  render={(props)=>(<Inicio {...props}  valorados={valorados}  recientes={recientes} />)} ></Route> 
                 <Route  path="/search"  render={(props)=>(<Search {...props}  valorados={valorados}  recientes={recientes} />)} ></Route> 
-                <Route  path="/adminetiquetas"  render={(props)=>(<AdmEtiquetas {...props}   />)} ></Route>
+                <Route  path="/adminetiquetas"  render={(props)=>(<NavegacionEtiquetas {...props}   />)} ></Route>
                 <Route  path="/admin" render={(props)=>(<Login {...props}  />)} ></Route>
                 <Route  path="/about" component={Nosotros}></Route>
                 <Route  path="/listusuarios" component={Usuarios}></Route>
