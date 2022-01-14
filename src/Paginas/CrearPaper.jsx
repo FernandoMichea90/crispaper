@@ -76,26 +76,10 @@ const useStyles=makeStyles((theme)=>({
         margin:"5px"
     },
     margenButton:{
-
         margin:"20px 0px",
-       
-
-
-
-
-
-
     },margenButtonDos:{
-
         margin:"20px 0px",
-        padding:"0px"
-       
-
-
-
-
-
-        
+        padding:"0px"    
     },
     divPdf:{
     border: "1px solid rgba(0, 0, 0, 0.3)",
@@ -132,13 +116,9 @@ const useStyles=makeStyles((theme)=>({
         }
    
         
-    
+
 }))
-
-
-
 const CrearPaper = (props) => {
-
     const usuario=useContext(UsuarioContext)
     const clases=useStyles()
     const [imagen,setimagen]=useState({file:null,imagen:null})
@@ -158,11 +138,9 @@ const CrearPaper = (props) => {
         etiquetas:[],
         titulo:"",
         resumen:""
-
     })
     const [id, setid] = useState()
     const [errores, seterrores] = useState({
-
         titulo:null,
         resumen:null,
         pdf:null
@@ -170,12 +148,8 @@ const CrearPaper = (props) => {
     })
     const [pdf,setpdf]=useState({file:null,pdf:null})
     const [link, setLink] = useState()
-
-
  //seleccionar el archivo 
     const seleccionarArchivo=imagen=>{
-       
-            
             const agregarimg=imagen.target.files[0]
             console.log(agregarimg)  
             if(agregarimg!=undefined){
@@ -183,11 +157,7 @@ const CrearPaper = (props) => {
                 imagen:agregarimg,
                 file:URL.createObjectURL(agregarimg)
             })}
-
-
-    }    
-
- 
+    }     
 //seleccionar el pdf 
     const seleccionarPdf=pdf=>{
 
@@ -207,11 +177,7 @@ const CrearPaper = (props) => {
             }
 
 }
-
-                    //remover etiqueta 
-
- 
-
+ //remover etiqueta 
 //manejar snapshot 
 
 function manejarSnapshot(snapshot){
@@ -245,37 +211,21 @@ const llamarEtiquetas=()=>{
 // validaciones 
 
 // primera validacion de vacio 
-
-
 const validacionuno=()=>{
-  
     let prueba={}
-
     //validar errores 
-
     if(paper.titulo==""){
             prueba.titulo="el titulo es requerido"
     }
-
-
     if(paper.resumen==""){
             prueba.resumen="el resumen es requerido"
     }
-
-  
     if(pdf.file==null &&  link==undefined){
         prueba.pdf=" debe subir un archivo .pdf o agregar una URL"
 }
-
-   
   return prueba
-
-
 }
-
-
 //nuevo paper 
-
 const NuevoPaper=async()=>{
     setcargando(true)
     set_mensaje_informativo("...verificando informacion")
@@ -295,10 +245,7 @@ const NuevoPaper=async()=>{
                 icon: 'success',
                 title: "Guardado!",
                 confirmButtonColor: '#21cbce',
-                                      
                 
-                
-              
               }).then(()=>{
                   props.history.push("/")
                   set_mensaje_informativo("")
@@ -315,44 +262,18 @@ const NuevoPaper=async()=>{
                 timer: 1500
               })
               set_mensaje_informativo("")
-            
-
         }
-
     }
-   
-
-
-  
-
-
     // agregar paper 
-
-
-
-
-
     /*
-
-
       paper.subida=new Date()
     const id = await firebase.db.collection("paper").add(paper).then((docRef) => {
         //console.log("Document written with ID: ", docRef.id);
 
         return docRef.id
     })
-
-   
-
- 
-    
-
-
     const pdf =await subirPDF(id)
-     const img =await subirImagen(id)
-  
- 
-     
+     const img =await subirImagen(id)   
      firebase.db.collection("paper").doc(id).update({
             imagen:img,
             pdf:pdf
@@ -368,55 +289,29 @@ const NuevoPaper=async()=>{
         // ver los valores de paper 
       
 // retornar al inicio 
-
-
-  
-    */
-  
+    */  
    setcargando(false)
-  
-
-
 }
-
-
 // ingresar paper  despues de las validacion 
 const IngresarPaper=async()=>{
-
- 
 try {
-
-
     //fecha
     paper.subida=new Date()
     //titulo para la busqueda 
     paper.busqueda=paper.titulo.toLocaleLowerCase()
-
-
-
     //crear paper y retornar el id 
     const id = await firebase.db.collection("paper").add(paper).then((docRef) => {
         //console.log("Document written with ID: ", docRef.id);
         return docRef.id
     })
-
     set_mensaje_informativo("...guardando imagen...")
     const img =await subirImagen(id)
-    
     set_mensaje_informativo("...guardando PDF...")
     const pdf =await subirPDF(id)
-    
-
     set_mensaje_informativo("...creando paper...")
-
-               
-                const tagdos=tag.map(valor=>{
-
+    const tagdos=tag.map(valor=>{
                        return {id:valor.id,descripcion:valor.descripcion} 
-
                 })
-
-
                 firebase.db.collection("paper").doc(id).update({
                         imagen:img,
                         pdf:pdf,
@@ -449,38 +344,19 @@ try {
                              firebase.db.collection("etiquetas").doc(valor.id).collection("paper").doc(paper.id).set(paper)           
 
                     })
-
-                    set_mensaje_informativo("...Finalizando")
-            
-                
-            
-
-      
-return true 
-    
+                    set_mensaje_informativo("...Finalizando")    
+return true     
 } catch (error) {
-   
+  
     return false 
 }
-
-    
-
-
-  
-    
-
 }
 
-
-
-const AddRemovePaperTag=async(tagdos,paperdos,tag)=>{
-
-     
+const AddRemovePaperTag=async(tagdos,paperdos,tag)=>{     
     firebase.db.collection("etiquetas").doc(tagdos.id).collection("paper").doc(paperdos.id).set({...paperdos,
                    etiquetas:tag
                  })  
     
-
     // await firebase.db.collection("etiquetas").where("descripcion", "==", tagdos).get().then(valor=>
     //     {
     //     const prueba =valor.docs.map(objeto=>{return{id:objeto.id,...objeto.data()}})    
@@ -494,14 +370,7 @@ const AddRemovePaperTag=async(tagdos,paperdos,tag)=>{
         
     //     )
     }
-
-        
-
-
-
   // actualizar paper
-
-
   const ActualizarPaper=async()=>{
 
     setcargando(true)
@@ -1034,7 +903,7 @@ const editorcreate= async (id)=>{
             <div>                   
             </div>
 
-            <Grid container>
+            <Grid contaiginer>
                 <Grid xs={4}  sm={2} md={4}>
 
                 </Grid>

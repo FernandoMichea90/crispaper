@@ -96,7 +96,7 @@ tamanoIconoMargen: {
     marginTop: '15px',
     borderRadius:'100%',
     backgroundSize: '260px auto',
-    backgroundRepeat: 'no-repeat',
+backgroundRepeat: 'no-repeat',
     backgroundPosition: '50%',
     overflow: 'hidden',
     border: '1px solid #00000033'

@@ -18,19 +18,6 @@ import Swal from 'sweetalert2'
 
 
 function Copyright() {
-
-
-    
-
-
-
-
-
-
-
-
-
-
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
