@@ -72,7 +72,7 @@ export default function BasicTable(props) {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Titulo</TableCell>
+            <TableCell style={{width:'600px'}}>Titulo</TableCell>
             {state.region&&
              <>
             <TableCell align="center">Region</TableCell>

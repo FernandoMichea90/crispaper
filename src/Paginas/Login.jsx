@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     height: '92vh',
 
   "& body":{
-    backgroundColor:"#ffffff"
+    backgroundColor:"#ffffff!important"
   },
    
 

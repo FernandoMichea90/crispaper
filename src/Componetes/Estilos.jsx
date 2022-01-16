@@ -220,7 +220,7 @@ botonRojoAlert:{
  },
  CajaBusc:{
      background:'#0000000a',
-     width:'300px',
+     width:'400px',
      padding:'2px 10px',
      borderRadius:'17px',
      [theme.breakpoints.down("xs")]:{
@@ -229,7 +229,7 @@ botonRojoAlert:{
 
  },
  Busc:{
-     width:'246px'
+     width:'84%'
  }
 
 }))

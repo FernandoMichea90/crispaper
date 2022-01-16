@@ -17,7 +17,7 @@ import Firebase from "../../firebase/firebase"
 import BookIcon from '@material-ui/icons/Book';
 import {useHistory} from 'react-router-dom'
 import { useRef } from 'react';
-import Icono from "../../pajaro.svg"
+import Icono from "../../imagen/planetcolab.png"
 import { withRouter } from "react-router";
 import Swal from "sweetalert2"
 import FuncionesFirebase from '../../Funciones/FuncionesFirebase';
