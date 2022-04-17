@@ -31,6 +31,14 @@ const  estilos = makeStyles((theme)=>({
         width:'100%',
         height:'80px'
     },
+    divMarginBuscador:{
+
+        margin:'0px 66px',
+        [theme.breakpoints.down('md')]:{
+            margin:'0px 0px',
+        }
+
+    },
     
 divImagen:{
     height:"274px",
@@ -63,7 +71,7 @@ const Prueba =()=> (
 const Eligeetiqueta = (props) => {
 
     const clases =estilos()
-    const clasesDos=EstilosDos()
+    const clasesGenerales=EstilosDos()
     let test =Prueba()
 
 
@@ -168,14 +176,14 @@ const switchColor=(contador,doc)=>{
     
     return (
         <div>
-            <div>
+            <div className={clases.divMarginBuscador}>
             <Grid container> 
-            <Grid xs={1}></Grid>
-            <Grid xs={10}>   
+           
+            <Grid xs={12}>   
             <Titulo></Titulo>
             <Buscador buscador={buscador} filtrado={filtrado} />
             </Grid>
-            <Grid xs={1}></Grid>
+           
             </Grid>
             </div>
 
@@ -199,26 +207,26 @@ const switchColor=(contador,doc)=>{
                                 <div  className={clases.divMargin}>
                                   <Typography variant="h6" align="center">
                                 {doc.imagen?
-                                  <a className={clasesDos.linkImagen} onClick={()=>redirecionar(doc)}>
+                                  <a className={clasesGenerales.linkImagen} onClick={()=>redirecionar(doc)}>
                                 <div className={clases.divImagen}> 
                                                             
                                 <img src={doc.imagen} style={{height:"100%"}}/>
-                                <div className={clasesDos.negroTransparente} style={{background:`rgb(0 0 0 / ${doc.transparencia}%)` }}>   
+                                <div className={clasesGenerales.negroTransparente} style={{background:`rgb(0 0 0 / ${doc.transparencia}%)` }}>   
                                 </div>
-                                <div className={clasesDos.negroTexto}>
+                                <div className={clasesGenerales.negroTexto}>
                                 {doc.descripcion}
                                 </div>
                                 </div>
                                  </a>
                             :
                          
-                            <a className={clasesDos.linkImagen} onClick={()=>redirecionar(doc)}>
+                            <a className={clasesGenerales.linkImagen} onClick={()=>redirecionar(doc)}>
                             <div className={clases.divImagen}> 
                                                         
                             <img src='http://localhost:3000/static/media/pajaro.7bde4732.svg' style={{height:"100%"}}/>
-                            <div className={clasesDos.negroTransparente}>   
+                            <div className={clasesGenerales.negroTransparente}>   
                             </div>
-                            <div className={clasesDos.negroTexto}>
+                            <div className={clasesGenerales.negroTexto}>
                             {doc.descripcion}
                             </div>
                             </div>

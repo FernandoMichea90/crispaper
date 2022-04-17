@@ -19,7 +19,15 @@ import FuncionesFirebase from '../../Funciones/FuncionesFirebase'
 const estilos = makeStyles((theme)=>({
   estilosDiv:{
     margin:'2px'
+  },
+  colorRojo:{
+    color:'#ff0000'
+  },
+  colorVerde:{
+    color:'#3cb371'
   }
+
+    
 }))
 
 const borrarPaper=(paper)=>{
@@ -56,6 +64,20 @@ export default function BasicTable(props) {
       quality:true,
       descripcion:true,
     });
+
+    // cortar el texto escrito en descripcion 
+
+    const recortarTexto=(descripcion)=>{
+      var nuevotexto =descripcion
+      // maximo caracter que puede tener es hasta 97 caracter 
+      if(descripcion.length>97){
+        // se corta la cadena de texto 
+        nuevotexto=descripcion.substring(0,97)
+        nuevotexto=nuevotexto.concat("...")
+        
+      }
+      return nuevotexto;
+    }
   
     const handleChange = (event) => {
       setState({ ...state, [event.target.name]: event.target.checked });
@@ -68,11 +90,11 @@ export default function BasicTable(props) {
   return (
     <div>
       <Mostrar state={state} handleChange={handleChange}  ></Mostrar>
-    <TableContainer component={Paper}>
+    <TableContainer style={{width:'100vw'}}  component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell style={{width:'600px'}}>Titulo</TableCell>
+            <TableCell align="center" style={{width:'25vw'}}>Titulo</TableCell>
             {state.region&&
              <>
             <TableCell align="center">Region</TableCell>
@@ -88,12 +110,12 @@ export default function BasicTable(props) {
            <TableCell align="center">Quality</TableCell>
               }
               {state.descripcion&&
-            <TableCell align="center">Descripcion</TableCell>
+            <TableCell align="center"  style={{width:'25vw'}}  >Descripcion</TableCell>
               }
             {usuario !==null && usuario.administrador &&
             <>
-            <TableCell align="center"><CreateIcon/></TableCell>
-            <TableCell align="center"><DeleteIcon/></TableCell>
+            <TableCell align="center"><CreateIcon className={clases.colorVerde}/></TableCell>
+            <TableCell align="center"><DeleteIcon className={clases.colorRojo}/></TableCell>
             </>
             }
             </TableRow>
@@ -110,7 +132,7 @@ export default function BasicTable(props) {
               
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
+              <TableCell   component="th" scope="row">
 
                 { row.link !== null ?
                 <a href={row.link}  target="_blank" > {row.titulo} </a>
@@ -124,27 +146,55 @@ export default function BasicTable(props) {
               {state.region && 
               <TableCell align="center">
               {row.Regiones !=undefined &&
-              row.Regiones.map(doc=>(
-                
-                <Chip className={clases.estilosDiv} label={doc.descripcion}/> 
-              ))}
+              row.Regiones.map((doc,index)=>{
+                // retornar solo una etiqueta (esto es solo un parche)
+                if(index==0)
+                {
+                  return (
+                    <Chip className={clases.estilosDiv} label={doc.descripcion}/> 
+                  ) 
+                }else{
+                  return (
+                    <></> 
+                  )
+                }
+
+             })}
               </TableCell>
               }
               {state.topicoambiental&&
               <TableCell align="center">
-              {row.etiquetas!=undefined&&row.etiquetas.map(doc=>(
+              {row.etiquetas!=undefined&&row.etiquetas.map((doc,index)=>{
+                 if(index==0)
+                 {
+                   return (
+                     <Chip className={clases.estilosDiv} label={doc.descripcion}/> 
+                   ) 
+                 }else{
+                   return (
+                     <></> 
+                   )
+                 }
+ 
                 
-                <Chip className={clases.estilosDiv} label={doc.descripcion}/> 
-              ))}
+               })}
               </TableCell>
                 }
                 {state.tipoinformacion&&
               <TableCell align="center">
               {row.TopicoInformacion !=undefined &&
-              row.TopicoInformacion.map(doc=>(
-                
-                <Chip className={clases.estilosDiv} label={doc.descripcion}/> 
-              ))}
+              row.TopicoInformacion.map((doc,index)=>{
+                if(index==0)
+                {
+                  return (
+                    <Chip className={clases.estilosDiv} label={doc.descripcion}/> 
+                  ) 
+                }else{
+                  return (
+                    <></> 
+                  )
+                }
+              })}
               </TableCell>
               }
               {state.quality&&
@@ -154,17 +204,17 @@ export default function BasicTable(props) {
               }
           {state.descripcion &&
               <TableCell align="center">
-                {row.resumen}
+                {recortarTexto(row.resumen)}
               </TableCell>}
               {usuario !==null && usuario.administrador &&
               <>
               <TableCell align="right">
-              <IconButton aria-label="create" className={clases.margin}>
+              <IconButton aria-label="create" className={clases.margin +' '+clases.colorVerde}>
                 <CreateIcon onClick={()=>history.push(`/editarpaper/${row.id}`)} />
               </IconButton>
               </TableCell>
               <TableCell align="right"> 
-              <IconButton aria-label="delete" onClick={()=>{borrarPaper(row)}} className={clases.margin}>
+              <IconButton aria-label="delete" onClick={()=>{borrarPaper(row)}} className={clases.margin +" "+clases.colorRojo}>
                 <DeleteIcon  />
               </IconButton>
               </TableCell>

@@ -230,6 +230,10 @@ botonRojoAlert:{
  },
  Busc:{
      width:'84%'
+ }, 
+ // color gray para texto 
+ colorGris:{
+     color:'#808080'
  }
 
 }))

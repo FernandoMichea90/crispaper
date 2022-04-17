@@ -2,6 +2,7 @@ import React ,{useState,useEffect} from 'react'
 import FuncionesFirebase from '../../Funciones/FuncionesFirebase'
 import {Typography} from '@material-ui/core'
 import Estilos from '../Estilos'
+
 const Titulo = () => {
 
     const estilos = Estilos()
@@ -31,7 +32,7 @@ useEffect(async() => {
              <Typography className={estilos.tituloTitulo} align="left" variant="h4">
                  {titulo.titulo}
              </Typography>
-             <Typography align="left" variant="h6">
+             <Typography align="left" variant="h6" className={estilos.colorGris}>
                  {titulo.descripcion}
              </Typography>
         </div>

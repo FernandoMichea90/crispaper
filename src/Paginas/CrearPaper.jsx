@@ -903,14 +903,10 @@ const editorcreate= async (id)=>{
             <div>                   
             </div>
 
-            <Grid contaiginer>
+            <Grid container>
                 <Grid xs={4}  sm={2} md={4}>
-
                 </Grid>
-
                 <Grid xs={12} sm={8} md={4}>
-
-
                         {cargando?
                         <div>                 
                         <div className={clases.divCircular} >

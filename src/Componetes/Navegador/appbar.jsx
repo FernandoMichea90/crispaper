@@ -195,10 +195,12 @@ const useStyles = makeStyles((theme) => ({
 
 },
 estiloIcono:{
-  height:"85px",
-  padding:"0px 0px 0px"
+  height: '56px',
+  padding:'0px 0px 0px',
+  margin: '10px 0px',
 
 },
+
   divlista:{
 
     position: "absolute",
@@ -386,7 +388,6 @@ const dejarUnaColaboracion=async()=>{
 
           FuncionesFirebase.IngresarColaboracion(Comentario)
         }
-
 
 
       }
