@@ -12,6 +12,7 @@ box:{
 ,divImagen:{
     position:'absolute',
     height:'74px',
+    width:'224px',
     right:'50px',
     top:'26px',
     [theme.breakpoints.down("sm")]:{
