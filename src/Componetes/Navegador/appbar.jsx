@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
     "& .botonCollaborate": {
       color: "#ffffff",
-      background: theme.palette.error.main+" !important",
+      background: theme.palette.error.main + " !important",
       fontSize: '12px',
       marginLeft: '5px',
 
@@ -322,7 +322,7 @@ const useStyles = makeStyles((theme) => ({
 const ButtonAppBar = (props) => {
 
   // color rojo 
-  const rojoColor=red["a700"]
+  const rojoColor = red["a700"]
   const history = useHistory()
   const [url, seturl] = useState(history.location.pathname)
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -786,7 +786,15 @@ d
             {!appBar ?
 
               <>
-                <Link href='/latest' className={classes.linkclass}>
+              <Link href="/about" className={classes.linkclass}>
+                  <div className="divHover">
+                    <Typography align="center" >
+                      Nosotros
+                    </Typography>
+                    <div className="subrayado"></div>
+                  </div>
+                </Link>
+                {/* <Link href='/latest' className={classes.linkclass}>
                   <div className="divHover">
                     <Typography >
 
@@ -795,7 +803,7 @@ d
                     </Typography>
                     <div className="subrayado"></div>
                   </div>
-                </Link>
+                </Link> */}
                 <Link href="/popular" className={
                   classes.linkclass}>
                   <div className="divHover">
@@ -806,6 +814,17 @@ d
                     <div className="subrayado"></div>
                   </div>
                 </Link>
+
+                <Link className={
+                  classes.linkclass}>
+                  <div className="divHover">
+                    <Typography >
+
+                      Soluciones
+                    </Typography>
+                  </div>
+                </Link>
+
 
 
 
@@ -835,26 +854,7 @@ d
 
               <>
 
-                <Link href="/about" className={classes.linkclass}>
-                  <div className="divHover">
-                    <Typography align="center" >
-
-                      About
-                      {/* <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                      endIcon={<AddIcon></AddIcon>}
-                      variant="contained"
-                      color="primary"
-                  >
-                      mas
-                  </Button> */}
-
-                    </Typography>
-                    <div className="subrayado"></div>
-                  </div>
-                </Link>
+                
                 {/* <Link href="/why" className={classes.linkclass}>
                   <div className="divHover">
                     <Typography align="center" >
