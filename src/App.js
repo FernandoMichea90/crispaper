@@ -103,13 +103,7 @@ const mejorvalorados=()=>{
       
 }
 
-useEffect(() => {
 
-  console.log("aleta")
-
-  // alert(history.location.pathname)
- 
-}, [])
 
   
   return (
@@ -147,7 +141,7 @@ useEffect(() => {
                 {/* /<Route exac path="/"  render={(props)=>(<Inicio {...props}  textoGeneral={textoGeneral}  valorados={valorados} recientes={recientes} />)} ></Route>  */}
                 <Route  path="/information/:id?fbclid"  render={(props)=>(<Eligeetiqueta {...props}  valorados={valorados} recientes={recientes} />)} ></Route>
                 <Route  path="/admintitulo"  render={(props)=>(<Titulo  {...props}  valorados={valorados} recientes={recientes} />)} ></Route>
-                <Route  path="/"  render={(props)=>(<Eligeetiqueta {...props}  valorados={valorados} recientes={recientes} />)} ></Route>
+                <Route exac path="/"  render={(props)=>(<Recientes {...props}  textoGeneral={textoGeneral}  valorados={valorados} recientes={recientes} />)} ></Route> 
 
           </Switch>
         </div>

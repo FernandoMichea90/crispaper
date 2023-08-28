@@ -535,16 +535,7 @@ setcargando(false)
         
             <div className={clases.root} style={{marginTop:"88px"}} >
         
-                <div className={clases.divTag} >
-                        <Typography variant="h3" align="center"
-                                className={clases.texto}
-                        >
-                            
-                            Environmental Topics
-                            </Typography> 
 
-
-                </div>  
 
                 {
                     !cargando?

@@ -22,7 +22,11 @@ const theme=createMuiTheme({
                 main: "#2196f3",
                 dark: "#1976d2"
 
+            },
+            error:{
+                main:"#dd2c00"
             }
+            
         },
         // typography:{
         //     fontFamily:"oswald",
