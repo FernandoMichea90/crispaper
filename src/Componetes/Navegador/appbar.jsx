@@ -17,7 +17,9 @@ import Firebase from "../../firebase/firebase"
 import BookIcon from '@material-ui/icons/Book';
 import { useHistory } from 'react-router-dom'
 import { useRef } from 'react';
-import Icono from "../../pajaro.svg"
+// import Icono from "../../pajaro.svg"
+import Icono from "../../planet_colab2.png"
+
 import { withRouter } from "react-router";
 import Swal from "sweetalert2"
 import FuncionesFirebase from '../../Funciones/FuncionesFirebase';
@@ -117,9 +119,10 @@ const useStyles = makeStyles((theme) => ({
 
   search: {
     position: 'relative',
-    background: "#ffffff",
+    background: "#cfcfcf3d",
     border: "1px solid #ccc",
-    borderRadius: theme.shape.borderRadius,
+    borderRadius: "22px",
+    height:"45px",
     [theme.breakpoints.down("md")]: {
 
       padding: "10px 0px 10px 0px",
@@ -196,7 +199,7 @@ const useStyles = makeStyles((theme) => ({
 
   },
   estiloIcono: {
-    height: "85px",
+    height: "45px",
     padding: "0px 0px 0px"
 
   },
@@ -273,7 +276,7 @@ const useStyles = makeStyles((theme) => ({
     background: "#ffffff"
   },
   input: {
-    marginLeft: "5px",
+    marginLeft: "15px",
     [theme.breakpoints.down("md")]: {
       width: "85%"
     }
@@ -501,11 +504,11 @@ const ButtonAppBar = (props) => {
 
     const { value: text } = await Swal.fire({
       input: 'textarea',
-      title: 'Suggestion? Comments? Question?',
-      inputPlaceholder: 'Please enter your feedback here',
+      title: 'Sugerencias-Comentarios-Preguntas?',
+      inputPlaceholder: 'Por favor escribe tu feedback aquí',
       confirmButtonColor: '#21cbce',
-      denyButtonText: `Cancel`,
-      confirmButtonText: `Send`,
+      denyButtonText: `Cancelar`,
+      confirmButtonText: `Enviar`,
       showDenyButton: true,
     })
 
@@ -815,7 +818,7 @@ d
                   </div>
                 </Link>
 
-                <Link className={
+                <Link onClick={() => abrirVentana()} className={
                   classes.linkclass}>
                   <div className="divHover">
                     <Typography >
@@ -896,7 +899,7 @@ d
             </div>
             </Link> */}
 
-                <Button onClick={() => abrirVentana()} className="botonCollaborate" variant="contained"
+                <Button onClick={() => dejarUnComentario()} className="botonCollaborate" variant="contained"
 
                   startIcon={<PublicIcon />}
 
