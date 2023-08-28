@@ -129,6 +129,9 @@ const estilos = makeStyles((theme) => ({
                 fontSize: "27px"
         }
         ,
+        spanGeneral:{
+                color:theme.palette.error.main
+        },
         divTituloGeneral: {
                 margin: "0px auto",
                 width: "85vw"
@@ -766,7 +769,7 @@ const Populares = (props) => {
                                 <Grid container>
                                         <Grid xs={12} md={3} lg={6}>
                                                 <Typography variant="h4" className={clases.tituloGeneral}>
-                                                        {tituloGeneral}
+                                                        Informacion ambiental de <span className={clases.spanGeneral}> calidad  confiable</span> 
                                                 </Typography>
                                         </Grid>
                                 </Grid>
