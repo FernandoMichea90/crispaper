@@ -33,10 +33,6 @@ class Firebase{
     async registrar(user){
     
        const  {nombre,correo,password}=user
-             
-
-
-   
     const nuevoUsuario=await this.auth.createUserWithEmailAndPassword(correo,password);
         return await nuevoUsuario.user.updateProfile( {
             displayName:nombre 

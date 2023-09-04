@@ -1070,6 +1070,11 @@ d
             handleClose()
           }}>Administrar Etiquetas</MenuItem>
           <MenuItem onClick={() => {
+            history.push("/admintipos")
+            setmenu(false)
+            handleClose()
+          }}>Administrar Tipos</MenuItem>
+          <MenuItem onClick={() => {
             history.push("/adminwhy")
             setmenu(false)
             handleClose()

@@ -166,6 +166,16 @@ const CrearPaper = (props) => {
     })
     const [pdf, setpdf] = useState({ file: null, pdf: null })
     const [link, setLink] = useState()
+    // open modal tipo 
+    const [openModalTipo,setOpenModalTipo]=useState(false)
+    // abrir modal tipo 
+    const handleOpenModalTipo=()=>{
+        setOpenModalTipo(true)
+    }
+    // Cerrar Modal Tipo 
+    const handleCloseOpenModalTipo=()=>{
+        setOpenModalTipo(false)
+    }
 
     // onChange Utilidad 
     const handleChangeUtilidad = (event, newValue) => {
@@ -177,7 +187,6 @@ const CrearPaper = (props) => {
 
 
         const agregarimg = imagen.target.files[0]
-        console.log(agregarimg)
         if (agregarimg != undefined) {
             setimagen({
                 imagen: agregarimg,
@@ -191,11 +200,6 @@ const CrearPaper = (props) => {
 
     //seleccionar el pdf 
     const seleccionarPdf = pdf => {
-
-
-
-
-
         const agregarpdf = pdf.target.files[0]
         if (agregarpdf != undefined) {
 
@@ -206,20 +210,9 @@ const CrearPaper = (props) => {
 
             setLink(null)
         }
-
-    }
-
-    //remover etiqueta 
-
-    const removerEtiqueta = (e) => {
-
-
-        //setetiquetas(etiquetas.filter(item=>item.descripcion!==e.descripcion))
-
     }
 
     //manejar snapshot 
-
     function manejarSnapshot(snapshot) {
         const lista = snapshot.docs.map(doc => {
             return {
@@ -229,14 +222,10 @@ const CrearPaper = (props) => {
         })
         setetiquetas(lista)
     }
-
     //llamar etiquetas
     const llamarEtiquetas = () => {
         firebase.db.collection("etiquetas").orderBy("descripcion").onSnapshot(manejarSnapshot)
-
     }
-
-
     // validaciones 
 
     // primera validacion de vacio 
@@ -1293,7 +1282,7 @@ const CrearPaper = (props) => {
 
                             <Typography align="center" >
 
-                                <AutocompletarTres etiquetas={etiquetas} tag={tag} settag={settag} removerEtiqueta={removerEtiqueta} llamarEtiquetasDos={llamarEtiquetas}
+                                <AutocompletarTres etiquetas={etiquetas} tag={tag} settag={settag}  llamarEtiquetasDos={llamarEtiquetas}
 
                                 ></AutocompletarTres>
 
@@ -1301,8 +1290,13 @@ const CrearPaper = (props) => {
 
 
                             <Typography align="center" >
-                                <Etiqueta_Tipo/>               
-                                <Modal_Etiqueta_Tipo/>                
+                                <Etiqueta_Tipo
+                                    handleOpenModalTipo={handleOpenModalTipo}
+                                />               
+                                <Modal_Etiqueta_Tipo
+                                    openModalTipo={openModalTipo}
+                                    handleCloseOpenModalTipo={handleCloseOpenModalTipo}
+                                />                
                             </Typography>
 
 

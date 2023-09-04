@@ -11,6 +11,7 @@ import Etiquetas from './Paginas/Etiquetastres'
 import EtiquetasDos from './Paginas/Etiquetascuatro'
 import {useHistory} from 'react-router-dom'
 import AdmEtiquetas from './Paginas/AdmEtiquetas'
+import AdmTipos from './Paginas/AdmTipos'
 import CrearCuenta from './Paginas/CrearCuenta'
 import Nosotros from '../src/Paginas/Nosotros'
 import Search from '../src/Paginas/Search'
@@ -125,6 +126,7 @@ const mejorvalorados=()=>{
                 <Route  path="/buscar/:papermatch"  render={(props)=>(<Inicio {...props}  valorados={valorados}  recientes={recientes} />)} ></Route> 
                 <Route  path="/search"  render={(props)=>(<Search {...props}  valorados={valorados}  recientes={recientes} />)} ></Route> 
                 <Route  path="/adminetiquetas"  render={(props)=>(<AdmEtiquetas {...props}   />)} ></Route>
+                <Route  path="/admintipos"  render={(props)=>(<AdmTipos {...props}   />)} ></Route>
                 <Route  path="/admin" render={(props)=>(<Login {...props}  />)} ></Route>
                 <Route  path="/about" component={Nosotros}></Route>
                 <Route  path="/listusuarios" component={Usuarios}></Route>
