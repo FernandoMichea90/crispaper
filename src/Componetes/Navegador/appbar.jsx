@@ -818,7 +818,15 @@ d
                   </div>
                 </Link>
 
-                <Link onClick={() => abrirVentana()} className={
+                <Link 
+                  onClick={() => {
+                    {
+                      handleClose()
+                      abrirCerrarMenu()
+                      history.push("/why")
+                    }
+                  }}
+                 className={
                   classes.linkclass}>
                   <div className="divHover">
                     <Typography >
@@ -1231,8 +1239,18 @@ container
                   }
                 }} className={classes.linkList} >
                   <Typography className={classes.linkLi} align="center" variant="subtitle1">
-                    About
-
+                    Nosotros
+                  </Typography>
+                </Link>
+                <Link onClick={() => {
+                  {
+                    handleClose()
+                    abrirCerrarMenu()
+                    history.push("/why")
+                  }
+                }} className={classes.linkList} >
+                  <Typography className={classes.linkLi} align="center" variant="subtitle1">
+                    Soluciones
                   </Typography>
                 </Link>
                 <Link onClick={() => dejarUnComentario()} className={classes.linkList} >

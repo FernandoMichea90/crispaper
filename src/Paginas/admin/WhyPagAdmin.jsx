@@ -6,12 +6,6 @@ import FuncionesFirebase from '../../Funciones/FuncionesFirebase'
 import Swal from 'sweetalert2'
 import Cargando from '../../Componetes/Cargando'
 
-
-
-
-
-
-
 const WhyPagAdmin = (props) => {
     const estilos=Estilos()
     const [cargando, setcargando] = useState(true)
@@ -29,8 +23,17 @@ const WhyPagAdmin = (props) => {
 const armarLista=async()=>{
       let listaComp=[]
       let compUno=await FuncionesFirebase.pedirComponenteUno()
+      if(!compUno){
+            compUno={titulo:'',descripcion:'',foto:''}
+        }
       let compDos=await FuncionesFirebase.pedirComponenteDos()
+        if(!compDos){
+            compDos={titulo:'',descripcion:'',foto:''}
+        }   
       let compTres=await FuncionesFirebase.pedirComponenterTres()
+        if(!compTres){
+            compTres={titulo:'',descripcion:'',foto:''}
+        }   
       listaComp.push(compUno,compDos,compTres)
       setcomponente(listaComp)
       setcargando(false)
@@ -52,8 +55,13 @@ const editarCabeza=async()=>{
     }
 }
     useEffect(async() => {
-            let consultaCabeza=await FuncionesFirebase.pedirCabeza()
+             let consultaCabeza=await FuncionesFirebase.pedirCabeza()
+             if (consultaCabeza){
              setPrincipal(consultaCabeza)
+             }
+             else{  
+                    setPrincipal({titulo:'',descripcion:''})
+             }
             //peticiones a la base de datos
             armarLista()
              //setPrincipal(prin)      
@@ -70,8 +78,6 @@ const editarCabeza=async()=>{
                 {cargando ?
                     <Cargando></Cargando>
                     :
-
-                
                     <>
                      {cargandoGuardar ?
                         <Cargando></Cargando>

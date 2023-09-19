@@ -20,10 +20,7 @@ import BotonMenu from '../Componetes/Tarjeta/BotonMenu'
 import BotonFlotante from '../Componetes/BotonFlotante';
 import Titulo from '../Componetes/Titulo/Titulo';
 import CardPaper from '../Componetes/CardPaper/CardPaper';
-
-
-
-
+import FuncionesFirebase from '../Funciones/FuncionesFirebase';
 const estilos = makeStyles((theme) => ({
         button: {
                 margin: '3px'
@@ -385,17 +382,8 @@ const Populares = (props) => {
 
                                         })
 
-
-
-
                                         console.log("paso por aca ")
                                         setlistapaper(nuevalista)
-
-
-
-
-
-
                                 }
 
 
@@ -410,17 +398,12 @@ const Populares = (props) => {
         }
 
         const pedirpaper = () => {
-                //buscar si  ahi un paper en especifico
-                //
                 setcargando(true)
-                // LLAMAR A LOS PAPER
-
                 listadepaper(props.recientes, props.valorados)
         }
 
 
         const borrar = (e) => {
-
                 Swal.fire({
                         title: '¿Esta seguro que desea borrar el siguiente registro?',
                         text: `${e.titulo}`,
@@ -430,7 +413,6 @@ const Populares = (props) => {
                         denyButtonText: `Cancelar`,
                 }).then((result) => {
                         /* Read more about isConfirmed, isDenied below */
-
                         if (result.isConfirmed) {
                                 firebase.db.collection("paper").doc(e.id).delete().then(() => {
                                         let nuevaLista = []
@@ -441,10 +423,7 @@ const Populares = (props) => {
                                                 }
 
                                         })
-
-
                                         //pedirpaper()
-
                                         console.log("borrado")
 
                                 }).catch((error) => {
@@ -539,6 +518,24 @@ const Populares = (props) => {
 
         }, [props.recientes, props.paperid, props.busqueda])
 
+
+        const pedirTitulo = async () => {
+                try {
+                    const consulta = await FuncionesFirebase.pedirTitulo();
+                        setTituloGeneral(consulta.titulo)    
+                }
+                catch (error) {                 
+                  setTituloGeneral("Informacion ambiental de calidad confiable")
+                  console.log(error)
+                }
+        }
+
+
+        useEffect(() => {
+        // solicitar titulos 
+         pedirTitulo();
+
+        }, [])
 
         const funcionCorazon = (valor) => {
                 if (valor.likes > 0) {

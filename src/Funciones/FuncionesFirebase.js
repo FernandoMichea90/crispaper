@@ -193,6 +193,7 @@ async pedirComponenteUno(){
           return doc.data()
         } else{
           console.log("el documento no existe")
+          return undefined;
         }
    })
    return consulta
@@ -204,6 +205,7 @@ async pedirComponenteDos(){
         return doc.data()
       }else{
         console.log("el documento no existe")
+        return undefined;
       }
   })
   return consulta
@@ -215,6 +217,7 @@ async pedirComponenterTres(){
        return doc.data()
      }else{
        console.log("el documento no existe")
+       return undefined;
      }
 
   })
