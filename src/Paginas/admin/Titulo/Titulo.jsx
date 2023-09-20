@@ -54,7 +54,7 @@ useEffect(async() => {
             name='subtitulo'
             label='Subtitulo'
             value={titulo.subtitulo}
-            placeholder='ingrese subtitulo' 
+            placeholder='ingrese subtitulo test' 
             variant="outlined"  
             fullWidth           
             >
