@@ -757,7 +757,7 @@ const Populares = (props) => {
 
 
                                 <Grid container>
-                                        <Grid xs={12} md={3} lg={6}>
+                                        <Grid xs={12}>
                                                 <Titulo></Titulo>
                                         </Grid>
                                 </Grid>
