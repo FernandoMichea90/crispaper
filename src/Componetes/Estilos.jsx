@@ -164,7 +164,7 @@ botonRojoAlert:{
  },
  tituloTitulo:{
      fontWeight:"500",
-     fontSize:'1.9rem'
+     fontSize: "27px"
  },
  tituloMargen:{
      marginBottom:'10px'

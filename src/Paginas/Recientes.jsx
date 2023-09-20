@@ -118,8 +118,8 @@ const estilos = makeStyles((theme) => ({
                 fontSize: "27px"
         }
         ,
-        spanGeneral:{
-                color:theme.palette.error.main
+        spanGeneral: {
+                color: theme.palette.error.main
         },
         divTituloGeneral: {
                 margin: "0px auto",
@@ -513,20 +513,20 @@ const Populares = (props) => {
 
         const pedirTitulo = async () => {
                 try {
-                    const consulta = await FuncionesFirebase.pedirTitulo();
-                    console.log(consulta)
-                    setTituloGeneral(consulta.titulo)    
+                        const consulta = await FuncionesFirebase.pedirTitulo();
+                        console.log(consulta)
+                        setTituloGeneral(consulta.titulo)
                 }
-                catch (error) {                 
-                  setTituloGeneral("Informacion ambiental de calidad confiable")
-                  console.log(error)
+                catch (error) {
+                        setTituloGeneral("Informacion ambiental de calidad confiable")
+                        console.log(error)
                 }
         }
 
 
         useEffect(() => {
-        // solicitar titulos 
-         pedirTitulo();
+                // solicitar titulos 
+                pedirTitulo();
 
         }, [])
 
@@ -671,7 +671,7 @@ const Populares = (props) => {
 
         const megustaSinValidarUsuario = (valor) => {
 
-               
+
                 if (valor.click) {
                         valor.likes = valor.likes - 1
                         valor.click = false
@@ -758,82 +758,84 @@ const Populares = (props) => {
 
                                 <Grid container>
                                         <Grid xs={12}>
-                                                <Titulo></Titulo>
+                                                <Typography variant="h4" className={clases.tituloGeneral}>
+                                                        Informacion ambiental de <span className={clases.spanGeneral}> calidad  confiable</span>
+                                                </Typography>
                                         </Grid>
                                 </Grid>
                         </div>
 
                         <Grid container>
                                 <Grid xs={12}>
-                         {
-                                cargando ?
-                                        <div className={clases.divCircular} >
-                                                <CircularProgress className={clases.circular}></CircularProgress>
-                                        </div>
-                                        : <div>
-                                        {listapaper.length == 0 ?
-                                                <Typography className={clases.
-                                                        textNoDisponible
-                                                } align="center" variant="h4">
-                                                        No hay registros
-                                                </Typography>
+                                        {
+                                                cargando ?
+                                                        <div className={clases.divCircular} >
+                                                                <CircularProgress className={clases.circular}></CircularProgress>
+                                                        </div>
+                                                        : <div>
+                                                                {listapaper.length == 0 ?
+                                                                        <Typography className={clases.
+                                                                                textNoDisponible
+                                                                        } align="center" variant="h4">
+                                                                                No hay registros
+                                                                        </Typography>
 
 
-                                                :
+                                                                        :
 
-                                                <div>
-                                                {
+                                                                        <div>
+                                                                                {
 
-                                                listapaper.map((valor,key) => (
-                                                          <CardPaper key={key} 
-                                                          valor={valor} 
-                                                          megustaSinValidarUsuario={megustaSinValidarUsuario} 
-                                                          buscarChips={buscarChips} 
-                                                          usuario={usuario} 
-                                                          funcionCorazon={funcionCorazon}
-                                                          setlistapaper={setlistapaper}
-                                                          borrar={borrar}
-                                                          />  
-                               
-                                                ))
-                                                }
+                                                                                        listapaper.map((valor, key) => (
+                                                                                                <CardPaper key={key}
+                                                                                                        valor={valor}
+                                                                                                        megustaSinValidarUsuario={megustaSinValidarUsuario}
+                                                                                                        buscarChips={buscarChips}
+                                                                                                        usuario={usuario}
+                                                                                                        funcionCorazon={funcionCorazon}
+                                                                                                        setlistapaper={setlistapaper}
+                                                                                                        borrar={borrar}
+                                                                                                />
 
-                                                </div>
-                                        }
+                                                                                        ))
+                                                                                }
 
-                                        {cargandodos ?
+                                                                        </div>
+                                                                }
 
-                                                <div className={clases.divCircular} >
-                                                        <CircularProgress className={clases.circular}></CircularProgress>
-                                                </div>
+                                                                {cargandodos ?
 
-
-
-                                                :
-
-                                                // vacio==true &&
-
-                                                <Typography align="center">
-                                                        <Button
-
-                                                                endIcon={<ExpandMoreIcon></ExpandMoreIcon>}
-                                                                variant="contained"
-                                                                className="botonVerMas"
-
-                                                                onClick={() => {
-                                                                        pedirMas()
-                                                                }} >
-                                                                See More
-
-                                                        </Button>
-                                                </Typography>}
+                                                                        <div className={clases.divCircular} >
+                                                                                <CircularProgress className={clases.circular}></CircularProgress>
+                                                                        </div>
 
 
 
+                                                                        :
+
+                                                                        // vacio==true &&
+
+                                                                        <Typography align="center">
+                                                                                <Button
+
+                                                                                        endIcon={<ExpandMoreIcon></ExpandMoreIcon>}
+                                                                                        variant="contained"
+                                                                                        className="botonVerMas"
+
+                                                                                        onClick={() => {
+                                                                                                pedirMas()
+                                                                                        }} >
+                                                                                        See More
+
+                                                                                </Button>
+                                                                        </Typography>}
 
 
 
-                                        </div>
+
+
+
+                                                        </div>
                                         }
 
 
