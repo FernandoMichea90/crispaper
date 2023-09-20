@@ -265,7 +265,7 @@ async pedirTitulo (){
       if(doc.exists){
         return doc.data()
       }else{
-        return "la informacion no existe"
+        return false;
       }} )  
       return consulta
 },

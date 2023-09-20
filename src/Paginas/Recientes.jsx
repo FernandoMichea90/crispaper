@@ -4,23 +4,15 @@ import Paper from '@material-ui/core/Paper';
 import firebase from '../firebase/firebase'
 import moment from 'moment'
 import Swal from 'sweetalert2'
-import { Chip } from '@material-ui/core'
 import "moment/locale/es"
-import SaveIcon from '@material-ui/icons/Save';
-import Basurero from '@material-ui/icons/Delete';
-import Lapiz from '@material-ui/icons/Create';
-import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import { UsuarioContext } from "../Provedores/UsuarioContext"
 import { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import CorazonLleno from "../imagen/iconos/arbolLleno.png"
-import Corazon from "../imagen/iconos/arbolVacio.png"
-import BotonMenu from '../Componetes/Tarjeta/BotonMenu'
 import BotonFlotante from '../Componetes/BotonFlotante';
-import Titulo from '../Componetes/Titulo/Titulo';
 import CardPaper from '../Componetes/CardPaper/CardPaper';
 import FuncionesFirebase from '../Funciones/FuncionesFirebase';
+import Titulo from '../Componetes/Titulo/Titulo';
 const estilos = makeStyles((theme) => ({
         button: {
                 margin: '3px'
@@ -522,7 +514,8 @@ const Populares = (props) => {
         const pedirTitulo = async () => {
                 try {
                     const consulta = await FuncionesFirebase.pedirTitulo();
-                        setTituloGeneral(consulta.titulo)    
+                    console.log(consulta)
+                    setTituloGeneral(consulta.titulo)    
                 }
                 catch (error) {                 
                   setTituloGeneral("Informacion ambiental de calidad confiable")
@@ -765,9 +758,7 @@ const Populares = (props) => {
 
                                 <Grid container>
                                         <Grid xs={12} md={3} lg={6}>
-                                                <Typography variant="h4" className={clases.tituloGeneral}>
-                                                        Informacion ambiental de <span className={clases.spanGeneral}> calidad  confiable</span> 
-                                                </Typography>
+                                                <Titulo></Titulo>
                                         </Grid>
                                 </Grid>
                         </div>

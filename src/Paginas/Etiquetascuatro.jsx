@@ -1,8 +1,6 @@
 import React, { useEffect,useState ,useContext} from 'react'
 import Firebase from '../firebase/firebase'
 import { Typography,makeStyles,Grid,CircularProgress,Button } from '@material-ui/core'
-import Paper from "../Componetes/Paper"
-import EtiquetasIcon from '@material-ui/icons/LocalOffer';
 import { useHistory } from 'react-router-dom';
 import Paperdos from "../Componetes/Papertres"
 import { UsuarioContext } from '../Provedores/UsuarioContext';

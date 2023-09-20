@@ -10,7 +10,7 @@ const Titulo = (props) => {
     const [titulo, settitulo] = useState({
         titulo:'',
         subtitulo:'',
-        descripcion:''
+        antetitulo:''
         
     })
 
@@ -38,7 +38,8 @@ const Titulo = (props) => {
 useEffect(async() => {
    
     const consulta =await FuncionesFirebase.pedirTitulo();
-    settitulo(consulta)
+    if (consulta) settitulo(consulta) 
+    console.log(consulta)
 }, [])
 
 
@@ -51,10 +52,10 @@ useEffect(async() => {
              <TextField 
             className={estilos.tituloMargenInput}
             onChange={actualizarState}
-            name='subtitulo'
-            label='Subtitulo'
-            value={titulo.subtitulo}
-            placeholder='ingrese subtitulo test' 
+            name='antetitulo'
+            label='Antetitulo'
+            value={titulo.antetitulo}
+            placeholder='ingrese antetitulo' 
             variant="outlined"  
             fullWidth           
             >
@@ -73,11 +74,10 @@ useEffect(async() => {
             <TextField
             className={estilos.tituloMargenInput}
             onChange={actualizarState}
-            name='descripcion'
-            label='Descripcion'
-
-            placeholder='ingrese la descripcion'
-            value={titulo.descripcion}
+            name='subtitulo'
+            label='Subtitulo'
+            placeholder='ingrese el subtitulo'
+            value={titulo.subtitulo}
             variant='outlined'
             fullWidth
             >

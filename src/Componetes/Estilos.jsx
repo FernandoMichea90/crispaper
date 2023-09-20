@@ -2,10 +2,8 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core'
 
 const Estilos = makeStyles((theme)=>({
-
     divCircular:{
         marginTop:"100px"
-
     },
     circular:{
         height:"72px !important",
@@ -28,9 +26,7 @@ const Estilos = makeStyles((theme)=>({
         margin:'20px 0px',
         height: '3px'
 },
-divImagen:{
-       
-   
+divImagen:{   
     width:"400px",
     maxHeight:'600px',
     overflow: 'auto',
@@ -45,10 +41,8 @@ divImagen:{
     marginTop:"15px",
     [theme.breakpoints.down("sm")]:{
             marginTop:"30px"
-    },
-   
+    },   
 },
-
 imgFoto:{
     position:"absolute",
     margin:"auto",
@@ -58,23 +52,16 @@ imgFoto:{
     right:"0",
     fontSize:"3rem"
 },
-
 botonesIcono :{ 
-
     display:'flex',
     justifyContent: 'center'
     ,
-
    '& ul':{
         listStyle:'none'
-
    },
    '& li':{
        float:'left',
    }
-
-
-
 },
 tamanoIcono: {
     fontSize: '45px !important',
@@ -99,9 +86,7 @@ tamanoIconoMargen: {
     backgroundRepeat: 'no-repeat',
     backgroundPosition: '50%',
     overflow: 'hidden',
-    border: '1px solid #00000033'
-
-    
+    border: '1px solid #00000033'    
 },divImgWhyDos:{
     width: '160px',
     height: '160px',
@@ -114,11 +99,8 @@ tamanoIconoMargen: {
     backgroundPosition: '50%',
     overflow: 'hidden',
     border: '1px solid #00000033'
-
-    
 }
 ,imgWhyDos:{
-  
     height: '160px',
     margin: 'auto',
     display: 'block',
@@ -127,7 +109,6 @@ tamanoIconoMargen: {
     backgroundSize:'253px auto',
     backgroundRepeat:'no-repeat',
     backgroundPosition: '50%',
-
 },
 cajaWhy: {
     '&  .MuiTypography-alignCenter':{
@@ -135,21 +116,16 @@ cajaWhy: {
         margin: '25px auto'
     }
 ,
-
     '& .MuiTypography-subtitle1':{
        
         fontWeight: 300
-       
     }
 },
 cajaAdminWhy:{
-
     '& .MuiFormControl-fullWidth': {
         margin: '15px auto'
     }
-
 },
-
 margenAdmynWhy :{
 
     margin:"60px auto"
@@ -180,17 +156,15 @@ botonRojoAlert:{
     border:'1px  solid #f43636',
     width:'100px'
 }, 
-
 // variables para titulo pagina 
-
  tituloSubtitulo:{
      textTransform:'uppercase',
      color:'#cf372c',
      fontWeight:"600"
-
  },
  tituloTitulo:{
-     fontWeight:"500"
+     fontWeight:"500",
+     fontSize:'1.9rem'
  },
  tituloMargen:{
      marginBottom:'10px'
@@ -198,13 +172,6 @@ botonRojoAlert:{
  tituloMargenInput:{
      marginTop:'10px',
      marginBottom:'10px'
-
  }
-
-
-
-
-
 }))
-
 export default Estilos

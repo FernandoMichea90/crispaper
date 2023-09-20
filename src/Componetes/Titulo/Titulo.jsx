@@ -8,7 +8,7 @@ const Titulo = () => {
 const [titulo, setTitulo] = useState({
     titulo: '',
     subtitulo:'',
-    descripcion:''
+    antetitulo:''
 })      
 
 
@@ -25,14 +25,14 @@ useEffect(async() => {
 
     return (
         <div className={estilos.tituloMargen}>
-            <Typography className={estilos.tituloSubtitulo} variant='h7' align='left'> 
-                {titulo.subtitulo}
+            <Typography className={estilos.tituloSubtitulo} variant='span' align='left'> 
+                {titulo.antetitulo}
              </Typography >
              <Typography className={estilos.tituloTitulo} align="left" variant="h4">
                  {titulo.titulo}
              </Typography>
-             <Typography align="left" variant="h6">
-                 {titulo.descripcion}
+             <Typography align="left" variant="span">
+                 {titulo.subtitulo}
              </Typography>
         </div>
     )

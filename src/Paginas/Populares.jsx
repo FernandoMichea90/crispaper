@@ -766,9 +766,7 @@ const Populares = (props) => {
 
                                 <Grid container>
                                         <Grid xs={12} md={3} lg={6}>
-                                                <Typography variant="h4" className={clases.tituloGeneral}>
-                                                        {tituloGeneral}
-                                                </Typography>
+                                                <Titulo></Titulo>
                                         </Grid>
                                 </Grid>
                         </div>
