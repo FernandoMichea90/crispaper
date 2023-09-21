@@ -759,7 +759,7 @@ const Populares = (props) => {
                                 <Grid container>
                                         <Grid xs={12}>
                                                 <Typography variant="h4" className={clases.tituloGeneral}>
-                                                        Informacion ambiental de <span className={clases.spanGeneral}> calidad  confiable</span>
+                                                        Información ambiental de <span className={clases.spanGeneral}> calidad y  confiable</span>
                                                 </Typography>
                                         </Grid>
                                 </Grid>

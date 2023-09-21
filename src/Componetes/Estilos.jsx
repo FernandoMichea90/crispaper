@@ -76,8 +76,8 @@ tamanoIconoMargen: {
 },descripcionWhy:{
     fontWeight:"300",
 },divImgWhy:{
-    width: '260px',
-    height: '260px',
+    width: '220px',
+    height: '220px',
     margin: 'auto',
     display: 'block',
     marginTop: '15px',
@@ -111,6 +111,7 @@ tamanoIconoMargen: {
     backgroundPosition: '50%',
 },
 cajaWhy: {
+    padding: '50px 0px',
     '&  .MuiTypography-alignCenter':{
         textAlign: 'center',
         margin: '25px auto'

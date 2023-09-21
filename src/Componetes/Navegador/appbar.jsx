@@ -805,7 +805,9 @@ d
                   classes.linkclass}>
                   <div className="divHover">
                     <Typography >
-
+                      <span>
+                        +
+                      </span>
                       Popular
                     </Typography>
                     <div className="subrayado"></div>
