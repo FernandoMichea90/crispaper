@@ -62,24 +62,9 @@ const [textoGeneral, setTextoGeneral]=useState("The Latest")
  const reciente=()=>{
 
 
-
-//   if(recientes)
-//   {
-
-//   setvalorados(false)
-//   setrecientes(false)
-// }else
-//   {
-//     setvalorados(false)
-//     setrecientes(true)
-
-//   }
-
         setTextoGeneral("The Latest")
         setvalorados(false)
         setrecientes(true)
-
-      
 
 
 }
